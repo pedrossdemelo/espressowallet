@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -50,12 +51,14 @@ export default function Login() {
           onChange={ handleChange }
         />
 
-        <button
+        <Button
           disabled={ !emailRegex.test(email) || password.length < minPasswordLength }
           type="submit"
+          variant='contained'
+          size='small'
         >
           Entrar
-        </button>
+        </Button>
       </form>
     </div>
   );
