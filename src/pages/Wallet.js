@@ -1,17 +1,18 @@
-import React from 'react';
-import { ExpenseForm, WalletHeader } from '../components';
-import ExpenseTable from '../components/ExpenseTable';
+import { Box } from "@mui/material";
+import { ExpenseForm, WalletHeader } from "../components";
 
 function Wallet() {
   return (
     <>
       <WalletHeader />
-      <main>
-        <ExpenseForm />
-        <ExpenseTable />
-      </main>
+      <Box component="main" sx={mainStyle}>
+        {/* <ExpenseTable /> */}
+      </Box>
+      <ExpenseForm />
     </>
   );
 }
+
+const mainStyle = { overflowX: "hidden" };
 
 export default Wallet;

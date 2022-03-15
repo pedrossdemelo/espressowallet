@@ -1,12 +1,20 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import {
+  AppBar,
+  IconButton,
+  Skeleton,
+  styled,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import { useSelector } from "react-redux";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function WalletHeader() {
-  const email = useSelector((state) => state.user.email) || 'Email unknown';
-  const expenses = useSelector((state) => state.wallet.expenses);
-  const isFetching = useSelector((state) => state.wallet.isFetching);
+  const expenses = useSelector(state => state.wallet.expenses);
+  const isFetching = useSelector(state => state.wallet.isFetching);
 
-  const calculateRate = (expense) => {
+  const calculateRate = expense => {
     const { currency, value, exchangeRates } = expense;
     const {
       [currency]: { ask: rate },
@@ -19,13 +27,40 @@ export default function WalletHeader() {
     .toFixed(2);
 
   return (
-    <header>
-      <h4 data-testid="email-field">{email}</h4>
-      <h4 data-testid="total-field">
-        {totalExpenses}
-        {isFetching ? ' 🔄' : ''}
-      </h4>
-      <h4 data-testid="header-currency-field">BRL</h4>
-    </header>
+    <>
+      <AppBar position="fixed">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open-drawer"
+            sx={{ mr: { xs: 0.5, sm: 1.5 } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography mb={-0.1} variant="h6">
+            Balance:{" "}
+            {isFetching ? (
+              <Skeleton
+                type="text"
+                sx={{
+                  display: "inline-block",
+                  width: `calc(${totalExpenses.toString().length}ch - 0.315rem)`,
+                  position: "relative",
+                  bottom: "0.05em"
+                }}
+              />
+            ) : (
+              totalExpenses
+            )}{" "}
+            BRL
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Offset />
+    </>
   );
 }
+
+const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);

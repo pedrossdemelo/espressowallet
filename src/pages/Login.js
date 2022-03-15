@@ -1,15 +1,22 @@
-import { Button } from '@mui/material';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { login } from '../store/actions';
+import {
+  Button,
+  Container,
+  Paper,
+  Stack,
+  TextField,
+  Typography
+} from "@mui/material";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { login } from "../store/actions";
 
 export default function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [state, setState] = React.useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const { email, password } = state;
 
@@ -24,42 +31,70 @@ export default function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(login(email));
-    history.push('/carteira');
+    history.push("/carteira");
   }
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+\w{2,4}$/g;
   const minPasswordLength = 6;
+  const disabled =
+    !emailRegex.test(email) || password.length < minPasswordLength;
 
   return (
-    <div>
-      <form onSubmit={ handleSubmit }>
-        <input
+    <Container maxWidth="md" sx={containerStyle}>
+      <Paper
+        variant="outlined"
+        component="form"
+        sx={formStyle}
+        onSubmit={handleSubmit}
+      >
+        <Typography mb={2} textAlign="center" fontWeight={600} variant="h5">
+          Poliwallet 💼
+        </Typography>
+        <TextField
           name="email"
-          data-testid="email-input"
           type="email"
-          placeholder="Email"
-          value={ email }
-          onChange={ handleChange }
+          label="Email"
+          size="small"
+          value={email}
+          onChange={handleChange}
         />
 
-        <input
+        <TextField
           name="password"
-          data-testid="password-input"
           type="password"
-          placeholder="Password"
-          value={ password }
-          onChange={ handleChange }
+          label="Password"
+          size="small"
+          value={password}
+          onChange={handleChange}
         />
 
-        <Button
-          disabled={ !emailRegex.test(email) || password.length < minPasswordLength }
-          type="submit"
-          variant='contained'
-          size='small'
-        >
-          Entrar
-        </Button>
-      </form>
-    </div>
+        <Stack direction="row" justifyContent="space-between">
+          <Button disabled={disabled}>Sign up</Button>
+          <Button
+            disabled={disabled}
+            type="submit"
+            variant="contained"
+            disableElevation
+          >
+            Login
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }
+
+const containerStyle = {
+  display: "flex",
+  minHeight: "100vh",
+  pb: 8,
+};
+
+const formStyle = {
+  p: 4,
+  display: "flex",
+  flexDirection: "column",
+  width: "20rem",
+  m: "auto",
+  gap: 2,
+};
