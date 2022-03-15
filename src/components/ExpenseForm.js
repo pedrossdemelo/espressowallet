@@ -1,10 +1,11 @@
 import { Add } from "@mui/icons-material";
 import {
-  Button, Fab,
+  Button,
+  Fab,
   List,
   ListItem,
   SwipeableDrawer,
-  TextField
+  TextField,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +14,19 @@ import { addExpenseThunk } from "../store/actions";
 
 const methodInputs = ["Cash", "Credit Card", "Debit Card"];
 
-const tagInputs = ["Food", "Entertainment", "Work", "Transportation", "Health"];
+const tagInputs = [
+  "Food",
+  "Education",
+  "Eletronics",
+  "Household",
+  "Clothing",
+  "Entertainment",
+  "Work",
+  "Transportation",
+  "Health",
+  "Payment",
+  "Other",
+];
 
 const fabStyle = { position: "fixed", bottom: "1rem", right: "1rem" };
 
@@ -23,8 +36,9 @@ const initialFormState = {
   value: 10,
   currency: "USD",
   description: "",
-}
+};
 
+const paperProps = { elevation: 0, style: { backgroundColor: "transparent" } };
 export default function ExpenseForm() {
   const dispatch = useDispatch();
   const [currencies, setCurrencies] = useState([]);
@@ -83,13 +97,30 @@ export default function ExpenseForm() {
         <Add sx={{ mr: 1, ml: -0.5 }} /> WRITE EXPENSE
       </Fab>
 
-      <SwipeableDrawer onClose={close} open={isDrawerOpen} anchor="bottom">
-        <List component="form" onSubmit={handleSubmit}>
+      <SwipeableDrawer
+        onClose={close}
+        PaperProps={paperProps}
+        open={isDrawerOpen}
+        anchor="bottom"
+      >
+        <List
+          component="form"
+          sx={{
+            borderRadius: "1rem 1rem 0 0",
+            bgcolor: "white",
+            boxShadow: 3,
+          }}
+          onSubmit={handleSubmit}
+        >
           <ListItem>
             <TextField
               variant="standard"
               fullWidth
+              size="large"
               name="value-input"
+              error={value <= 0}
+              helperText={value <= 0 ? "Value must be greater than 0" : " "}
+              autoFocus
               type="number"
               label="Value"
               onChange={handleChange}
@@ -103,6 +134,7 @@ export default function ExpenseForm() {
               SelectProps={{ native: true }}
               id="currency-input"
               name="currency-input"
+              helperText=" "
               data-testid="currency-input"
               onChange={handleChange}
               value={currency}
@@ -117,11 +149,17 @@ export default function ExpenseForm() {
 
           <ListItem>
             <TextField
-              multiline
               fullWidth
-              variant="standard"
+              variant="outlined"
+              error={description.length >= 25}
+              helperText={
+                description.length >= 25
+                  ? "Descriptions should be shorter than 25 characters"
+                  : " "
+              }
+              size="large"
               type="text"
-              placeholder="How did you spend it?"
+              placeholder="What was the expense?"
               autoComplete="off"
               name="description-input"
               label="Description"
@@ -134,10 +172,11 @@ export default function ExpenseForm() {
           <ListItem sx={{ justifyContent: "space-between" }}>
             <TextField
               select
-              variant="standard"
+              variant="outlined"
               SelectProps={{ native: true }}
               id="method-input"
               name="method-input"
+              size="small"
               data-testid="method-input"
               label="Method"
               onChange={handleChange}
@@ -152,7 +191,8 @@ export default function ExpenseForm() {
 
             <TextField
               label="Tag"
-              variant="standard"
+              size="small"
+              variant="outlined"
               select
               SelectProps={{ native: true }}
               onChange={handleChange}
@@ -170,9 +210,12 @@ export default function ExpenseForm() {
           </ListItem>
 
           <ListItem>
-            <Button disabled={description.length < 5} sx={{ml: "auto", mt: 1}} type="submit">
-              {updating === null ? "Add " : "Edit "}
-              expense
+            <Button
+              disabled={description.length < 5 || description.length >= 25 || value <= 0}
+              sx={{ ml: "auto", mt: 1 }}
+              type="submit"
+            >
+              Add expense
             </Button>
           </ListItem>
         </List>
