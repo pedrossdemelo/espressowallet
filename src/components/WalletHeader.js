@@ -9,11 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  ArrowDownward,
-  ArrowUpward,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import stringAvatar from "../utils/stringAvatar";
 import calculateRate from "../utils/calculateRate";
 
@@ -42,7 +38,7 @@ export default function WalletHeader() {
               display: "flex",
               alignItems: "center",
               width: "100%",
-              height: { xs: 58, sm: 64},
+              height: { xs: 58, sm: 64 },
             }}
           >
             <IconButton edge="start" size="small" color="inherit">
@@ -52,7 +48,7 @@ export default function WalletHeader() {
             <Typography
               textAlign="center"
               sx={{ lineHeight: 1, mx: "auto" }}
-              pb={{xs: 0.75, sm: 1}}
+              pb={{ xs: 0.75, sm: 1 }}
               variant="h6"
             >
               <Typography variant="caption" component="label">
