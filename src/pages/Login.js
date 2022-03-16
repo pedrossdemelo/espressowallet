@@ -43,8 +43,8 @@ export default function Login() {
   return (
     <Box sx={containerStyle}>
       <Paper
-        variant="outlined"
         component="form"
+        elevation={2}
         sx={formStyle}
         onSubmit={handleSubmit}
       >
