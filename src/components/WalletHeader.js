@@ -33,20 +33,16 @@ export default function WalletHeader() {
 
   const totalBalance = totalIncomes - totalExpenses;
 
-  const appbarStyle = {
-    borderRadius: "0 0 1rem 1rem",
-  };
-
   return (
     <>
-      <AppBar sx={appbarStyle} position="fixed">
+      <AppBar position="fixed">
         <Toolbar sx={toolbarStyle}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               width: "100%",
-              height: 58,
+              height: { xs: 58, sm: 64},
             }}
           >
             <IconButton edge="start" size="small" color="inherit">
@@ -56,7 +52,7 @@ export default function WalletHeader() {
             <Typography
               textAlign="center"
               sx={{ lineHeight: 1, mx: "auto" }}
-              pb={0.5}
+              pb={{xs: 0.75, sm: 1}}
               variant="h6"
             >
               <Typography variant="caption" component="label">
@@ -75,53 +71,6 @@ export default function WalletHeader() {
               <MenuIcon />
             </IconButton>
           </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "space-between",
-              pb: 1.75,
-            }}
-          >
-            <Box sx={{ display: "flex" }}>
-              <IconButton>
-                <Avatar sx={{ bgcolor: "success.light" }}>
-                  <ArrowUpward />
-                </Avatar>
-              </IconButton>
-
-              <Typography variant="h6" sx={{ lineHeight: 1 }} py={0.5}>
-                <Typography variant="caption" component="label">
-                  Total income:
-                </Typography>
-                <br />
-                {totalIncomes} BRL
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: "flex", mr: -0.75 }}>
-              <Typography
-                variant="h6"
-                sx={{ lineHeight: 1 }}
-                textAlign="right"
-                py={0.5}
-              >
-                <Typography variant="caption" component="label">
-                  Total expenses:
-                </Typography>
-                <br />
-                {totalExpenses} BRL
-              </Typography>
-
-              <IconButton>
-                <Avatar sx={{ bgcolor: "error.light" }}>
-                  <ArrowDownward />
-                </Avatar>
-              </IconButton>
-            </Box>
-          </Box>
         </Toolbar>
       </AppBar>
     </>
@@ -129,7 +78,7 @@ export default function WalletHeader() {
 }
 
 const toolbarStyle = {
-  "@media all": { minHeight: 136, pr: 2.5, pl: 1.75 },
+  "@media all": { pr: 2.5, pl: 1.75 },
   alignItems: "flex-start",
   justifyContent: "space-between",
   flexDirection: "column",
