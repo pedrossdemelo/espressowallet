@@ -23,13 +23,18 @@ const addExpense = (payload) => ({
   payload,
 });
 
+const addIncome = (payload) => ({
+  type: 'wallet/addIncome',
+  payload,
+});
+
 export const deleteExpense = (payload) => ({
   type: 'wallet/deleteExpense',
   payload,
 });
 
-export const editExpense = (payload) => ({
-  type: 'wallet/editExpense',
+export const deleteIncome = (payload) => ({
+  type: 'wallet/deleteIncome',
   payload,
 });
 
@@ -40,3 +45,11 @@ export const addExpenseThunk = (payload) => async (dispatch) => {
   const expense = { ...payload, exchangeRates: data };
   dispatch(addExpense(expense));
 };
+
+export const addIncomeThunk = (payload) => async (dispatch) => {
+  dispatch(fetchRates());
+  const { data, error } = await getRates();
+  if (error) return dispatch(requestFailed(error));
+  const income = { ...payload, exchangeRates: data };
+  dispatch(addIncome(income));
+}

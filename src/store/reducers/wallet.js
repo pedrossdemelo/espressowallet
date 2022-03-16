@@ -2,8 +2,8 @@ const initialState = {
   isFetching: false,
   error: null,
   expenses: [],
+  incomes: [],
   currencies: [],
-  updating: null,
 };
 
 export default function walletReducer(state = initialState, action) {
@@ -13,47 +13,46 @@ export default function walletReducer(state = initialState, action) {
       ...state,
       isFetching: true,
     };
+
   case 'wallet/requestFailed':
     return {
       ...state,
       isFetching: false,
       error: action.payload,
     };
+
   case 'wallet/addExpense':
-    if (state.updating === action.payload.id) {
-      return {
-        ...state,
-        isFetching: false,
-        updating: null,
-        expenses: state.expenses.map((expense) => {
-          if (expense.id === action.payload.id) {
-            return action.payload;
-          }
-          return expense;
-        }),
-      };
-    }
     return {
       ...state,
       isFetching: false,
-      updating: null,
       expenses: [...state.expenses, action.payload],
     };
+
   case 'wallet/deleteExpense':
     return {
       ...state,
       isFetching: false,
-      updating: null,
       expenses: state.expenses.filter(
         (expense) => expense.id !== action.payload,
       ),
     };
-  case 'wallet/editExpense':
+
+  case 'wallet/addIncome':
     return {
       ...state,
       isFetching: false,
-      updating: action.payload,
+      incomes: [...state.incomes, action.payload],
     };
+  
+  case 'wallet/deleteIncome':
+    return {
+      ...state,
+      isFetching: false,
+      incomes: state.incomes.filter(
+        (income) => income.id !== action.payload,
+      ),
+    };
+
   default:
     return state;
   }

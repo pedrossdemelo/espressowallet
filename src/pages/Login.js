@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Container,
   Paper,
@@ -40,7 +41,7 @@ export default function Login() {
     !emailRegex.test(email) || password.length < minPasswordLength;
 
   return (
-    <Container maxWidth="md" sx={containerStyle}>
+    <Box sx={containerStyle}>
       <Paper
         variant="outlined"
         component="form"
@@ -80,18 +81,21 @@ export default function Login() {
           </Button>
         </Stack>
       </Paper>
-    </Container>
+    </Box>
   );
 }
 
 const containerStyle = {
   display: "flex",
   minHeight: "100vh",
+  boxSizing: "border-box",
   pb: 8,
+  bgcolor: "grey.50",
 };
 
 const formStyle = {
   p: 4,
+  borderRadius: 4,
   display: "flex",
   flexDirection: "column",
   width: "20rem",
