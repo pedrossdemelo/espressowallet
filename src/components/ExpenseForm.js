@@ -1,9 +1,14 @@
-import { Add } from "@mui/icons-material";
+import { Add, ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import {
+  accordionActionsClasses,
+  Box,
   Button,
   Fab,
   List,
   ListItem,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
   SwipeableDrawer,
   TextField,
 } from "@mui/material";
@@ -92,11 +97,39 @@ export default function ExpenseForm() {
   const open = () => setIsDrawerOpen(true);
   const close = () => setIsDrawerOpen(false);
 
+  const actions = [
+    {
+      icon: <ArrowDownward />,
+      name: "Expense",
+      onClick: open,
+      color: "error.light"
+    },
+    {
+      icon: <ArrowUpward />,
+      name: "Income",
+      onClick: open,
+      color: "success.light"
+    },
+  ];
+
   return (
     <>
-      <Fab onClick={open} color="primary" variant="extended" sx={fabStyle}>
-        <Add sx={{ mr: 1, ml: -0.5 }} /> WRITE EXPENSE
-      </Fab>
+      <SpeedDial
+        ariaLabel="New expense or income"
+        sx={{ position: "fixed", bottom: "1rem", right: "1rem" }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map(action => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={action.onClick}
+            tooltipOpen
+            FabProps={{ sx: { bgcolor: action.color, color: "background.paper"} }}
+          />
+        ))}
+      </SpeedDial>
 
       <SwipeableDrawer
         onClose={close}
@@ -212,7 +245,9 @@ export default function ExpenseForm() {
 
           <ListItem>
             <Button
-              disabled={description.length < 3 || description.length >= 25 || value <= 0}
+              disabled={
+                description.length < 3 || description.length >= 25 || value <= 0
+              }
               sx={{ ml: "auto", mt: 1 }}
               type="submit"
             >

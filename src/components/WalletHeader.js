@@ -9,7 +9,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ArrowDownward, ArrowUpward, Menu as MenuIcon } from "@mui/icons-material";
+import {
+  ArrowDownward,
+  ArrowUpward,
+  Menu as MenuIcon,
+} from "@mui/icons-material";
 import stringAvatar from "../utils/stringAvatar";
 
 export default function WalletHeader() {
@@ -25,8 +29,10 @@ export default function WalletHeader() {
     return value * rate;
   };
 
-  const totalExpenses =
-    0 - expenses.reduce((acc, curr) => acc + calculateRate(curr), 0).toFixed(2);
+  const totalExpenses = expenses
+    .reduce((acc, curr) => acc + calculateRate(curr), 0)
+    .toFixed(2);
+  const totalBalance = 0 - totalExpenses;
 
   return (
     <AppBar
@@ -40,7 +46,7 @@ export default function WalletHeader() {
             display: "flex",
             alignItems: "center",
             width: "100%",
-            height: 56,
+            height: 58,
           }}
         >
           <IconButton edge="start" size="small" color="inherit">
@@ -58,9 +64,9 @@ export default function WalletHeader() {
             </Typography>
             <br />
             {isFetching ? (
-              <Skeleton type="text" sx={skeletonStyle(totalExpenses)} />
+              <Skeleton type="text" sx={skeletonStyle(totalBalance)} />
             ) : (
-              totalExpenses
+              totalBalance
             )}{" "}
             BRL
           </Typography>
@@ -79,18 +85,14 @@ export default function WalletHeader() {
             pb: 1.75,
           }}
         >
-          <Box sx={{display: "flex"}}>
+          <Box sx={{ display: "flex" }}>
             <IconButton>
               <Avatar sx={{ bgcolor: "success.light" }}>
                 <ArrowUpward />
               </Avatar>
             </IconButton>
 
-            <Typography
-              variant="h6"
-              sx={{ lineHeight: 1 }}
-              py={0.5}
-            >
+            <Typography variant="h6" sx={{ lineHeight: 1 }} py={0.5}>
               <Typography variant="caption" component="label">
                 Total income:
               </Typography>
@@ -99,7 +101,7 @@ export default function WalletHeader() {
             </Typography>
           </Box>
 
-          <Box sx={{display: "flex", mr: -0.75}}>
+          <Box sx={{ display: "flex", mr: -0.75 }}>
             <Typography
               variant="h6"
               sx={{ lineHeight: 1 }}
@@ -110,7 +112,7 @@ export default function WalletHeader() {
                 Total expenses:
               </Typography>
               <br />
-              420.00 BRL
+              {totalExpenses} BRL
             </Typography>
 
             <IconButton>
