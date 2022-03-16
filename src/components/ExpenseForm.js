@@ -39,6 +39,7 @@ const initialFormState = {
 };
 
 const paperProps = { elevation: 0, style: { backgroundColor: "transparent" } };
+
 export default function ExpenseForm() {
   const dispatch = useDispatch();
   const [currencies, setCurrencies] = useState([]);
@@ -107,7 +108,7 @@ export default function ExpenseForm() {
           component="form"
           sx={{
             borderRadius: "1rem 1rem 0 0",
-            bgcolor: "white",
+            bgcolor: "background.paper",
             boxShadow: 3,
           }}
           onSubmit={handleSubmit}
@@ -211,7 +212,7 @@ export default function ExpenseForm() {
 
           <ListItem>
             <Button
-              disabled={description.length < 5 || description.length >= 25 || value <= 0}
+              disabled={description.length < 3 || description.length >= 25 || value <= 0}
               sx={{ ml: "auto", mt: 1 }}
               type="submit"
             >
