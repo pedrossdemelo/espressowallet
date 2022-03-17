@@ -1,16 +1,18 @@
 import { Box } from "@mui/material";
 import { SpeedDials, WalletHeader } from "../components";
-import ExpenseGraph from "../components/ExpenseInfo";
+import ExpenseInfo from "../components/ExpenseInfo";
 import ExpenseAndIncome from "../components/ExpenseAndIncome";
+import IncomeInfo from "../components/IncomeInfo";
 
 function Wallet() {
   return (
     <>
       <WalletHeader />
       <Box component="main" sx={mainStyle}>
-        <Box sx={{ height: { xs: 58, sm: 64 }, mb: 2 }} />
+        <Box sx={{ height: { xs: 58, sm: 64 } }} />
         <ExpenseAndIncome />
-        <ExpenseGraph />
+        <IncomeInfo />
+        <ExpenseInfo />
       </Box>
       <SpeedDials />
     </>
@@ -21,6 +23,9 @@ const mainStyle = {
   overflowX: "hidden",
   bgcolor: "#fafaf9",
   minHeight: "100vh",
+  display: "flex",
+  flexFlow: "column nowrap",
+  gap: 2,
 };
 
 export default Wallet;

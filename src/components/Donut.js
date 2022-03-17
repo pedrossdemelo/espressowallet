@@ -1,9 +1,8 @@
 import { Box, Tooltip } from "@mui/material";
 import React from "react";
-import { colorMap } from "./ExpenseInfo";
 
 export default function Donut(props) {
-  const { height = 200, sx, data } = props;
+  const { height = 200, sx, data, colorMap } = props;
 
   let percentageLeft = 100;
 

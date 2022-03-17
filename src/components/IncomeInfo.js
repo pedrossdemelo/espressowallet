@@ -5,26 +5,22 @@ import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
 
 export const colorMap = {
-  Work: "#f44336",
-  Food: "#ff9800",
-  Education: "#ffeb3b",
-  Entertainment: "#4caf50",
-  Transportation: "#2196f3",
-  Eletronics: "#3f51b5",
-  Health: "#673ab7",
-  Payment: "#9c27b0",
-  Clothing: "#e91e63",
-  Household: "#009688",
+  Salary: "#f44336",
+  Savings: "#ff9800",
+  Investments: "#ffeb3b",
+  Gift: "#4caf50",
+  Prize: "#2196f3",
+  Sale: "#3f51b5",
   Other: "#f4f4f4",
 };
 
-export default function ExpenseInfo() {
-  const expenses = useSelector(state => state.wallet.expenses);
+export default function IncomeInfo() {
+  const incomes = useSelector(state => state.wallet.incomes);
 
-  if (expenses.length === 0) return null;
+  if (incomes.length === 0) return null;
 
-  const total = expenses.reduce((acc, curr) => acc + calculateRate(curr), 0);
-  const tags = expenses.reduce((acc, curr) => {
+  const total = incomes.reduce((acc, curr) => acc + calculateRate(curr), 0);
+  const tags = incomes.reduce((acc, curr) => {
     const { tag } = curr;
     const amount = calculateRate(curr);
     const percentage = (amount / total) * 100;
@@ -54,7 +50,7 @@ export default function ExpenseInfo() {
   return (
     <Box sx={{ px: 2 }}>
       <Typography mb={1} ml={1.5} variant="h6">
-        Your expense sources
+        Your income sources
       </Typography>
       <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
         <Donut data={tagsArray} colorMap={colorMap} height="7rem" />
@@ -69,7 +65,7 @@ export default function ExpenseInfo() {
               <Stack direction="row" alignItems="center">
                 <Box sx={dotStyle(tag)} />
                 <Typography variant="body2">
-                  {tag}: {Math.round(percentage) || percentage.toFixed(1)}%
+                  {tag}: {Math.round(percentage)}%
                 </Typography>
               </Stack>
               <Typography textAlign="right" variant="body2">{amount.toFixed(2)} BRL</Typography>

@@ -27,7 +27,7 @@ export default function WalletHeader() {
     .reduce((acc, curr) => acc + calculateRate(curr), 0)
     .toFixed(2);
 
-  const totalBalance = totalIncomes - totalExpenses;
+  const totalBalance = (totalIncomes - totalExpenses).toFixed(2);
 
   return (
     <>

@@ -22,8 +22,8 @@ export default function ExpenseAndIncome() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        pb: 1.75,
-        mx: 4,
+        mx: 2.5,
+        mb: -1,
       }}
     >
       <Box sx={{ display: "flex" }}>
