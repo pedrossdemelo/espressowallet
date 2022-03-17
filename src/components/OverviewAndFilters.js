@@ -1,6 +1,15 @@
 import { FilterList } from "@mui/icons-material";
 import { DatePicker } from "@mui/lab";
-import { Button, IconButton, List, ListItem, Stack, SwipeableDrawer, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  Stack,
+  SwipeableDrawer,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React from "react";
 
 export default function OverviewAndFilters() {
@@ -19,13 +28,15 @@ export default function OverviewAndFilters() {
         <Typography variant="h6">Overview</Typography>
 
         <Stack alignItems="center" direction="row">
-          <Typography variant="h6" mr={0.5} textAlign="right">
-            Last month
-          </Typography>
-
-          <IconButton onClick={open} edge="end">
-            <FilterList />
-          </IconButton>
+          <DatePicker
+            views={["year", "month"]}
+            autoFocus
+            value={new Date()}
+            onChange={() => {}}
+            label="Ola"
+            minDate={new Date("2008-01-31")}
+            renderInput={params => <TextField {...params} size="small" />}
+          />
         </Stack>
       </Stack>
 
@@ -44,7 +55,15 @@ export default function OverviewAndFilters() {
           }}
         >
           <ListItem>
-            <DatePicker />
+            <DatePicker
+              views={["year", "month"]}
+              autoFocus
+              value={new Date()}
+              onChange={() => {}}
+              label="Ola"
+              minDate={new Date("2008-01-31")}
+              renderInput={params => <TextField {...params} />}
+            />
           </ListItem>
         </List>
       </SwipeableDrawer>
