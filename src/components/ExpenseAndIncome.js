@@ -22,12 +22,12 @@ export default function ExpenseAndIncome() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        mx: 2.5,
-        mb: -1,
+        mx: 3.5,
+        my: -1,
       }}
     >
       <Box sx={{ display: "flex" }}>
-        <IconButton>
+        <IconButton edge="start">
           <Avatar sx={{ bgcolor: "success.light" }}>
             <ArrowUpward />
           </Avatar>
@@ -42,7 +42,7 @@ export default function ExpenseAndIncome() {
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", mr: -0.75 }}>
+      <Box sx={{ display: "flex" }}>
         <Typography
           variant="h6"
           sx={{ lineHeight: 1 }}
@@ -56,7 +56,7 @@ export default function ExpenseAndIncome() {
           {totalExpenses} BRL
         </Typography>
 
-        <IconButton>
+        <IconButton edge="end">
           <Avatar sx={{ bgcolor: "error.light" }}>
             <ArrowDownward />
           </Avatar>
