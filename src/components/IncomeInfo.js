@@ -65,7 +65,7 @@ export default function IncomeInfo() {
               <Stack direction="row" alignItems="center">
                 <Box sx={dotStyle(tag)} />
                 <Typography variant="body2">
-                  {tag}: {Math.round(percentage)}%
+                  {tag}: {Math.round(percentage) || percentage.toFixed(1)}%
                 </Typography>
               </Stack>
               <Typography textAlign="right" variant="body2">{amount.toFixed(2)} BRL</Typography>
