@@ -4,7 +4,7 @@ import ExpenseInfo from "../components/ExpenseInfo";
 import ExpenseAndIncome from "../components/ExpenseAndIncome";
 import IncomeInfo from "../components/IncomeInfo";
 import History from "../components/History";
-import OverviewAndFilters from "../components/OverviewAndFilters";
+import OverviewDate from "../components/OverviewDate";
 
 function Wallet() {
   return (
@@ -12,7 +12,7 @@ function Wallet() {
       <WalletHeader />
       <Box component="main" sx={mainStyle}>
         <Box sx={{ height: { xs: 58, sm: 64 } }} />
-        <OverviewAndFilters />
+        <OverviewDate />
         <ExpenseAndIncome />
         <IncomeInfo />
         <ExpenseInfo />

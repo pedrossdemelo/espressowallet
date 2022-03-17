@@ -38,6 +38,11 @@ export const deleteIncome = (payload) => ({
   payload,
 });
 
+export const updateDateFilter = (payload) => ({
+  type: 'filters/updateDateFilter',
+  payload,
+})
+
 export const addExpenseThunk = (payload) => async (dispatch) => {
   dispatch(fetchRates());
   const { data, error } = await getRates();

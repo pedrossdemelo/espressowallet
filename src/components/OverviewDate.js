@@ -8,14 +8,14 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function OverviewAndFilters() {
+export default function OverviewDate() {
   return (
     <>
       <Stack
         alignItems="center"
         direction="row"
         justifyContent="space-between"
-        sx={{ mx: 3.5 }}
+        sx={{ mx: 3.5, mb: -0.5 }}
       >
         <Typography variant="h6">Overview</Typography>
 
@@ -35,7 +35,7 @@ export default function OverviewAndFilters() {
                 }}
                 endAdornment={
                   params.InputProps.endAdornment ?? (
-                    <IconButton edge="end" sx={{ ml: 0.5 }}>
+                    <IconButton edge="end" sx={{ ml: 1 }}>
                       <Event />
                     </IconButton>
                   )

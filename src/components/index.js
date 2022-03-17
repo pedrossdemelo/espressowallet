@@ -5,5 +5,6 @@ export { default as ExpenseInfo } from "./ExpenseInfo";
 export { default as History, iconsMap, colorMap } from "./History";
 export { default as IncomeFormDrawer } from "./IncomeFormDrawer";
 export { default as IncomeInfo } from "./IncomeInfo";
+export { default as OverviewDate } from "./OverviewDate";
 export { default as SpeedDials } from "./SpeedDials";
 export { default as WalletHeader } from "./WalletHeader";
