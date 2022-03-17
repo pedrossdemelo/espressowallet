@@ -3,16 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
-
-export const colorMap = {
-  Salary: "#f44336",
-  Savings: "#ff9800",
-  Investments: "#ffeb3b",
-  Gift: "#4caf50",
-  Prize: "#2196f3",
-  Sale: "#3f51b5",
-  Other: "#f4f4f4",
-};
+import { colorMap } from "./History";
 
 export default function IncomeInfo() {
   const incomes = useSelector(state => state.wallet.incomes);
@@ -52,8 +43,8 @@ export default function IncomeInfo() {
       <Typography mb={1} ml={1.5} variant="h6">
         Your income sources
       </Typography>
-      <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
-        <Donut data={tagsArray} colorMap={colorMap} height="7rem" />
+      <Card sx={{ display: "flex", alignItems: "center", p: 2, borderRadius: "0.5rem" }}>
+        <Donut data={tagsArray} height="7rem" />
         <Stack
           spacing={0.5}
           alignItems="stretch"

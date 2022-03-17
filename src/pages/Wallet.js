@@ -3,6 +3,7 @@ import { SpeedDials, WalletHeader } from "../components";
 import ExpenseInfo from "../components/ExpenseInfo";
 import ExpenseAndIncome from "../components/ExpenseAndIncome";
 import IncomeInfo from "../components/IncomeInfo";
+import History from "../components/History";
 
 function Wallet() {
   return (
@@ -13,6 +14,7 @@ function Wallet() {
         <ExpenseAndIncome />
         <IncomeInfo />
         <ExpenseInfo />
+        <History />
       </Box>
       <SpeedDials />
     </>

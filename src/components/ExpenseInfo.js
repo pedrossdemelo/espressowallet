@@ -3,20 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
-
-export const colorMap = {
-  Work: "#f44336",
-  Food: "#ff9800",
-  Education: "#ffeb3b",
-  Entertainment: "#4caf50",
-  Transportation: "#2196f3",
-  Eletronics: "#3f51b5",
-  Health: "#673ab7",
-  Payment: "#9c27b0",
-  Clothing: "#e91e63",
-  Household: "#009688",
-  Other: "#f4f4f4",
-};
+import { colorMap } from "./History";
 
 export default function ExpenseInfo() {
   const expenses = useSelector(state => state.wallet.expenses);
@@ -39,7 +26,6 @@ export default function ExpenseInfo() {
 
   const tagsArray = Object.entries(tags);
   tagsArray.sort((a, b) => b[1].percentage - a[1].percentage);
-  console.log(tagsArray);
 
   function dotStyle(tag) {
     return {
@@ -56,8 +42,8 @@ export default function ExpenseInfo() {
       <Typography mb={1} ml={1.5} variant="h6">
         Your expense sources
       </Typography>
-      <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
-        <Donut data={tagsArray} colorMap={colorMap} height="7rem" />
+      <Card sx={{ display: "flex", alignItems: "center", p: 2, borderRadius: "0.5rem" }}>
+        <Donut data={tagsArray} height="7rem" />
         <Stack
           spacing={0.5}
           alignItems="stretch"
