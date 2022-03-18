@@ -32,7 +32,7 @@ export default function OverviewDate() {
         <Typography variant="h6">Overview</Typography>
 
         <DatePicker
-          views={["month", "year"]}
+          views={["year", "month"]}
           autoFocus
           value={start}
           onChange={handleChange}
