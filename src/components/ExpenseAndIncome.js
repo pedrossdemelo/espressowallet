@@ -23,7 +23,7 @@ export default function ExpenseAndIncome() {
         alignItems: "center",
         justifyContent: "space-between",
         mx: 3.5,
-        my: -1,
+        mt: -0.5,
       }}
     >
       <Box sx={{ display: "flex" }}>

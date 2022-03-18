@@ -23,6 +23,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -95,7 +96,7 @@ export default function History() {
         }}
       >
         {combinedTransactions.map(transaction => (
-          <ListItem key={transaction.description}>
+          <ListItemButton key={transaction.description}>
             <Stack
               direction="row"
               sx={{ flexGrow: 1 }}
@@ -147,7 +148,7 @@ export default function History() {
                 </Typography>
               </Typography>
             </Stack>
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Box>

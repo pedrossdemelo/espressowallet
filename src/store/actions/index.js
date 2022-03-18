@@ -38,8 +38,8 @@ export const deleteIncome = (payload) => ({
   payload,
 });
 
-export const updateDateFilter = (payload) => ({
-  type: 'filters/updateDateFilter',
+export const setDateFilter = (payload) => ({
+  type: 'filters/setDateFilter',
   payload,
 })
 
