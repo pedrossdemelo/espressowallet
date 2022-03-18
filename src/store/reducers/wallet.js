@@ -53,6 +53,32 @@ export default function walletReducer(state = initialState, action) {
       ),
     };
 
+  case 'wallet/editExpense':
+    return {
+      ...state,
+      isFetching: false,
+      expenses: state.expenses.map(
+        (expense) => {
+          if (expense.id === action.payload.id) {
+            return action.payload;
+          }
+          return expense;
+        })
+    };
+  
+  case 'wallet/editIncome':
+    return {
+      ...state,
+      isFetching: false,
+      incomes: state.incomes.map(
+        (income) => {
+          if (income.id === action.payload.id) {
+            return action.payload;
+          }
+          return income;
+        })
+    };
+
   default:
     return state;
   }

@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import getRates from "../services/getRates";
-import { addExpenseThunk } from "../store/actions";
+import { addExpenseThunk, deleteExpenseThunk, editExpenseThunk } from "../store/actions";
 
 const tagInputs = [
   "Food",
@@ -34,13 +34,13 @@ const initialFormState = {
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
-export default function ExpenseFormDrawer({ open, close }) {
+export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
   const dispatch = useDispatch();
   const [currencies, setCurrencies] = useState([]);
   const lastId = useRef(0);
 
-  const [formState, setFormState] = useState(initialFormState);
-  const [date, setDate] = useState(new Date());
+  const [formState, setFormState] = useState(toEdit ?? initialFormState);
+  const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
 
   function handleChange(e) {
@@ -58,16 +58,24 @@ export default function ExpenseFormDrawer({ open, close }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (toEdit) {
+      dispatch(editExpenseThunk({
+        ...formState,
+        id: toEdit.id,
+        createdAt: date,
+      }));
+      close();
+      return;
+    }
     dispatch(
       addExpenseThunk({
         ...formState,
-        createdAt: new Date(),
+        createdAt: date,
         type: "expense",
-        id: lastId.current,
+        id: toEdit?.id ?? lastId.current,
       })
     );
     lastId.current += 1;
-    setFormState(initialFormState);
     close();
   }
 
@@ -80,9 +88,10 @@ export default function ExpenseFormDrawer({ open, close }) {
   }, []);
 
   useEffect(() => {
+    if (toEdit) return;
     setFormState(initialFormState);
     setDate(new Date());
-  }, [open]);
+  }, [open, toEdit]);
   return (
     <SwipeableDrawer
       onClose={close}
@@ -194,7 +203,7 @@ export default function ExpenseFormDrawer({ open, close }) {
             sx={{ ml: "auto", mt: 1 }}
             type="submit"
           >
-            Add expense
+            {toEdit ? "Edit" : "Add"} expense
           </Button>
         </ListItem>
       </List>

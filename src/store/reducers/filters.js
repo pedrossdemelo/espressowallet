@@ -61,6 +61,28 @@ export default function filterReducer(state = initialState, action) {
         ...state,
         incomes: state.incomes.filter(income => income.id !== action.payload),
       };
+    
+    case "filter/editFilteredExpense":
+      return {
+        ...state,
+        expenses: state.expenses.map(expense => {
+          if (expense.id === action.payload.id) {
+            return action.payload;
+          }
+          return expense;
+        }),
+      };
+    
+    case "filter/editFilteredIncome":
+      return {
+        ...state,
+        incomes: state.incomes.map(income => {
+          if (income.id === action.payload.id) {
+            return action.payload;
+          }
+          return income;
+        }),
+      };
 
     default:
       return state;

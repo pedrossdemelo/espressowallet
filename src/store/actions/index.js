@@ -74,6 +74,46 @@ export const deleteFilteredIncome = payload => ({
   payload,
 });
 
+export const editExpense = payload => ({
+  type: "wallet/editExpense",
+  payload,
+});
+
+export const editIncome = payload => ({
+  type: "wallet/editIncome",
+  payload,
+});
+
+export const editFilteredIncome = payload => ({
+  type: "filter/editFilteredIncome",
+  payload,
+});
+
+export const editFilteredExpense = payload => ({
+  type: "filter/editFilteredExpense",
+  payload,
+});
+
+export const editExpenseThunk = payload => async dispatch => {
+  dispatch(editExpense(payload));
+  dispatch(editFilteredExpense(payload));
+};
+
+export const editIncomeThunk = payload => async dispatch => {
+  dispatch(editIncome(payload));
+  dispatch(editFilteredIncome(payload));
+};
+
+export const deleteExpenseThunk = payload => async dispatch => {
+  dispatch(deleteExpense(payload));
+  dispatch(deleteFilteredExpense(payload));
+};
+
+export const deleteIncomeThunk = payload => async dispatch => {
+  dispatch(deleteIncome(payload));
+  dispatch(deleteFilteredIncome(payload));
+};
+
 export const addExpenseThunk = payload => async dispatch => {
   dispatch(fetchRates());
   const { data, error } = await getRates();
@@ -114,4 +154,4 @@ export const updateFilteredResultsThunk = () => async dispatch => {
 
   dispatch(setFilteredExpenses(filteredExpenses));
   dispatch(setFilteredIncomes(filteredIncomes));
-}
+};

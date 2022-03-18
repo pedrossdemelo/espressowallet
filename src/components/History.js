@@ -16,18 +16,24 @@ import {
   TheaterComedy,
   TrendingUp,
   Work,
+  DeleteOutline,
+  Edit,
 } from "@mui/icons-material";
 import {
   Avatar,
   Box,
+  IconButton,
   List,
+  ListItem,
   ListItemAvatar,
-  ListItemButton,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import ExpenseFormDrawer from "./ExpenseFormDrawer";
+import IncomeFormDrawer from "./IncomeFormDrawer";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,
@@ -95,67 +101,126 @@ export default function History() {
         }}
       >
         {combinedTransactions.map(transaction => (
-          <ListItemButton key={transaction.description}>
-            <Stack
-              direction="row"
-              sx={{ flexGrow: 1 }}
-              justifyContent="space-between"
-            >
-              <Stack direction="row">
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: colorMap[transaction.tag], mr: 2 }}>
-                    {iconsMap[transaction.tag]}
-                  </Avatar>
-                </ListItemAvatar>
-
-                <Typography
-                  lineHeight={1.375}
-                  sx={{
-                    display: "flex",
-                    flexFlow: "column nowrap",
-                    justifyContent: "center",
-                    textTransform: "capitalize",
-                  }}
-                  textAlign="left"
-                >
-                  {transaction.description}
-                  <br />
-                  <Typography lineHeight={1.375} variant="caption">
-                    {transaction.tag}
-                  </Typography>
-                </Typography>
-              </Stack>
-
-              <Typography
-                textAlign="right"
-                lineHeight={1.375}
-                sx={{
-                  display: "flex",
-                  flexFlow: "column nowrap",
-                  justifyContent: "center",
-                }}
-              >
-                {transaction.type === "income" ? "+" : "-"}{" "}
-                {Number(transaction.value).toFixed(2)} {transaction.currency}
-                <br />
-                <Typography lineHeight={1.375} variant="caption">
-                  x{" "}
-                  {Number(
-                    transaction.exchangeRates[transaction.currency].ask
-                  ).toFixed(2)}{" "}
-                  |{" "}
-                  {transaction.createdAt
-                    .toLocaleDateString()
-                    .split("/")
-                    .slice(0, 2)
-                    .join("/")}
-                  {" "}{transaction.createdAt.getHours()}:{transaction.createdAt.getMinutes().toString().padStart(2, '0')}
-                </Typography>
-              </Typography>
-            </Stack>
-          </ListItemButton>
+          <TransactionListItem
+            key={transaction.description}
+            transaction={transaction}
+          />
         ))}
       </List>
     </Box>
+  );
+}
+
+function TransactionListItem(props) {
+  const isDesktop = useMediaQuery("(pointer: fine)");
+  const [isHovered, setIsHovered] = useState(false);
+  const enter = () => setIsHovered(true);
+  const leave = () => setIsHovered(false);
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const open = () => setIsDrawerOpen(true);
+  const close = () => setIsDrawerOpen(false);
+
+  const { transaction } = props;
+
+  return (
+    <>
+      <ListItem
+        sx={{
+          "&:hover": {
+            boxShadow: 2,
+            borderRadius: 2,
+            outline: "0.5px solid lightgray",
+          },
+          cursor: "pointer",
+        }}
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+      >
+        <Stack
+          direction="row"
+          sx={{
+            flexGrow: 1,
+          }}
+          justifyContent="space-between"
+        >
+          <Stack direction="row">
+            <ListItemAvatar>
+              <Avatar
+                sx={{
+                  bgcolor: colorMap[transaction.tag],
+                  mr: 2,
+                }}
+              >
+                {iconsMap[transaction.tag]}
+              </Avatar>
+            </ListItemAvatar>
+
+            <Typography
+              lineHeight={1.375}
+              sx={{
+                display: "flex",
+                flexFlow: "column nowrap",
+                justifyContent: "center",
+                textTransform: "capitalize",
+              }}
+              textAlign="left"
+            >
+              {transaction.description}
+              <br />
+              <Typography lineHeight={1.375} variant="caption">
+                {transaction.tag}
+              </Typography>
+            </Typography>
+          </Stack>
+
+          {isHovered ? (
+            <Stack direction="row">
+              <IconButton onClick={open}>
+                <Edit />
+              </IconButton>
+
+              <IconButton>
+                <DeleteOutline />
+              </IconButton>
+            </Stack>
+          ) : (
+            <Typography
+              textAlign="right"
+              lineHeight={1.375}
+              sx={{
+                display: "flex",
+                flexFlow: "column nowrap",
+                justifyContent: "center",
+              }}
+            >
+              {transaction.type === "income" ? "+" : "-"}{" "}
+              {Number(transaction.value).toFixed(2)} {transaction.currency}
+              <br />
+              <Typography lineHeight={1.375} variant="caption">
+                x{" "}
+                {Number(
+                  transaction.exchangeRates[transaction.currency].ask
+                ).toFixed(2)}{" "}
+                |{" "}
+                {transaction.createdAt
+                  .toLocaleDateString()
+                  .split("/")
+                  .slice(0, 2)
+                  .join("/")}{" "}
+                {transaction.createdAt.getHours()}:
+                {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
+              </Typography>
+            </Typography>
+          )}
+        </Stack>
+      </ListItem>
+
+      {transaction.type === "income" ? (
+        <IncomeFormDrawer toEdit={transaction} open={isDrawerOpen} close={close} />
+      ) : (
+        <ExpenseFormDrawer toEdit={transaction} open={isDrawerOpen} close={close} />
+      )}
+    </>
   );
 }

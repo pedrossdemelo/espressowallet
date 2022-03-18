@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import getRates from "../services/getRates";
-import { addIncomeThunk } from "../store/actions";
+import { addIncomeThunk, deleteIncomeThunk, editIncomeThunk } from "../store/actions";
 
 const tagInputs = [
   "Investments",
@@ -30,13 +30,13 @@ const initialFormState = {
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
-export default function IncomeFormDrawer({ open, close }) {
+export default function IncomeFormDrawer({ open, close, toEdit = null }) {
   const dispatch = useDispatch();
   const [currencies, setCurrencies] = useState([]);
   const lastId = useRef(0);
 
-  const [formState, setFormState] = useState(initialFormState);
-  const [date, setDate] = useState(new Date());
+  const [formState, setFormState] = useState(toEdit ?? initialFormState);
+  const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
 
   function handleChange(e) {
@@ -54,16 +54,24 @@ export default function IncomeFormDrawer({ open, close }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (toEdit) {
+      dispatch(editIncomeThunk({
+        ...formState,
+        id: toEdit.id,
+        createdAt: date,
+      }));
+      close();
+      return;
+    }
     dispatch(
       addIncomeThunk({
         ...formState,
         createdAt: date,
         type: "income",
-        id: lastId.current,
+        id: toEdit?.id ?? lastId.current,
       })
     );
-    lastId.current += 1;
-    setFormState(initialFormState);
+    !toEdit && (lastId.current += 1);
     close();
   }
 
@@ -76,9 +84,10 @@ export default function IncomeFormDrawer({ open, close }) {
   }, []);
 
   useEffect(() => {
+    if (toEdit) return;
     setFormState(initialFormState);
     setDate(new Date());
-  }, [open]);
+  }, [open, toEdit]);
 
   return (
     <SwipeableDrawer
@@ -191,7 +200,7 @@ export default function IncomeFormDrawer({ open, close }) {
             sx={{ ml: "auto", mt: 1 }}
             type="submit"
           >
-            Add income
+            {toEdit ? "Edit" : "Add"} income
           </Button>
         </ListItem>
       </List>
