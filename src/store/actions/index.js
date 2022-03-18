@@ -100,7 +100,7 @@ export const addIncomeThunk = payload => async dispatch => {
     dispatch(addFilteredExpense(income));
 };
 
-export const updateFilteredResults = () => async dispatch => {
+export const updateFilteredResultsThunk = () => async dispatch => {
   const { start, end } = store.getState().filter.date;
   const { expenses, incomes } = store.getState().wallet;
 
