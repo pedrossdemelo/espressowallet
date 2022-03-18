@@ -22,16 +22,24 @@ import {
 import {
   Avatar,
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   Stack,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
 
@@ -112,7 +120,7 @@ export default function History() {
 }
 
 function TransactionListItem(props) {
-  const isDesktop = useMediaQuery("(pointer: fine)");
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const enter = () => setIsHovered(true);
   const leave = () => setIsHovered(false);
@@ -121,7 +129,24 @@ function TransactionListItem(props) {
   const open = () => setIsDrawerOpen(true);
   const close = () => setIsDrawerOpen(false);
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
   const { transaction } = props;
+
+  const delTransaction = type => () => {
+    switch (type) {
+      case "expense":
+        dispatch(deleteExpenseThunk(transaction.id));
+        return;
+      case "income":
+        dispatch(deleteIncomeThunk(transaction.id));
+        return;
+      default:
+        return;
+    }
+  };
 
   return (
     <>
@@ -176,13 +201,17 @@ function TransactionListItem(props) {
 
           {isHovered ? (
             <Stack direction="row">
-              <IconButton onClick={open}>
-                <Edit />
-              </IconButton>
+              <Tooltip arrow placement="top" title="Edit">
+                <IconButton onClick={open}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
 
-              <IconButton>
-                <DeleteOutline />
-              </IconButton>
+              <Tooltip arrow placement="top" title="Delete">
+                <IconButton onClick={openDialog}>
+                  <DeleteOutline />
+                </IconButton>
+              </Tooltip>
             </Stack>
           ) : (
             <Typography
@@ -217,10 +246,47 @@ function TransactionListItem(props) {
       </ListItem>
 
       {transaction.type === "income" ? (
-        <IncomeFormDrawer toEdit={transaction} open={isDrawerOpen} close={close} />
+        <IncomeFormDrawer
+          toEdit={transaction}
+          open={isDrawerOpen}
+          close={close}
+        />
       ) : (
-        <ExpenseFormDrawer toEdit={transaction} open={isDrawerOpen} close={close} />
+        <ExpenseFormDrawer
+          toEdit={transaction}
+          open={isDrawerOpen}
+          close={close}
+        />
       )}
+
+      <ConfirmationDialog
+        open={isDialogOpen}
+        close={closeDialog}
+        onConfirm={delTransaction(transaction.type)}
+        transaction={transaction}
+      />
     </>
   );
 }
+
+const ConfirmationDialog = ({ open, transaction, close, onConfirm }) => {
+  return (
+    <Dialog open={open} onClose={close}>
+      <DialogTitle>Delete transaction</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete the {transaction.type}{" "}
+          {transaction.description}?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={close} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} color="primary" autoFocus>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
