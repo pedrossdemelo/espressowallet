@@ -97,7 +97,7 @@ export const addIncomeThunk = payload => async dispatch => {
   const { start, end } = store.getState().filter.date;
 
   if (income.createdAt >= start && income.createdAt <= end)
-    dispatch(addFilteredExpense(income));
+    dispatch(addFilteredIncome(income));
 };
 
 export const updateFilteredResultsThunk = () => async dispatch => {

@@ -39,7 +39,7 @@ export default function filterReducer(state = initialState, action) {
     case "filter/addFilteredIncome":
       return {
         ...state,
-        expenses: [...state.expenses, action.payload],
+        incomes: [...state.incomes, action.payload],
       };
 
     case "filter/addFilteredExpense":
