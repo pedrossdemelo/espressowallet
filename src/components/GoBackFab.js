@@ -26,7 +26,7 @@ export default function GoBackFab() {
     <Zoom in={filterIsOnCurrentMonth === false}>
       <Fab
         sx={{ position: "fixed", bottom: "1.25rem", left: "1rem" }}
-        color="secondary"
+        color="primary"
         onClick={goBackToCurrentMonth}
         variant="extended"
       >
