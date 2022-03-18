@@ -51,7 +51,7 @@ export default function ExpenseInfo() {
           sx={{ alignSelf: "stretch", ml: 2, flexGrow: 1, py: 0.5 }}
         >
           {tagsArray.slice(0, 5).map(([tag, { percentage, amount }]) => (
-            <Stack direction="row" justifyContent="space-between">
+            <Stack key={tag} direction="row" justifyContent="space-between">
               <Stack direction="row" alignItems="center">
                 <Box sx={dotStyle(tag)} />
                 <Typography variant="body2">
