@@ -3,6 +3,21 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
 export default function NoTransactionsYet() {
   const { expenses, incomes, date } = useSelector(state => state.filter);
 
@@ -27,7 +42,7 @@ export default function NoTransactionsYet() {
 
       <Typography>
         No transactions in{" "}
-        {date.start.toLocaleString("default", { month: "long" })} {filterYear}
+        {months[Number(date.start.getMonth())]} {filterYear}
       </Typography>
     </div>
   );
