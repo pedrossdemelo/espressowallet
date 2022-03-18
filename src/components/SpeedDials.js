@@ -23,12 +23,14 @@ export default function SpeedDials() {
       name: "Expense",
       onClick: openExpense,
       color: "error.light",
+      colorHover: "error.main",
     },
     {
       icon: <ArrowUpward />,
       name: "Income",
       onClick: openIncome,
       color: "success.light",
+      colorHover: "success.main",
     },
   ];
 
@@ -47,7 +49,7 @@ export default function SpeedDials() {
             onClick={action.onClick}
             tooltipOpen
             FabProps={{
-              sx: { bgcolor: action.color, color: "background.paper" },
+              sx: { bgcolor: action.color, color: "background.paper", '&:hover': { bgcolor: action.colorHover } },
             }}
           />
         ))}
