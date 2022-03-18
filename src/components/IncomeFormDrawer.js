@@ -159,6 +159,8 @@ export default function IncomeFormDrawer({ open, close }) {
             label="Date"
             onChange={handleDateChange}
             renderInput={params => <TextField size="small" {...params} />}
+            ampm={false}
+            ampmInClock={false}
           />
 
           <TextField
