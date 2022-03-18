@@ -272,7 +272,7 @@ function TransactionListItem(props) {
 const ConfirmationDialog = ({ open, transaction, close, onConfirm }) => {
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle>Delete transaction</DialogTitle>
+      <DialogTitle>Delete {transaction.type}</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Are you sure you want to delete the {transaction.type}{" "}
