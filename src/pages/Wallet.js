@@ -6,6 +6,7 @@ import IncomeInfo from "../components/IncomeInfo";
 import History from "../components/History";
 import OverviewDate from "../components/OverviewDate";
 import GoBackFab from "../components/GoBackFab";
+import NoTransactionsYet from "../components/NoTransactionsYet";
 
 function Wallet() {
   return (
@@ -13,11 +14,18 @@ function Wallet() {
       <WalletHeader />
       <Box component="main" sx={mainStyle}>
         <Box sx={{ height: { xs: 58, sm: 64 } }} />
+
         <OverviewDate />
+
         <ExpenseAndIncome />
+
         <IncomeInfo />
+
         <ExpenseInfo />
+
         <History />
+        {/* If there is no transactions in the filter, show this: */}
+        <NoTransactionsYet />
       </Box>
       <SpeedDials />
       <GoBackFab />
