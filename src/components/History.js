@@ -143,7 +143,14 @@ export default function History() {
                   x{" "}
                   {Number(
                     transaction.exchangeRates[transaction.currency].ask
-                  ).toFixed(2)} | {transaction.createdAt.toLocaleDateString()}
+                  ).toFixed(2)}{" "}
+                  |{" "}
+                  {transaction.createdAt
+                    .toLocaleDateString()
+                    .split("/")
+                    .slice(0, 2)
+                    .join("/")}
+                  {" "}{transaction.createdAt.getHours()}:{transaction.createdAt.getMinutes().toString().padStart(2, '0')}
                 </Typography>
               </Typography>
             </Stack>
