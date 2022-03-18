@@ -6,7 +6,7 @@ import Donut from "./Donut";
 import { colorMap } from "./History";
 
 export default function ExpenseInfo() {
-  const expenses = useSelector(state => state.wallet.expenses);
+  const expenses = useSelector(state => state.filter.expenses);
 
   if (expenses.length === 0) return null;
 

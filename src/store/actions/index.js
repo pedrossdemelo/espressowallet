@@ -54,6 +54,26 @@ export const setFilteredIncomes = payload => ({
   payload,
 });
 
+export const addFilteredIncome = payload => ({
+  type: "filter/addFilteredIncome",
+  payload,
+});
+
+export const addFilteredExpense = payload => ({
+  type: "filter/addFilteredExpense",
+  payload,
+});
+
+export const deleteFilteredExpense = payload => ({
+  type: "filter/deleteFilteredExpense",
+  payload,
+});
+
+export const deleteFilteredIncome = payload => ({
+  type: "filter/deleteFilteredIncome",
+  payload,
+});
+
 export const addExpenseThunk = payload => async dispatch => {
   dispatch(fetchRates());
   const { data, error } = await getRates();
@@ -61,11 +81,10 @@ export const addExpenseThunk = payload => async dispatch => {
   const expense = { ...payload, exchangeRates: data };
   dispatch(addExpense(expense));
 
-  const expenses = store.getState().wallet.expenses;
   const { start, end } = store.getState().filter.date;
 
-  expenses.filter(expense => expense.createdAt >= start && expense.createdAt <= end);
-  dispatch(setFilteredExpenses(expenses));
+  if (expense.createdAt >= start && expense.createdAt <= end)
+    dispatch(addFilteredExpense(expense));
 };
 
 export const addIncomeThunk = payload => async dispatch => {
@@ -75,9 +94,24 @@ export const addIncomeThunk = payload => async dispatch => {
   const income = { ...payload, exchangeRates: data };
   dispatch(addIncome(income));
 
-  const incomes = store.getState().wallet.incomes;
   const { start, end } = store.getState().filter.date;
 
-  incomes.filter(expense => expense.createdAt >= start && expense.createdAt <= end);
-  dispatch(setFilteredIncomes(incomes));
+  if (income.createdAt >= start && income.createdAt <= end)
+    dispatch(addFilteredExpense(income));
 };
+
+export const updateFilteredResults = () => async dispatch => {
+  const { start, end } = store.getState().filter.date;
+  const { expenses, incomes } = store.getState().wallet;
+
+  const filteredExpenses = expenses.filter(
+    expense => expense.createdAt >= start && expense.createdAt <= end
+  );
+
+  const filteredIncomes = incomes.filter(
+    income => income.createdAt >= start && income.createdAt <= end
+  );
+
+  dispatch(setFilteredExpenses(filteredExpenses));
+  dispatch(setFilteredIncomes(filteredIncomes));
+}

@@ -6,7 +6,7 @@ import Donut from "./Donut";
 import { colorMap } from "./History";
 
 export default function IncomeInfo() {
-  const incomes = useSelector(state => state.wallet.incomes);
+  const incomes = useSelector(state => state.filter.incomes);
 
   if (incomes.length === 0) return null;
 

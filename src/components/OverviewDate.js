@@ -8,12 +8,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateFilter } from "../store/actions";
+import { setDateFilter, updateFilteredResults } from "../store/actions";
 
 export default function OverviewDate() {
   const dispatch = useDispatch();
-  const { start } = useSelector((state) => state.filter.date);
-  const handleChange = (newDate) => dispatch(setDateFilter(newDate))
+  const { start } = useSelector(state => state.filter.date);
+  const handleChange = newDate => {
+    dispatch(setDateFilter(newDate));
+    dispatch(updateFilteredResults());
+  };
 
   return (
     <>

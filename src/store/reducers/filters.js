@@ -23,18 +23,44 @@ export default function filterReducer(state = initialState, action) {
         ...state,
         date: range,
       };
-    
+
     case "filter/setFilteredExpenses":
       return {
         ...state,
         expenses: action.payload,
-      }
-    
+      };
+
     case "filter/setFilteredIncomes":
       return {
         ...state,
         incomes: action.payload,
-      }
+      };
+
+    case "filter/addFilteredIncome":
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload],
+      };
+
+    case "filter/addFilteredExpense":
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload],
+      };
+
+    case "filter/deleteFilteredExpense":
+      return {
+        ...state,
+        expenses: state.expenses.filter(
+          expense => expense.id !== action.payload
+        ),
+      };
+
+    case "filter/deleteFilteredIncome":
+      return {
+        ...state,
+        incomes: state.incomes.filter(income => income.id !== action.payload),
+      };
 
     default:
       return state;

@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import calculateRate from "../utils/calculateRate";
 
 export default function ExpenseAndIncome() {
-  const expenses = useSelector(state => state.wallet.expenses);
-  const incomes = useSelector(state => state.wallet.incomes);
+  const expenses = useSelector(state => state.filter.expenses);
+  const incomes = useSelector(state => state.filter.incomes);
 
   const totalExpenses = expenses
     .reduce((acc, curr) => acc + calculateRate(curr), 0)

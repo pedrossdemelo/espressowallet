@@ -21,7 +21,6 @@ import {
   Avatar,
   Box,
   List,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   Stack,
@@ -71,8 +70,8 @@ export const colorMap = {
 };
 
 export default function History() {
-  const expenses = useSelector(state => state.wallet.expenses);
-  const incomes = useSelector(state => state.wallet.incomes);
+  const expenses = useSelector(state => state.filter.expenses);
+  const incomes = useSelector(state => state.filter.incomes);
 
   if (expenses.length === 0 && incomes.length === 0) {
     return null;
