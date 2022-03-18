@@ -22,7 +22,6 @@ export default function walletReducer(state = initialState, action) {
     };
 
   case 'wallet/addExpense':
-    action.payload.type = 'expense';
     return {
       ...state,
       isFetching: false,
@@ -39,7 +38,6 @@ export default function walletReducer(state = initialState, action) {
     };
 
   case 'wallet/addIncome':
-    action.payload.type = 'income';
     return {
       ...state,
       isFetching: false,

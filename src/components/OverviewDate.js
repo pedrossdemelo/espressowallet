@@ -7,8 +7,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setDateFilter } from "../store/actions";
 
 export default function OverviewDate() {
+  const dispatch = useDispatch();
+  const { start } = useSelector((state) => state.filter.date);
+  const handleChange = (newDate) => dispatch(setDateFilter(newDate))
+
   return (
     <>
       <Stack
@@ -22,9 +28,9 @@ export default function OverviewDate() {
         <DatePicker
           views={["month", "year"]}
           autoFocus
-          value={new Date()}
-          onChange={() => {}}
-          minDate={new Date("2008-01-31")}
+          value={start}
+          onChange={handleChange}
+          minDate={new Date("2019-01-31")}
           maxDate={new Date()}
           renderInput={params => (
             <FormControl style={{ maxWidth: "12em" }}>

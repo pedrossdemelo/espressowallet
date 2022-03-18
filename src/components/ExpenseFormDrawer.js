@@ -59,6 +59,7 @@ export default function ExpenseFormDrawer({ open, close }) {
       addExpenseThunk({
         ...formState,
         createdAt: new Date(),
+        type: "expense",
         id: lastId.current,
       })
     );

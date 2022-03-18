@@ -4,7 +4,8 @@ const { start, end } = getMonthRange(new Date());
 
 const initialState = {
   date: { start, end },
-  results: [],
+  expenses: [],
+  incomes: [],
 };
 
 export default function filterReducer(state = initialState, action) {
@@ -14,8 +15,7 @@ export default function filterReducer(state = initialState, action) {
 
       if (action.payload instanceof Date) {
         range = getMonthRange(action.payload);
-      }
-      if (action.payload instanceof Object) {
+      } else {
         range = action.payload;
       }
 
@@ -23,6 +23,18 @@ export default function filterReducer(state = initialState, action) {
         ...state,
         date: range,
       };
+    
+    case "filter/setFilteredExpenses":
+      return {
+        ...state,
+        expenses: action.payload,
+      }
+    
+    case "filter/setFilteredIncomes":
+      return {
+        ...state,
+        incomes: action.payload,
+      }
 
     default:
       return state;

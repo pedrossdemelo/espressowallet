@@ -1,6 +1,7 @@
 export default function getMonthRange(date) {
   const start = new Date(date.getTime());
   const end = new Date(date.getTime());
+  console.log(start, end)
 
   start.setDate(1);
   start.setHours(0, 0, 0, 0);

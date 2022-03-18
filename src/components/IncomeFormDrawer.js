@@ -52,6 +52,7 @@ export default function IncomeFormDrawer({ open, close }) {
       addIncomeThunk({
         ...formState,
         createdAt: new Date(),
+        type: "income",
         id: lastId.current,
       })
     );
