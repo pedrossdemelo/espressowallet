@@ -1,3 +1,4 @@
+import { DateTimePicker } from "@mui/lab";
 import {
   Button,
   List,
@@ -35,6 +36,7 @@ export default function IncomeFormDrawer({ open, close }) {
   const lastId = useRef(0);
 
   const [formState, setFormState] = useState(initialFormState);
+  const [date, setDate] = useState(new Date());
   const { tag, value, currency, description } = formState;
 
   function handleChange(e) {
@@ -46,12 +48,16 @@ export default function IncomeFormDrawer({ open, close }) {
     });
   }
 
+  function handleDateChange(date) {
+    setDate(date);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(
       addIncomeThunk({
         ...formState,
-        createdAt: new Date(),
+        createdAt: date,
         type: "income",
         id: lastId.current,
       })
@@ -142,7 +148,14 @@ export default function IncomeFormDrawer({ open, close }) {
           />
         </ListItem>
 
-        <ListItem sx={{ justifyContent: "center" }}>
+        <ListItem sx={{ justifyContent: "space-between" }}>
+          <DateTimePicker
+            value={date}
+            label="Date"
+            onChange={handleDateChange}
+            renderInput={params => <TextField size="small" {...params} />}
+          />
+
           <TextField
             label="Tag"
             size="small"

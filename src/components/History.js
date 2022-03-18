@@ -122,7 +122,6 @@ export default function History() {
                   <br />
                   <Typography lineHeight={1.375} variant="caption">
                     {transaction.tag}
-                    {transaction.method ? ` | ${transaction.method}` : ""}
                   </Typography>
                 </Typography>
               </Stack>

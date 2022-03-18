@@ -1,3 +1,4 @@
+import { DateTimePicker } from "@mui/lab";
 import {
   Button,
   List,
@@ -27,7 +28,6 @@ const tagInputs = [
 ];
 
 const initialFormState = {
-  method: "Cash",
   tag: "Food",
   value: 10,
   currency: "USD",
@@ -42,7 +42,8 @@ export default function ExpenseFormDrawer({ open, close }) {
   const lastId = useRef(0);
 
   const [formState, setFormState] = useState(initialFormState);
-  const { method, tag, value, currency, description } = formState;
+  const [date, setDate] = useState(new Date());
+  const { tag, value, currency, description } = formState;
 
   function handleChange(e) {
     const { name, value: valuePair } = e.target;
@@ -51,6 +52,10 @@ export default function ExpenseFormDrawer({ open, close }) {
       ...formState,
       [key]: valuePair,
     });
+  }
+
+  function handleDateChange(date) {
+    setDate(date);
   }
 
   function handleSubmit(e) {
@@ -150,24 +155,12 @@ export default function ExpenseFormDrawer({ open, close }) {
         </ListItem>
 
         <ListItem sx={{ justifyContent: "space-between" }}>
-          <TextField
-            select
-            variant="outlined"
-            SelectProps={{ native: true }}
-            id="method-input"
-            name="method-input"
-            size="small"
-            data-testid="method-input"
-            label="Method"
-            onChange={handleChange}
-            value={method}
-          >
-            {methodInputs.map(m => (
-              <option data-testid={m} value={m} key={m}>
-                {m}
-              </option>
-            ))}
-          </TextField>
+          <DateTimePicker
+            value={date}
+            label="Date"
+            onChange={handleDateChange}
+            renderInput={params => <TextField size="small" {...params} />}
+          />
 
           <TextField
             label="Tag"
