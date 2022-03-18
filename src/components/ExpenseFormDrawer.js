@@ -11,8 +11,6 @@ import { useDispatch } from "react-redux";
 import getRates from "../services/getRates";
 import { addExpenseThunk } from "../store/actions";
 
-const methodInputs = ["Cash", "Credit Card", "Debit Card"];
-
 const tagInputs = [
   "Food",
   "Education",
@@ -81,6 +79,10 @@ export default function ExpenseFormDrawer({ open, close }) {
     })();
   }, []);
 
+  useEffect(() => {
+    setFormState(initialFormState);
+    setDate(new Date());
+  }, [open]);
   return (
     <SwipeableDrawer
       onClose={close}

@@ -75,6 +75,11 @@ export default function IncomeFormDrawer({ open, close }) {
     })();
   }, []);
 
+  useEffect(() => {
+    setFormState(initialFormState);
+    setDate(new Date());
+  }, [open]);
+
   return (
     <SwipeableDrawer
       onClose={close}
