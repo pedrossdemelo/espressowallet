@@ -5,6 +5,7 @@ import ExpenseAndIncome from "../components/ExpenseAndIncome";
 import IncomeInfo from "../components/IncomeInfo";
 import History from "../components/History";
 import OverviewDate from "../components/OverviewDate";
+import GoBackFab from "../components/GoBackFab";
 
 function Wallet() {
   return (
@@ -19,6 +20,7 @@ function Wallet() {
         <History />
       </Box>
       <SpeedDials />
+      <GoBackFab />
     </>
   );
 }
