@@ -32,16 +32,18 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   Stack,
   Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
+import SwipeableView from "react-swipeable-views";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,
@@ -102,6 +104,7 @@ export default function History() {
       </Typography>
       <List
         sx={{
+          pt: 1.5,
           bgcolor: "background.paper",
           borderRadius: "1rem 1rem 0 0",
           boxShadow: 2,
@@ -250,74 +253,129 @@ function TransactionListItem(props) {
     </ListItem>
   );
 
+  const reachedThreshHold = useRef(null);
+
+  const handleSwitching = index => {
+    // When the gesture stops, the index will always be 1, so ignore it
+    if (index === 1) return;
+    // If the user has reached the left threshold, open the delete confirmation dialog once the gesture stops
+    if (index <= 0.75) reachedThreshHold.current = "left";
+    // If the user has reached the right threshold, open the edit dialog once the gesture stops
+    else if (index >= 1.25) reachedThreshHold.current = "right";
+    // If the user has reached neither threshold, or decided not to delete or edit by going back, reset the threshold
+    else reachedThreshHold.current = null;
+  };
+
+  const handleSwipeEnd = () => {
+    if (reachedThreshHold.current === "left") openDialog();
+    if (reachedThreshHold.current === "right") open();
+    reachedThreshHold.current = null;
+  };
+
   const MobileListItem = () => (
-    <ListItem>
-      <Stack
-        direction="row"
+    <SwipeableView
+      hysteresis={99}
+      threshold={99}
+      onSwitching={handleSwitching}
+      onTransitionEnd={handleSwipeEnd}
+      index={1}
+    >
+      <ListItem
         sx={{
-          flexGrow: 1,
+          color: "white",
+          justifyContent: "flex-end",
+          bgcolor: "error.light",
+          height: "100%",
+          borderRadius: 2,
+          overflow: "visible",
         }}
-        justifyContent="space-between"
       >
         <Stack direction="row">
-          <ListItemAvatar>
-            <Avatar
+          <DeleteOutline />
+        </Stack>
+      </ListItem>
+
+      <ListItem>
+        <Stack
+          direction="row"
+          sx={{
+            flexGrow: 1,
+          }}
+          justifyContent="space-between"
+        >
+          <Stack direction="row">
+            <ListItemAvatar>
+              <Avatar
+                sx={{
+                  bgcolor: colorMap[transaction.tag],
+                  mr: 2,
+                }}
+              >
+                {iconsMap[transaction.tag]}
+              </Avatar>
+            </ListItemAvatar>
+
+            <Typography
+              lineHeight={1.375}
               sx={{
-                bgcolor: colorMap[transaction.tag],
-                mr: 2,
+                display: "flex",
+                flexFlow: "column nowrap",
+                justifyContent: "center",
+                textTransform: "capitalize",
               }}
+              textAlign="left"
             >
-              {iconsMap[transaction.tag]}
-            </Avatar>
-          </ListItemAvatar>
+              {transaction.description}
+              <br />
+              <Typography lineHeight={1.375} variant="caption">
+                {transaction.tag}
+              </Typography>
+            </Typography>
+          </Stack>
 
           <Typography
+            textAlign="right"
             lineHeight={1.375}
             sx={{
               display: "flex",
               flexFlow: "column nowrap",
               justifyContent: "center",
-              textTransform: "capitalize",
             }}
-            textAlign="left"
           >
-            {transaction.description}
+            {transaction.type === "income" ? "+" : "-"}{" "}
+            {Number(transaction.value).toFixed(2)} {transaction.currency}
             <br />
             <Typography lineHeight={1.375} variant="caption">
-              {transaction.tag}
+              x{" "}
+              {Number(
+                transaction.exchangeRates[transaction.currency].ask
+              ).toFixed(2)}{" "}
+              |{" "}
+              {transaction.createdAt
+                .toLocaleDateString()
+                .split("/")
+                .slice(0, 2)
+                .join("/")}{" "}
+              {transaction.createdAt.getHours()}:
+              {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
             </Typography>
           </Typography>
         </Stack>
+      </ListItem>
 
-        <Typography
-          textAlign="right"
-          lineHeight={1.375}
-          sx={{
-            display: "flex",
-            flexFlow: "column nowrap",
-            justifyContent: "center",
-          }}
-        >
-          {transaction.type === "income" ? "+" : "-"}{" "}
-          {Number(transaction.value).toFixed(2)} {transaction.currency}
-          <br />
-          <Typography lineHeight={1.375} variant="caption">
-            x{" "}
-            {Number(
-              transaction.exchangeRates[transaction.currency].ask
-            ).toFixed(2)}{" "}
-            |{" "}
-            {transaction.createdAt
-              .toLocaleDateString()
-              .split("/")
-              .slice(0, 2)
-              .join("/")}{" "}
-            {transaction.createdAt.getHours()}:
-            {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
-          </Typography>
-        </Typography>
-      </Stack>
-    </ListItem>
+      <ListItem
+        sx={{
+          borderRadius: 2,
+          color: "white",
+          bgcolor: "primary.light",
+          height: "100%",
+        }}
+      >
+        <Stack direction="row">
+          <Edit />
+        </Stack>
+      </ListItem>
+    </SwipeableView>
   );
 
   const isDesktop = useMediaQuery("(pointer: fine)");
