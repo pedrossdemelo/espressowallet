@@ -37,7 +37,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
@@ -148,102 +148,183 @@ function TransactionListItem(props) {
     }
   };
 
+  useEffect(() => {
+    // Every time the component is rendered, the mouse leaves the element
+    leave();
+  }, [isDialogOpen, isDrawerOpen]);
+
+  const DesktopListItem = () => (
+    <ListItem
+      sx={{
+        "&:hover": {
+          boxShadow: 2,
+          borderRadius: 2,
+          outline: "0.5px solid lightgray",
+        },
+        cursor: "pointer",
+      }}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+    >
+      <Stack
+        direction="row"
+        sx={{
+          flexGrow: 1,
+        }}
+        justifyContent="space-between"
+      >
+        <Stack direction="row">
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: colorMap[transaction.tag],
+                mr: 2,
+              }}
+            >
+              {iconsMap[transaction.tag]}
+            </Avatar>
+          </ListItemAvatar>
+
+          <Typography
+            lineHeight={1.375}
+            sx={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              justifyContent: "center",
+              textTransform: "capitalize",
+            }}
+            textAlign="left"
+          >
+            {transaction.description}
+            <br />
+            <Typography lineHeight={1.375} variant="caption">
+              {transaction.tag}
+            </Typography>
+          </Typography>
+        </Stack>
+
+        {isHovered ? (
+          <Stack direction="row">
+            <Tooltip arrow placement="top" title="Edit">
+              <IconButton onClick={open}>
+                <Edit />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip arrow placement="top" title="Delete">
+              <IconButton onClick={openDialog}>
+                <DeleteOutline />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        ) : (
+          <Typography
+            textAlign="right"
+            lineHeight={1.375}
+            sx={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              justifyContent: "center",
+            }}
+          >
+            {transaction.type === "income" ? "+" : "-"}{" "}
+            {Number(transaction.value).toFixed(2)} {transaction.currency}
+            <br />
+            <Typography lineHeight={1.375} variant="caption">
+              x{" "}
+              {Number(
+                transaction.exchangeRates[transaction.currency].ask
+              ).toFixed(2)}{" "}
+              |{" "}
+              {transaction.createdAt
+                .toLocaleDateString()
+                .split("/")
+                .slice(0, 2)
+                .join("/")}{" "}
+              {transaction.createdAt.getHours()}:
+              {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
+            </Typography>
+          </Typography>
+        )}
+      </Stack>
+    </ListItem>
+  );
+
+  const MobileListItem = () => (
+    <ListItem>
+      <Stack
+        direction="row"
+        sx={{
+          flexGrow: 1,
+        }}
+        justifyContent="space-between"
+      >
+        <Stack direction="row">
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: colorMap[transaction.tag],
+                mr: 2,
+              }}
+            >
+              {iconsMap[transaction.tag]}
+            </Avatar>
+          </ListItemAvatar>
+
+          <Typography
+            lineHeight={1.375}
+            sx={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              justifyContent: "center",
+              textTransform: "capitalize",
+            }}
+            textAlign="left"
+          >
+            {transaction.description}
+            <br />
+            <Typography lineHeight={1.375} variant="caption">
+              {transaction.tag}
+            </Typography>
+          </Typography>
+        </Stack>
+
+        <Typography
+          textAlign="right"
+          lineHeight={1.375}
+          sx={{
+            display: "flex",
+            flexFlow: "column nowrap",
+            justifyContent: "center",
+          }}
+        >
+          {transaction.type === "income" ? "+" : "-"}{" "}
+          {Number(transaction.value).toFixed(2)} {transaction.currency}
+          <br />
+          <Typography lineHeight={1.375} variant="caption">
+            x{" "}
+            {Number(
+              transaction.exchangeRates[transaction.currency].ask
+            ).toFixed(2)}{" "}
+            |{" "}
+            {transaction.createdAt
+              .toLocaleDateString()
+              .split("/")
+              .slice(0, 2)
+              .join("/")}{" "}
+            {transaction.createdAt.getHours()}:
+            {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
+          </Typography>
+        </Typography>
+      </Stack>
+    </ListItem>
+  );
+
+  const isDesktop = useMediaQuery("(pointer: fine)");
+
   return (
     <>
-      <ListItem
-        sx={{
-          "&:hover": {
-            boxShadow: 2,
-            borderRadius: 2,
-            outline: "0.5px solid lightgray",
-          },
-          cursor: "pointer",
-        }}
-        onMouseEnter={enter}
-        onMouseLeave={leave}
-      >
-        <Stack
-          direction="row"
-          sx={{
-            flexGrow: 1,
-          }}
-          justifyContent="space-between"
-        >
-          <Stack direction="row">
-            <ListItemAvatar>
-              <Avatar
-                sx={{
-                  bgcolor: colorMap[transaction.tag],
-                  mr: 2,
-                }}
-              >
-                {iconsMap[transaction.tag]}
-              </Avatar>
-            </ListItemAvatar>
-
-            <Typography
-              lineHeight={1.375}
-              sx={{
-                display: "flex",
-                flexFlow: "column nowrap",
-                justifyContent: "center",
-                textTransform: "capitalize",
-              }}
-              textAlign="left"
-            >
-              {transaction.description}
-              <br />
-              <Typography lineHeight={1.375} variant="caption">
-                {transaction.tag}
-              </Typography>
-            </Typography>
-          </Stack>
-
-          {isHovered ? (
-            <Stack direction="row">
-              <Tooltip arrow placement="top" title="Edit">
-                <IconButton onClick={open}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip arrow placement="top" title="Delete">
-                <IconButton onClick={openDialog}>
-                  <DeleteOutline />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          ) : (
-            <Typography
-              textAlign="right"
-              lineHeight={1.375}
-              sx={{
-                display: "flex",
-                flexFlow: "column nowrap",
-                justifyContent: "center",
-              }}
-            >
-              {transaction.type === "income" ? "+" : "-"}{" "}
-              {Number(transaction.value).toFixed(2)} {transaction.currency}
-              <br />
-              <Typography lineHeight={1.375} variant="caption">
-                x{" "}
-                {Number(
-                  transaction.exchangeRates[transaction.currency].ask
-                ).toFixed(2)}{" "}
-                |{" "}
-                {transaction.createdAt
-                  .toLocaleDateString()
-                  .split("/")
-                  .slice(0, 2)
-                  .join("/")}{" "}
-                {transaction.createdAt.getHours()}:
-                {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
-              </Typography>
-            </Typography>
-          )}
-        </Stack>
-      </ListItem>
+      {isDesktop ? <DesktopListItem /> : <MobileListItem />}
 
       {transaction.type === "income" ? (
         <IncomeFormDrawer
