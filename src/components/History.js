@@ -1,8 +1,12 @@
 import {
   AttachMoney,
   CardGiftcard,
-  Checkroom, DeleteOutline, DevicesOther,
-  DirectionsCar, Edit, EmojiEvents,
+  Checkroom,
+  DeleteOutline,
+  DevicesOther,
+  DirectionsCar,
+  Edit,
+  EmojiEvents,
   House,
   LocalHospital,
   MoreHoriz,
@@ -13,12 +17,13 @@ import {
   Sell,
   TheaterComedy,
   TrendingUp,
-  Work
+  Work,
 } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
+  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
@@ -27,10 +32,11 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar, Stack,
+  ListItemAvatar,
+  Stack,
   Tooltip,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +44,7 @@ import SwipeableView from "react-swipeable-views";
 import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
+import { TransitionGroup } from "react-transition-group";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,
@@ -60,23 +67,23 @@ export const iconsMap = {
 };
 
 export const colorMap = {
+  Transportation: "#6366f1",
+  Prize: "#2196f3",
+  Education: "#7dd3fc",
+  Savings: "#2dd4bf",
+  Salary: "#047857",
   Investments: "#22c55e",
+  Eletronics: "#a3e635",
   Payment: "#fbbf24",
   Food: "#fb923c",
-  Work: "#3b82f6",
-  Education: "#7dd3fc",
-  Entertainment: "#ec4899",
-  Transportation: "#6366f1",
-  Eletronics: "#a3e635",
+  Work: "#b45309",
   Health: "#dc2626",
   Clothing: "#f43f5e",
+  Gift: "#f87171",
+  Entertainment: "#ec4899",
+  Sale: "#d946ef",
   Household: "#a855f7",
   Other: "#d4d4d4",
-  Salary: "#047857",
-  Savings: "#2dd4bf",
-  Gift: "#f87171",
-  Prize: "#2196f3",
-  Sale: "#d946ef",
 };
 
 export default function History() {
@@ -96,6 +103,7 @@ export default function History() {
       <Typography mb={1} ml={3.5} variant="h6">
         History
       </Typography>
+
       <List
         sx={{
           pt: 1.5,
@@ -103,14 +111,18 @@ export default function History() {
           borderRadius: "1rem 1rem 0 0",
           boxShadow: 2,
           flexGrow: 1,
+          pb: "calc(56px + 1.375rem)",
         }}
       >
-        {combinedTransactions.map(transaction => (
-          <TransactionListItem
-            key={transaction.description}
-            transaction={transaction}
-          />
-        ))}
+        <TransitionGroup>
+          {combinedTransactions.map(transaction => (
+            <Collapse key={transaction.description}>
+              <TransactionListItem
+                transaction={transaction}
+              />
+            </Collapse>
+          ))}
+        </TransitionGroup>
       </List>
     </Box>
   );
