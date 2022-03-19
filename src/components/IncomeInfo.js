@@ -1,4 +1,4 @@
-import { Box, Card, Stack, Typography } from "@mui/material";
+import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import calculateRate from "../utils/calculateRate";
@@ -8,7 +8,7 @@ import { colorMap } from "./History";
 export default function IncomeInfo() {
   const incomes = useSelector(state => state.filter.incomes);
 
-  if (incomes.length === 0) return null;
+  const shouldRender = incomes.length > 0;
 
   const total = incomes.reduce((acc, curr) => acc + calculateRate(curr), 0);
   const tags = incomes.reduce((acc, curr) => {
@@ -38,31 +38,42 @@ export default function IncomeInfo() {
   }
 
   return (
-    <Box sx={{ px: 2 }}>
-      <Typography mb={1} ml={1.5} variant="h6">
-        Your income sources
-      </Typography>
-      <Card sx={{ display: "flex", alignItems: "center", p: 2, borderRadius: "0.5rem" }}>
-        <Donut data={tagsArray} height="7rem" />
-        <Stack
-          spacing={0.5}
-          alignItems="stretch"
-          justifyContent={tagsArray.length > 3 ? "center" : "flex-start"}
-          sx={{ alignSelf: "stretch", ml: 2, flexGrow: 1, py: 0.5 }}
+    <Collapse unmountOnExit in={shouldRender}>
+      <Box sx={{ px: 2 }}>
+        <Typography mb={1} ml={1.5} variant="h6">
+          Your income sources
+        </Typography>
+        <Card
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            p: 2,
+            borderRadius: "0.5rem",
+          }}
         >
-          {tagsArray.slice(0, 5).map(([tag, { percentage, amount }]) => (
-            <Stack key={tag} direction="row" justifyContent="space-between">
-              <Stack direction="row" alignItems="center">
-                <Box sx={dotStyle(tag)} />
-                <Typography variant="body2">
-                  {tag}: {Math.round(percentage) || percentage.toFixed(1)}%
+          <Donut data={tagsArray} height="7rem" />
+          <Stack
+            spacing={0.5}
+            alignItems="stretch"
+            justifyContent={tagsArray.length > 3 ? "center" : "flex-start"}
+            sx={{ alignSelf: "stretch", ml: 2, flexGrow: 1, py: 0.5 }}
+          >
+            {tagsArray.slice(0, 5).map(([tag, { percentage, amount }]) => (
+              <Stack key={tag} direction="row" justifyContent="space-between">
+                <Stack direction="row" alignItems="center">
+                  <Box sx={dotStyle(tag)} />
+                  <Typography variant="body2">
+                    {tag}: {Math.round(percentage) || percentage.toFixed(1)}%
+                  </Typography>
+                </Stack>
+                <Typography textAlign="right" variant="body2">
+                  {amount.toFixed(2)} BRL
                 </Typography>
               </Stack>
-              <Typography textAlign="right" variant="body2">{amount.toFixed(2)} BRL</Typography>
-            </Stack>
-          ))}
-        </Stack>
-      </Card>
-    </Box>
+            ))}
+          </Stack>
+        </Card>
+      </Box>
+    </Collapse>
   );
 }
