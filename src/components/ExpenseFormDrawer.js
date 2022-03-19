@@ -169,6 +169,7 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
           <DateTimePicker
             value={date}
             label="Date"
+            disableFuture
             onChange={handleDateChange}
             renderInput={params => <TextField size="small" {...params} />}
             ampm={false}

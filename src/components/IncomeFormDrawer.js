@@ -4,7 +4,7 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField
+  TextField,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -55,11 +55,13 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (toEdit) {
-      dispatch(editIncomeThunk({
-        ...formState,
-        id: toEdit.id,
-        createdAt: date,
-      }));
+      dispatch(
+        editIncomeThunk({
+          ...formState,
+          id: toEdit.id,
+          createdAt: date,
+        })
+      );
       close();
       return;
     }
@@ -164,6 +166,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
 
         <ListItem sx={{ justifyContent: "space-between" }}>
           <DateTimePicker
+            disableFuture
             value={date}
             label="Date"
             onChange={handleDateChange}

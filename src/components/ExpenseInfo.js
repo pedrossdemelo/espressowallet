@@ -1,5 +1,5 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
@@ -10,22 +10,34 @@ export default function ExpenseInfo() {
 
   const shouldRender = expenses.length > 0;
 
-  const total = expenses.reduce((acc, curr) => acc + calculateRate(curr), 0);
-  const tags = expenses.reduce((acc, curr) => {
-    const { tag } = curr;
-    const amount = calculateRate(curr);
-    const percentage = (amount / total) * 100;
-    if (acc[tag] !== undefined)
-      acc[tag] = {
-        percentage: percentage + acc[tag].percentage,
-        amount: amount + acc[tag].amount,
-      };
-    else acc[tag] = { percentage, amount };
-    return acc;
-  }, {});
+  const total = useMemo(
+    () => expenses.reduce((acc, curr) => acc + calculateRate(curr), 0),
+    [expenses]
+  );
 
-  const tagsArray = Object.entries(tags);
-  tagsArray.sort((a, b) => b[1].percentage - a[1].percentage);
+  const tags = useMemo(
+    () =>
+      expenses.reduce((acc, curr) => {
+        const { tag } = curr;
+        const amount = calculateRate(curr);
+        const percentage = (amount / total) * 100;
+        if (acc[tag] !== undefined)
+          acc[tag] = {
+            percentage: percentage + acc[tag].percentage,
+            amount: amount + acc[tag].amount,
+          };
+        else acc[tag] = { percentage, amount };
+        return acc;
+      }, {}),
+    [expenses, total]
+  );
+
+  let tagsArray = useMemo(() => Object.entries(tags), [tags]);
+
+  tagsArray = useMemo(
+    () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
+    [tagsArray]
+  );
 
   function dotStyle(tag) {
     return {
