@@ -111,6 +111,7 @@ export default function History() {
           borderRadius: "1rem 1rem 0 0",
           boxShadow: 2,
           flexGrow: 1,
+          pb: "calc(56px + 1.375rem)",
         }}
       >
         <TransitionGroup>
