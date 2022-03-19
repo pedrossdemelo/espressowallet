@@ -7,11 +7,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateFilter, updateFilteredResultsThunk } from "../store/actions";
 
 export default function OverviewDate() {
   const dispatch = useDispatch();
+  const { expenses, incomes } = useSelector(state => state.wallet);
   const { start } = useSelector(state => state.filter.date);
   const handleChange = newDate => {
     dispatch(setDateFilter(newDate));
@@ -20,6 +22,19 @@ export default function OverviewDate() {
     // causing the app to freeze.
     dispatch(updateFilteredResultsThunk());
   };
+
+  const [minDate, setMinDate] = useState(new Date());
+
+  useEffect(() => {
+    (async () => {
+      const combined = [...expenses, ...incomes];
+      const minDate = combined.reduce((acc, curr) => {
+        if (acc === undefined) return curr.createdAt;
+        return curr.createdAt < acc.createdAt ? curr.createdAt : acc.createdAt;
+      }, undefined);
+      setMinDate(minDate);
+    })();
+  }, [expenses, incomes]);
 
   return (
     <>
@@ -36,7 +51,7 @@ export default function OverviewDate() {
           autoFocus
           value={start}
           onChange={handleChange}
-          minDate={new Date("2019-01-31")}
+          minDate={minDate}
           maxDate={new Date()}
           renderInput={params => (
             <FormControl style={{ maxWidth: "12em" }}>
