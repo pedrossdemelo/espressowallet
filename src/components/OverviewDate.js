@@ -52,7 +52,7 @@ export default function OverviewDate() {
           value={start}
           onChange={handleChange}
           minDate={minDate}
-          maxDate={new Date()}
+          disableFuture
           renderInput={params => (
             <FormControl style={{ maxWidth: "12em" }}>
               <Input
