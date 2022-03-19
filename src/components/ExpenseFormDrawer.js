@@ -4,12 +4,12 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField,
+  TextField
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import getRates from "../services/getRates";
-import { addExpenseThunk, deleteExpenseThunk, editExpenseThunk } from "../store/actions";
+import { addExpenseThunk, editExpenseThunk } from "../store/actions";
 
 const tagInputs = [
   "Food",
