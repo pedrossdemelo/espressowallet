@@ -27,10 +27,11 @@ export default function OverviewDate() {
 
   useEffect(() => {
     (async () => {
+      if (!expenses.length && !incomes.length) return;
       const combined = [...expenses, ...incomes];
       const minDate = combined.reduce((acc, curr) => {
         if (acc === undefined) return curr.createdAt;
-        return curr.createdAt < acc.createdAt ? curr.createdAt : acc.createdAt;
+        return curr.createdAt < acc ? curr.createdAt : acc;
       }, undefined);
       setMinDate(minDate);
     })();
@@ -52,6 +53,7 @@ export default function OverviewDate() {
           value={start}
           onChange={handleChange}
           minDate={minDate}
+          maxDate={new Date()}
           disableFuture
           renderInput={params => (
             <FormControl style={{ maxWidth: "12em" }}>
