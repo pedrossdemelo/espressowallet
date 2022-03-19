@@ -1,10 +1,8 @@
 import {
   AttachMoney,
   CardGiftcard,
-  Checkroom,
-  DevicesOther,
-  DirectionsCar,
-  EmojiEvents,
+  Checkroom, DeleteOutline, DevicesOther,
+  DirectionsCar, Edit, EmojiEvents,
   House,
   LocalHospital,
   MoreHoriz,
@@ -15,9 +13,7 @@ import {
   Sell,
   TheaterComedy,
   TrendingUp,
-  Work,
-  DeleteOutline,
-  Edit,
+  Work
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -31,19 +27,17 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  Stack,
+  ListItemAvatar, Stack,
   Tooltip,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SwipeableView from "react-swipeable-views";
 import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
-import SwipeableView from "react-swipeable-views";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,
