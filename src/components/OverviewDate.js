@@ -7,9 +7,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateFilter, updateFilteredResultsThunk } from "../store/actions";
+import { setDateFilter } from "../store/actions";
 
 export default function OverviewDate() {
   const dispatch = useDispatch();
@@ -17,10 +17,6 @@ export default function OverviewDate() {
   const { start } = useSelector(state => state.filter.date);
   const handleChange = newDate => {
     dispatch(setDateFilter(newDate));
-    // We put the filter method inside a thunk so that
-    // a large array of expenses can be filtered without
-    // causing the app to freeze.
-    dispatch(updateFilteredResultsThunk());
   };
 
   const [minDate, setMinDate] = useState(new Date());

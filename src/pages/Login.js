@@ -1,9 +1,9 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import { useAuth } from "hooks";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useAuth } from "../hooks";
-import { loginEmail, signUpEmail } from "../services";
+import { loginEmail, signUpEmail } from "services";
 
 const noErrors = {
   emailError: " ",

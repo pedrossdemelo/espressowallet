@@ -2,7 +2,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { Fab, Zoom } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateFilter, updateFilteredResultsThunk } from "../store/actions";
+import { setDateFilter } from "../store/actions";
 
 export default function GoBackFab() {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ export default function GoBackFab() {
 
   const goBackToCurrentMonth = () => {
     dispatch(setDateFilter(new Date()));
-    dispatch(updateFilteredResultsThunk());
   };
 
   return (
