@@ -45,6 +45,12 @@ import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
 import { TransitionGroup } from "react-transition-group";
+import { auth, db } from "../services/firebase";
+import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import Loading from "./Loading";
+import useUserData from "../hooks/useUserData";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,
@@ -87,12 +93,12 @@ export const colorMap = {
 };
 
 export default function History() {
-  const expenses = useSelector(state => state.filter.expenses);
-  const incomes = useSelector(state => state.filter.incomes);
+  const [expenses, loadingExpenses] = useUserData("expenses");
+  const [incomes, loadingIncomes] = useUserData("incomes");
 
-  if (expenses.length === 0 && incomes.length === 0) {
-    return null;
-  }
+  if (loadingExpenses || loadingIncomes) return <Loading />;
+
+  if (!expenses.length && !incomes.length) return null;
 
   const combinedTransactions = [...expenses, ...incomes];
 
@@ -117,10 +123,8 @@ export default function History() {
         <TransitionGroup>
           {combinedTransactions.map(transaction => (
             // TODO: Use id as key
-            <Collapse key={transaction.description}>
-              <TransactionListItem
-                transaction={transaction}
-              />
+            <Collapse key={transaction.id}>
+              <TransactionListItem transaction={transaction} />
             </Collapse>
           ))}
         </TransitionGroup>
@@ -130,7 +134,8 @@ export default function History() {
 }
 
 function TransactionListItem(props) {
-  const dispatch = useDispatch();
+  const [user] = useAuthState(auth);
+
   const [isHovered, setIsHovered] = useState(false);
   const enter = () => setIsHovered(true);
   const leave = () => setIsHovered(false);
@@ -145,17 +150,18 @@ function TransactionListItem(props) {
 
   const { transaction } = props;
 
-  const delTransaction = type => () => {
-    switch (type) {
-      case "expense":
-        dispatch(deleteExpenseThunk(transaction.id));
-        return;
-      case "income":
-        dispatch(deleteIncomeThunk(transaction.id));
-        return;
-      default:
-        return;
-    }
+  const delTransaction = type => async () => {
+    console.log("oi");
+    console.log(transaction.id, user.uid, type);
+    const deleteLocation = doc(
+      db,
+      "userData",
+      user.uid,
+      `${type}s`,
+      transaction.id
+    );
+    deleteDoc(deleteLocation);
+    return;
   };
 
   useEffect(() => {

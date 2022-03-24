@@ -1,36 +1,70 @@
-import {
-  Box,
-  Button, Paper,
-  Stack,
-  TextField,
-  Typography
-} from "@mui/material";
-import React from "react";
-import { useDispatch } from "react-redux";
+import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { login } from "../store/actions";
+import { loginEmail, signUpEmail } from "../services";
+import { useAuth } from "../hooks";
+
+const noErrors = {
+  emailError: " ",
+  passwordError: " ",
+};
+
+const notLoading = {
+  loginLoading: false,
+  signUpLoading: false,
+};
+
+const emptyForm = {
+  email: "",
+  password: "",
+};
 
 export default function Login() {
+  const [user, pageLoading] = useAuth();
   const history = useHistory();
-  const dispatch = useDispatch();
-  const [state, setState] = React.useState({
-    email: "",
-    password: "",
-  });
-  const { email, password } = state;
+
+  const [loading, setLoading] = useState(notLoading);
+  const { loginLoading, signUpLoading } = loading;
+
+  const [form, setForm] = useState(emptyForm);
+  const { email, password } = form;
+
+  const [errorState, setErrorState] = useState(noErrors);
+  const { emailError, passwordError } = errorState;
+
+  const isSignUp = useRef(false);
+
+  if (pageLoading) return <div>Loading...</div>;
+  if (user) {
+    history.push("/carteira");
+    return null;
+  }
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setState({
-      ...state,
+    setForm({
+      ...form,
       [name]: value,
     });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    dispatch(login(email));
-    history.push("/carteira");
+    setErrorState(noErrors);
+    if (isSignUp.current) {
+      setLoading({ ...notLoading, signUpLoading: true });
+      const { error } = await signUpEmail(email, password);
+      if (error) setErrorState(humanErrorParse(error));
+    } else {
+      setLoading({ ...notLoading, loginLoading: true });
+      const { error } = await loginEmail(email, password);
+      if (error) setErrorState(humanErrorParse(error));
+    }
+    isSignUp.current = false;
+    setLoading(notLoading);
+    false && history.push("/carteira");
   }
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+\w{2,4}$/g;
@@ -56,6 +90,8 @@ export default function Login() {
           size="small"
           value={email}
           onChange={handleChange}
+          error={emailError !== " "}
+          helperText={emailError}
         />
 
         <TextField
@@ -65,18 +101,29 @@ export default function Login() {
           size="small"
           value={password}
           onChange={handleChange}
+          error={passwordError !== " "}
+          helperText={passwordError}
         />
 
         <Stack direction="row" justifyContent="space-between">
-          <Button disabled={disabled}>Sign up</Button>
-          <Button
-            disabled={disabled}
+          <LoadingButton
+            onClick={() => (isSignUp.current = true)}
+            type="submit"
+            disabled={disabled || loading !== notLoading}
+            loading={signUpLoading}
+          >
+            Sign up
+          </LoadingButton>
+
+          <LoadingButton
+            disabled={disabled || loading !== notLoading}
             type="submit"
             variant="contained"
             disableElevation
+            loading={loginLoading}
           >
             Login
-          </Button>
+          </LoadingButton>
         </Stack>
       </Paper>
     </Box>
@@ -100,3 +147,17 @@ const formStyle = {
   m: "auto",
   gap: 2,
 };
+
+function humanErrorParse(error) {
+  error = error.split("/")[1].split("-").join(" ");
+  error = error.charAt(0).toUpperCase() + error.slice(1);
+  return /password/g.test(error)
+    ? {
+        ...noErrors,
+        passwordError: error,
+      }
+    : {
+        ...noErrors,
+        emailError: error,
+      };
+}

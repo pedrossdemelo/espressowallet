@@ -1,14 +1,21 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
+import { collection } from "firebase/firestore";
 import React, { useMemo } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useSelector } from "react-redux";
+import { auth, db } from "../services/firebase";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
 import { colorMap } from "./History";
 
 export default function ExpenseInfo() {
-  const expenses = useSelector(state => state.filter.expenses);
+  const [user] = useAuthState(auth);
+  const userExpenses = collection(db, `userData/${user.uid}/expenses`);
 
-  const shouldRender = expenses.length > 0;
+  let [expenses, loading] = useCollectionData(userExpenses);
+
+  expenses = expenses || [];
 
   const total = useMemo(
     () => expenses.reduce((acc, curr) => acc + calculateRate(curr), 0),
@@ -38,6 +45,10 @@ export default function ExpenseInfo() {
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
     [tagsArray]
   );
+
+  if (loading) return null;
+
+  const shouldRender = expenses.length > 0;
 
   function dotStyle(tag) {
     return {

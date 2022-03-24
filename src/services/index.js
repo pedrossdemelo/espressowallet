@@ -1,3 +1,5 @@
-export { default as getRates } from './getRates';
-
-export const fact = 'THIS IS A DUMB RULE';
+export { auth, db } from "./firebase";
+export { default as getRates } from "./getRates";
+export { default as loginEmail } from "./loginEmail";
+export { default as logout } from "./logout";
+export { default as signUpEmail } from "./signUpEmail";

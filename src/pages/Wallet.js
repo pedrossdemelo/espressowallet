@@ -7,8 +7,20 @@ import History from "../components/History";
 import OverviewDate from "../components/OverviewDate";
 import GoBackFab from "../components/GoBackFab";
 import NoTransactionsYet from "../components/NoTransactionsYet";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../services/firebase";
+import { useHistory } from "react-router-dom";
 
 function Wallet() {
+  const [user, loading] = useAuthState(auth);
+  const history = useHistory();
+
+  if (loading) return <div>Loading...</div>
+  if (!user) {
+    history.push("/");
+    return null;
+  }
+
   return (
     <>
       <WalletHeader />

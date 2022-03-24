@@ -4,12 +4,21 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField
+  TextField,
 } from "@mui/material";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch } from "react-redux";
+import { db, auth } from "../services/firebase";
 import getRates from "../services/getRates";
-import { addExpenseThunk, editExpenseThunk } from "../store/actions";
 
 const tagInputs = [
   "Food",
@@ -34,10 +43,23 @@ const initialFormState = {
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
+const converter = {
+  toFirestore(expense) {
+    return {
+      ...expense,
+      type: "expense",
+      createdAt: Timestamp.fromDate(expense.createdAt),
+    };
+  },
+};
+
 export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
-  const dispatch = useDispatch();
+  const [user] = useAuthState(auth);
+  const userExpenses = collection(
+    db,
+    `userData/${user.uid}/expenses`
+  ).withConverter(converter);
   const [currencies, setCurrencies] = useState([]);
-  const lastId = useRef(0);
 
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
@@ -56,26 +78,27 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
     setDate(date);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    const { data } = await getRates();
+
+    const expense = { ...formState, createdAt: date, exchangeRates: data };
+
+    if (!toEdit) addDoc(userExpenses, expense);
+
     if (toEdit) {
-      dispatch(editExpenseThunk({
-        ...formState,
-        id: toEdit.id,
-        createdAt: date,
-      }));
-      close();
-      return;
+      const updateLocation = doc(
+        db,
+        "userData",
+        user.uid,
+        "expenses",
+        toEdit.id
+      );
+
+      updateDoc(updateLocation, expense);
     }
-    dispatch(
-      addExpenseThunk({
-        ...formState,
-        createdAt: date,
-        type: "expense",
-        id: toEdit?.id ?? lastId.current,
-      })
-    );
-    lastId.current += 1;
+
     close();
   }
 

@@ -2,6 +2,7 @@ import { HistoryToggleOff } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useUserData } from "../hooks";
 
 const months = [
   "January",
@@ -19,11 +20,14 @@ const months = [
 ]
 
 export default function NoTransactionsYet() {
-  const { expenses, incomes, date } = useSelector(state => state.filter);
+  const { date } = useSelector(state => state.filter);
+
+  const [expenses] = useUserData("expenses");
+  const [incomes] = useUserData("incomes");
+
+  const isEmpty = !expenses.length && !incomes.length;
 
   const filterYear = date.start.getFullYear();
-
-  const isEmpty = expenses.length === 0 && incomes.length === 0;
 
   return (
     <div
