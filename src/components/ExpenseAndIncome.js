@@ -16,6 +16,8 @@ export default function ExpenseAndIncome() {
     .reduce((acc, curr) => acc + calculateRate(curr), 0)
     .toFixed(2);
 
+  if (totalExpenses === "0.00" && totalIncomes === "0.00") return null;
+
   return (
     <Box
       sx={{

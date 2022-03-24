@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import { calculateRate } from "utils";
 
 export default function IncomeInfo() {
-  const [incomes, loading] = useUserData("incomes");
+  const [incomes] = useUserData("incomes");
 
   const shouldRender = incomes.length > 0;
 
@@ -38,8 +38,6 @@ export default function IncomeInfo() {
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
     [tagsArray]
   );
-
-  if (loading) return null;
 
   function dotStyle(tag) {
     return {

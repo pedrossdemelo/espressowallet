@@ -8,30 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { setDateFilter } from "actions";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function OverviewDate() {
   const dispatch = useDispatch();
-  const { expenses, incomes } = useSelector(state => state.wallet);
+
   const { start } = useSelector(state => state.filter.date);
+
   const handleChange = newDate => {
     dispatch(setDateFilter(newDate));
   };
-
-  const [minDate, setMinDate] = useState(new Date());
-
-  useEffect(() => {
-    (async () => {
-      if (!expenses.length && !incomes.length) return;
-      const combined = [...expenses, ...incomes];
-      const minDate = combined.reduce((acc, curr) => {
-        if (acc === undefined) return curr.createdAt;
-        return curr.createdAt < acc ? curr.createdAt : acc;
-      }, undefined);
-      setMinDate(minDate);
-    })();
-  }, [expenses, incomes]);
 
   return (
     <>
@@ -48,7 +34,7 @@ export default function OverviewDate() {
           autoFocus
           value={start}
           onChange={handleChange}
-          minDate={minDate}
+          minDate={new Date("2000-01-01")}
           maxDate={new Date()}
           disableFuture
           renderInput={params => (
