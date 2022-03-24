@@ -1,6 +1,6 @@
 {
   "extends": ["prettier"],
-  "plugins": ["prettier", "only-warn", "react", "react-hooks"],
+  "plugins": ["prettier", "only-warn"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "babelOptions": {
