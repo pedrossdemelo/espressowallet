@@ -1,15 +1,6 @@
 import getRates from "../../services/getRates";
 import store from "../index";
 
-export const t = () => "hey";
-
-export function login(payload) {
-  return {
-    type: "user/login",
-    payload,
-  };
-}
-
 const fetchRates = () => ({
   type: "wallet/fetchRates",
 });

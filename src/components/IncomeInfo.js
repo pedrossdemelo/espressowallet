@@ -1,12 +1,12 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useUserData } from "../hooks";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";
 import { colorMap } from "./History";
 
 export default function IncomeInfo() {
-  const incomes = useSelector(state => state.filter.incomes);
+  const [incomes, loading] = useUserData("incomes");
 
   const shouldRender = incomes.length > 0;
 
@@ -38,6 +38,8 @@ export default function IncomeInfo() {
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
     [tagsArray]
   );
+
+  if (loading) return null;
 
   function dotStyle(tag) {
     return {

@@ -4,12 +4,18 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField,
+  TextField
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import {
+  addDoc,
+  collection,
+  doc, Timestamp,
+  updateDoc
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../services/firebase";
 import getRates from "../services/getRates";
-import { addIncomeThunk, editIncomeThunk } from "../store/actions";
 
 const tagInputs = [
   "Investments",
@@ -30,10 +36,25 @@ const initialFormState = {
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
+const converter = {
+  toFirestore(income) {
+    return {
+      ...income,
+      type: "income",
+      createdAt: Timestamp.fromDate(income.createdAt),
+    };
+  },
+};
+
 export default function IncomeFormDrawer({ open, close, toEdit = null }) {
-  const dispatch = useDispatch();
+  const [user] = useAuthState(auth);
+
+  const userIncomes = collection(
+    db,
+    `userData/${user.uid}/incomes`
+  ).withConverter(converter);
+
   const [currencies, setCurrencies] = useState([]);
-  const lastId = useRef(0);
 
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
@@ -52,28 +73,26 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
     setDate(date);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    const { data } = await getRates();
+
+    const income = { ...formState, createdAt: date, exchangeRates: data };
+
+    if (!toEdit) addDoc(userIncomes, income);
+
     if (toEdit) {
-      dispatch(
-        editIncomeThunk({
-          ...formState,
-          id: toEdit.id,
-          createdAt: date,
-        })
+      const updateLocation = doc(
+        db,
+        "userData",
+        user.uid,
+        "incomes",
+        toEdit?.id
       );
-      close();
-      return;
+      updateDoc(updateLocation, income);
     }
-    dispatch(
-      addIncomeThunk({
-        ...formState,
-        createdAt: date,
-        type: "income",
-        id: toEdit?.id ?? lastId.current,
-      })
-    );
-    !toEdit && (lastId.current += 1);
+
     close();
   }
 

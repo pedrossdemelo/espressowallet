@@ -8,16 +8,21 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import stringAvatar from "../utils/stringAvatar";
 import calculateRate from "../utils/calculateRate";
+import { useHistory } from "react-router-dom";
+import { useAuth, useUserData } from "../hooks";
 
 export default function WalletHeader() {
-  const expenses = useSelector(state => state.wallet.expenses);
-  const incomes = useSelector(state => state.wallet.incomes);
-  const email = useSelector(state => state.user.email);
-  const isFetching = useSelector(state => state.wallet.isFetching);
+  const [{ email }] = useAuth();
+
+  const [expenses, expensesLoading] = useUserData("expenses");
+  const [incomes, incomesLoading] = useUserData("incomes"); 
+  const isFetching = expensesLoading || incomesLoading;
+
+  const history = useHistory();
+  const goToUserConfig = () => history.push("/config");
 
   const totalExpenses = expenses
     .reduce((acc, curr) => acc + calculateRate(curr), 0)
@@ -41,7 +46,7 @@ export default function WalletHeader() {
               height: { xs: 58, sm: 64 },
             }}
           >
-            <IconButton edge="start" size="small" color="inherit">
+            <IconButton onClick={goToUserConfig} edge="start" size="small" color="inherit">
               <Avatar {...stringAvatar(email, { height: 36, width: 36 })} />
             </IconButton>
 

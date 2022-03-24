@@ -1,12 +1,12 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useUserData } from "../hooks";
 import calculateRate from "../utils/calculateRate";
 
 export default function ExpenseAndIncome() {
-  const expenses = useSelector(state => state.filter.expenses);
-  const incomes = useSelector(state => state.filter.incomes);
+  const [expenses] = useUserData("expenses");
+  const [incomes] = useUserData("incomes");
 
   const totalExpenses = expenses
     .reduce((acc, curr) => acc + calculateRate(curr), 0)
@@ -18,7 +18,7 @@ export default function ExpenseAndIncome() {
 
   return (
     <Box
-      sx={{
+    sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
