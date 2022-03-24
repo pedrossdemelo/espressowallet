@@ -1,9 +1,8 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { collection } from "firebase/firestore";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useSelector } from "react-redux";
 import { auth, db } from "../services/firebase";
 import calculateRate from "../utils/calculateRate";
 import Donut from "./Donut";

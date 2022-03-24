@@ -17,7 +17,7 @@ import {
   Sell,
   TheaterComedy,
   TrendingUp,
-  Work,
+  Work
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -36,21 +36,18 @@ import {
   Stack,
   Tooltip,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
+import { deleteDoc, doc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAuthState } from "react-firebase-hooks/auth";
 import SwipeableView from "react-swipeable-views";
-import { deleteExpenseThunk, deleteIncomeThunk } from "../store/actions";
+import { TransitionGroup } from "react-transition-group";
+import useUserData from "../hooks/useUserData";
+import { auth, db } from "../services/firebase";
 import ExpenseFormDrawer from "./ExpenseFormDrawer";
 import IncomeFormDrawer from "./IncomeFormDrawer";
-import { TransitionGroup } from "react-transition-group";
-import { auth, db } from "../services/firebase";
-import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import Loading from "./Loading";
-import useUserData from "../hooks/useUserData";
 
 export const iconsMap = {
   Entertainment: <TheaterComedy />,

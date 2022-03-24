@@ -4,20 +4,17 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField,
+  TextField
 } from "@mui/material";
 import {
   addDoc,
   collection,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
+  doc, Timestamp,
+  updateDoc
 } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch } from "react-redux";
-import { db, auth } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 import getRates from "../services/getRates";
 
 const tagInputs = [
