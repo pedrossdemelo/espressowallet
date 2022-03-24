@@ -61,7 +61,7 @@
     "prettier": "^2.6.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,css,md}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "yarn organize-imports-cli",
       "yarn eslint --fix",
       "yarn prettier --write"

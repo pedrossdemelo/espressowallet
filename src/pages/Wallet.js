@@ -1,6 +1,4 @@
 import { Box } from "@mui/material";
-import { useAuth } from "hooks";
-import { useHistory } from "react-router-dom";
 import {
   ExpenseAndIncome,
   ExpenseInfo,
@@ -11,7 +9,9 @@ import {
   OverviewDate,
   SpeedDials,
   WalletHeader,
-} from "../components";
+} from "components";
+import { useAuth } from "hooks";
+import { useHistory } from "react-router-dom";
 
 function Wallet() {
   const [user, loading] = useAuth();
