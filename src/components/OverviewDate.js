@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateFilter } from "../store/actions";
+import { setDateFilter } from "store/actions";
 
 export default function OverviewDate() {
   const dispatch = useDispatch();

@@ -1,8 +1,8 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import { useUserData } from "hooks";
 import React from "react";
-import { useUserData } from "../hooks";
-import calculateRate from "../utils/calculateRate";
+import { calculateRate } from "utils";
 
 export default function ExpenseAndIncome() {
   const [expenses] = useUserData("expenses");
@@ -18,7 +18,7 @@ export default function ExpenseAndIncome() {
 
   return (
     <Box
-    sx={{
+      sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",

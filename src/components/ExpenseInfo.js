@@ -3,8 +3,8 @@ import { collection } from "firebase/firestore";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth, db } from "../services/firebase";
-import calculateRate from "../utils/calculateRate";
+import { auth, db } from "services";
+import { calculateRate } from "utils";
 import Donut from "./Donut";
 import { colorMap } from "./History";
 

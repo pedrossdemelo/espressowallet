@@ -1,8 +1,8 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
+import { Donut } from "components";
+import { useUserData } from "hooks";
 import React, { useMemo } from "react";
-import { useUserData } from "../hooks";
-import calculateRate from "../utils/calculateRate";
-import Donut from "./Donut";
+import { calculateRate } from "utils";
 import { colorMap } from "./History";
 
 export default function IncomeInfo() {

@@ -1,12 +1,7 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
-import {
-  SpeedDial,
-  SpeedDialAction,
-  SpeedDialIcon
-} from "@mui/material";
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { ExpenseFormDrawer, IncomeFormDrawer } from "components";
 import { useState } from "react";
-import ExpenseFormDrawer from "./ExpenseFormDrawer";
-import IncomeFormDrawer from "./IncomeFormDrawer";
 
 export default function SpeedDials() {
   const [expenseDrawerOpen, setExpenseDrawerOpen] = useState(false);
@@ -49,14 +44,18 @@ export default function SpeedDials() {
             onClick={action.onClick}
             tooltipOpen
             FabProps={{
-              sx: { bgcolor: action.color, color: "background.paper", '&:hover': { bgcolor: action.colorHover } },
+              sx: {
+                bgcolor: action.color,
+                color: "background.paper",
+                "&:hover": { bgcolor: action.colorHover },
+              },
             }}
           />
         ))}
       </SpeedDial>
 
       <ExpenseFormDrawer open={expenseDrawerOpen} close={closeExpense} />
-      
+
       <IncomeFormDrawer open={incomeDrawerOpen} close={closeIncome} />
     </>
   );

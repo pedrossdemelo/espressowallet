@@ -4,18 +4,18 @@ import {
   List,
   ListItem,
   SwipeableDrawer,
-  TextField
+  TextField,
 } from "@mui/material";
 import {
   addDoc,
   collection,
-  doc, Timestamp,
-  updateDoc
+  doc,
+  Timestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../services/firebase";
-import getRates from "../services/getRates";
+import { auth, db, getRates } from "services";
 
 const tagInputs = [
   "Food",

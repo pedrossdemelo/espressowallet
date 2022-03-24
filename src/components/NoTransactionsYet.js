@@ -1,8 +1,8 @@
 import { HistoryToggleOff } from "@mui/icons-material";
 import { Typography } from "@mui/material";
+import { useUserData } from "hooks";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useUserData } from "../hooks";
 
 const months = [
   "January",
@@ -17,7 +17,7 @@ const months = [
   "October",
   "November",
   "December",
-]
+];
 
 export default function NoTransactionsYet() {
   const { date } = useSelector(state => state.filter);
@@ -39,14 +39,13 @@ export default function NoTransactionsYet() {
         paddingBottom: "calc(1rem + 56px + 10vh)",
         gap: "0.5rem",
         flexGrow: 1,
-        opacity: 0.375
+        opacity: 0.375,
       }}
     >
       <HistoryToggleOff fontSize="large" />
 
       <Typography>
-        No transactions in{" "}
-        {months[Number(date.start.getMonth())]} {filterYear}
+        No transactions in {months[Number(date.start.getMonth())]} {filterYear}
       </Typography>
     </div>
   );

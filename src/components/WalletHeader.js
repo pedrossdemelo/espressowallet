@@ -1,3 +1,4 @@
+import { Menu as MenuIcon } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -7,18 +8,16 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { useAuth, useUserData } from "hooks";
 import React from "react";
-import { Menu as MenuIcon } from "@mui/icons-material";
-import stringAvatar from "../utils/stringAvatar";
-import calculateRate from "../utils/calculateRate";
 import { useHistory } from "react-router-dom";
-import { useAuth, useUserData } from "../hooks";
+import { calculateRate, stringAvatar } from "utils";
 
 export default function WalletHeader() {
   const [{ email }] = useAuth();
 
   const [expenses, expensesLoading] = useUserData("expenses");
-  const [incomes, incomesLoading] = useUserData("incomes"); 
+  const [incomes, incomesLoading] = useUserData("incomes");
   const isFetching = expensesLoading || incomesLoading;
 
   const history = useHistory();
@@ -46,7 +45,12 @@ export default function WalletHeader() {
               height: { xs: 58, sm: 64 },
             }}
           >
-            <IconButton onClick={goToUserConfig} edge="start" size="small" color="inherit">
+            <IconButton
+              onClick={goToUserConfig}
+              edge="start"
+              size="small"
+              color="inherit"
+            >
               <Avatar {...stringAvatar(email, { height: 36, width: 36 })} />
             </IconButton>
 
