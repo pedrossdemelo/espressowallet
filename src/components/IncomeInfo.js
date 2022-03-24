@@ -1,9 +1,9 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { Donut } from "components";
+import { colorMap } from "constants";
 import { useUserData } from "hooks";
 import React, { useMemo } from "react";
 import { calculateRate } from "utils";
-import { colorMap } from "./History";
 
 export default function IncomeInfo() {
   const [incomes, loading] = useUserData("incomes");

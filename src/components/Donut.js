@@ -1,6 +1,6 @@
 import { Box, Tooltip } from "@mui/material";
+import { colorMap } from "constants";
 import React from "react";
-import { colorMap } from "./History";
 
 export default function Donut(props) {
   const { height = 200, sx, data } = props;

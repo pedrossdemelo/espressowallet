@@ -1,24 +1,4 @@
-import {
-  AttachMoney,
-  CardGiftcard,
-  Checkroom,
-  DeleteOutline,
-  DevicesOther,
-  DirectionsCar,
-  Edit,
-  EmojiEvents,
-  House,
-  LocalHospital,
-  MoreHoriz,
-  Payments,
-  Restaurant,
-  Savings,
-  School,
-  Sell,
-  TheaterComedy,
-  TrendingUp,
-  Work,
-} from "@mui/icons-material";
+import { DeleteOutline, Edit } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -39,6 +19,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { ExpenseFormDrawer, IncomeFormDrawer, Loading } from "components";
+import { colorMap, iconsMap } from "constants";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useUserData } from "hooks";
 import { useEffect, useRef, useState } from "react";
@@ -46,46 +27,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import SwipeableView from "react-swipeable-views";
 import { TransitionGroup } from "react-transition-group";
 import { auth, db } from "services";
-
-export const iconsMap = {
-  Entertainment: <TheaterComedy />,
-  Food: <Restaurant />,
-  Health: <LocalHospital />,
-  Education: <School />,
-  Transportation: <DirectionsCar />,
-  Savings: <Savings />,
-  Payment: <Payments />,
-  Clothing: <Checkroom />,
-  Household: <House />,
-  Eletronics: <DevicesOther />,
-  Work: <Work />,
-  Salary: <AttachMoney />,
-  Investments: <TrendingUp />,
-  Gift: <CardGiftcard />,
-  Prize: <EmojiEvents />,
-  Sale: <Sell />,
-  Other: <MoreHoriz />,
-};
-
-export const colorMap = {
-  Transportation: "#6366f1",
-  Prize: "#2196f3",
-  Education: "#7dd3fc",
-  Savings: "#2dd4bf",
-  Salary: "#047857",
-  Investments: "#22c55e",
-  Eletronics: "#a3e635",
-  Payment: "#fbbf24",
-  Food: "#fb923c",
-  Work: "#b45309",
-  Health: "#dc2626",
-  Clothing: "#f43f5e",
-  Gift: "#f87171",
-  Entertainment: "#ec4899",
-  Sale: "#d946ef",
-  Household: "#a855f7",
-  Other: "#d4d4d4",
-};
 
 export default function History() {
   const [expenses, loadingExpenses] = useUserData("expenses");

@@ -1,4 +1,5 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
+import { colorMap } from "constants";
 import { collection } from "firebase/firestore";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -6,7 +7,6 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, db } from "services";
 import { calculateRate } from "utils";
 import Donut from "./Donut";
-import { colorMap } from "./History";
 
 export default function ExpenseInfo() {
   const [user] = useAuthState(auth);
