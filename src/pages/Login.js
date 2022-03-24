@@ -36,6 +36,7 @@ export default function Login() {
   const isSignUp = useRef(false);
 
   if (pageLoading) return <div>Loading...</div>;
+
   if (user) {
     history.push("/");
     return null;
@@ -51,17 +52,23 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     setErrorState(noErrors);
+
     if (isSignUp.current) {
       setLoading({ ...notLoading, signUpLoading: true });
       const { error } = await signUpEmail(email, password);
       if (error) setErrorState(humanErrorParse(error));
-    } else {
+    }
+
+    if (!isSignUp.current) {
       setLoading({ ...notLoading, loginLoading: true });
       const { error } = await loginEmail(email, password);
       if (error) setErrorState(humanErrorParse(error));
     }
+
     isSignUp.current = false;
+
     setLoading(notLoading);
   }
 
@@ -105,8 +112,7 @@ export default function Login() {
 
         <Stack direction="row" justifyContent="space-between">
           <LoadingButton
-            onClick={() => (isSignUp.current = true)}
-            type="submit"
+            onClick={() => (isSignUp.current = true || handleSubmit())}
             disabled={disabled || loading !== notLoading}
             loading={signUpLoading}
           >
