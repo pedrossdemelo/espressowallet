@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { auth, db, logout } from "../services";
 import { addDoc, collection, query, where } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useHistory } from "react-router-dom";
+import { auth, db, logout } from "services";
 
 const converter = {
   toFirestore: expense => expense,

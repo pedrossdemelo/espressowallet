@@ -1,7 +1,6 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Login, Wallet } from './pages';
-import UserConfig from './pages/UserConfig';
+import { Login, UserConfig, Wallet } from "pages";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 
 function App() {
   return (

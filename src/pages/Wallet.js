@@ -1,21 +1,23 @@
 import { Box } from "@mui/material";
-import { SpeedDials, WalletHeader } from "../components";
-import ExpenseInfo from "../components/ExpenseInfo";
-import ExpenseAndIncome from "../components/ExpenseAndIncome";
-import IncomeInfo from "../components/IncomeInfo";
-import History from "../components/History";
-import OverviewDate from "../components/OverviewDate";
-import GoBackFab from "../components/GoBackFab";
-import NoTransactionsYet from "../components/NoTransactionsYet";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../services/firebase";
+import { useAuth } from "hooks";
 import { useHistory } from "react-router-dom";
+import {
+  ExpenseAndIncome,
+  ExpenseInfo,
+  GoBackFab,
+  History,
+  IncomeInfo,
+  NoTransactionsYet,
+  OverviewDate,
+  SpeedDials,
+  WalletHeader,
+} from "../components";
 
 function Wallet() {
-  const [user, loading] = useAuthState(auth);
+  const [user, loading] = useAuth();
   const history = useHistory();
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div>Loading...</div>;
   if (!user) {
     history.push("/");
     return null;
