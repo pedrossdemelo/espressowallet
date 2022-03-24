@@ -1,10 +1,9 @@
-import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
+import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { loginEmail, signUpEmail } from "../services";
 import { useAuth } from "../hooks";
+import { loginEmail, signUpEmail } from "../services";
 
 const noErrors = {
   emailError: " ",
@@ -64,7 +63,6 @@ export default function Login() {
     }
     isSignUp.current = false;
     setLoading(notLoading);
-    false && history.push("/carteira");
   }
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+\w{2,4}$/g;

@@ -1,0 +1,13 @@
+{
+  "extends": ["prettier"],
+  "plugins": ["prettier", "only-warn", "react", "react-hooks"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    },
+    "requireConfigFile": false,
+    "sourceType": "module",
+    "jsx": true
+  }
+}
