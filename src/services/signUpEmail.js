@@ -1,6 +1,4 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
-
 
 export default async function signUpEmail(email, password) {
   try {
