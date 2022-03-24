@@ -1,5 +1,5 @@
 import { addDoc, collection, query, where } from "firebase/firestore";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router-dom";
@@ -41,7 +41,7 @@ export default function UserConfig() {
       <button
         onClick={async () => {
           await logout();
-          history.push("/");
+          history.push("/login");
         }}
       >
         Logout

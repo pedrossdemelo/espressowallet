@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useAuth } from "hooks";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { loginEmail, signUpEmail } from "services";
 
@@ -37,7 +37,7 @@ export default function Login() {
 
   if (pageLoading) return <div>Loading...</div>;
   if (user) {
-    history.push("/carteira");
+    history.push("/");
     return null;
   }
 

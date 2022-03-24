@@ -19,7 +19,7 @@ function Wallet() {
 
   if (loading) return <div>Loading...</div>;
   if (!user) {
-    history.push("/");
+    history.push("/login");
     return null;
   }
 
