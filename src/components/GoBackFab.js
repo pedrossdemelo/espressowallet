@@ -1,8 +1,8 @@
 import { ArrowBack } from "@mui/icons-material";
 import { Fab, Zoom } from "@mui/material";
+import { setDateFilter } from "actions";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateFilter } from "store/actions";
 
 export default function GoBackFab() {
   const dispatch = useDispatch();
