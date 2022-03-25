@@ -21,7 +21,7 @@ import {
 import { ExpenseFormDrawer, IncomeFormDrawer } from "components";
 import { colorMap, iconsMap } from "constants";
 import { useFilteredTransactions } from "hooks";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import SwipeableView from "react-swipeable-views";
 import { TransitionGroup } from "react-transition-group";
 import { deleteTransaction } from "services";
@@ -60,10 +60,6 @@ export default function History() {
 }
 
 function TransactionListItem(props) {
-  const [isHovered, setIsHovered] = useState(false);
-  const enter = () => setIsHovered(true);
-  const leave = () => setIsHovered(false);
-
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const open = () => setIsDrawerOpen(true);
   const close = () => setIsDrawerOpen(false);
@@ -76,11 +72,6 @@ function TransactionListItem(props) {
 
   const delTransaction = () => deleteTransaction(transaction);
 
-  useEffect(() => {
-    // Every time the component is rendered, the mouse leaves the element
-    leave();
-  }, [isDialogOpen, isDrawerOpen]);
-
   const DesktopListItem = () => (
     <ListItem
       sx={{
@@ -88,11 +79,21 @@ function TransactionListItem(props) {
           boxShadow: 2,
           borderRadius: 2,
           outline: "0.5px solid lightgray",
+          "& .edit-delete": {
+            display: "flex",
+          },
+          "& .transaction-details": {
+            display: "none",
+          },
+        },
+        "& .edit-delete": {
+          display: "none",
+        },
+        "& .transaction-details": {
+          display: "flex",
         },
         cursor: "pointer",
       }}
-      onMouseEnter={enter}
-      onMouseLeave={leave}
     >
       <Stack
         direction="row"
@@ -131,49 +132,50 @@ function TransactionListItem(props) {
           </Typography>
         </Stack>
 
-        {isHovered ? (
-          <Stack direction="row">
-            <Tooltip arrow placement="top" title="Edit">
-              <IconButton onClick={open}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
+        {/* When hovered, render this */}
+        <Stack direction="row" className="edit-delete">
+          <Tooltip arrow placement="top" title="Edit">
+            <IconButton onClick={open}>
+              <Edit />
+            </IconButton>
+          </Tooltip>
 
-            <Tooltip arrow placement="top" title="Delete">
-              <IconButton onClick={openDialog}>
-                <DeleteOutline />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        ) : (
-          <Typography
-            textAlign="right"
-            lineHeight={1.375}
-            sx={{
-              display: "flex",
-              flexFlow: "column nowrap",
-              justifyContent: "center",
-            }}
-          >
-            {transaction.type === "income" ? "+" : "-"}{" "}
-            {Number(transaction.value).toFixed(2)} {transaction.currency}
-            <br />
-            <Typography lineHeight={1.375} variant="caption">
-              x{" "}
-              {Number(
-                transaction.exchangeRates[transaction.currency].ask
-              ).toFixed(2)}{" "}
-              |{" "}
-              {transaction.createdAt
-                .toLocaleDateString()
-                .split("/")
-                .slice(0, 2)
-                .join("/")}{" "}
-              {transaction.createdAt.getHours()}:
-              {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
-            </Typography>
+          <Tooltip arrow placement="top" title="Delete">
+            <IconButton onClick={openDialog}>
+              <DeleteOutline />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+
+        {/* Otherwise, render this */}
+        <Typography
+          textAlign="right"
+          lineHeight={1.375}
+          className="transaction-details"
+          sx={{
+            display: "flex",
+            flexFlow: "column nowrap",
+            justifyContent: "center",
+          }}
+        >
+          {transaction.type === "income" ? "+" : "-"}{" "}
+          {Number(transaction.value).toFixed(2)} {transaction.currency}
+          <br />
+          <Typography lineHeight={1.375} variant="caption">
+            x{" "}
+            {Number(
+              transaction.exchangeRates[transaction.currency].ask
+            ).toFixed(2)}{" "}
+            |{" "}
+            {transaction.createdAt
+              .toLocaleDateString()
+              .split("/")
+              .slice(0, 2)
+              .join("/")}{" "}
+            {transaction.createdAt.getHours()}:
+            {transaction.createdAt.getMinutes().toString().padStart(2, "0")}
           </Typography>
-        )}
+        </Typography>
       </Stack>
     </ListItem>
   );
