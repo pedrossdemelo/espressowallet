@@ -3,6 +3,8 @@
 /functions/lib/**/*.js
 /functions/lib/**/*.js.map
 
+/functions/*-debug.*
+
 # dependencies
 /node_modules
 /.pnp
