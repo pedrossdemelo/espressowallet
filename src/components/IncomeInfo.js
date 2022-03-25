@@ -1,12 +1,12 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { Donut } from "components";
 import { colorMap } from "constants";
-import { useUserData } from "hooks";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { calculateRate } from "utils";
+import { FilteredIncomes } from "./FilteredUserDataProvider";
 
 export default function IncomeInfo() {
-  const [incomes] = useUserData("incomes");
+  const [incomes] = useContext(FilteredIncomes);
 
   const shouldRender = incomes.length > 0;
 

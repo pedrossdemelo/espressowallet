@@ -6,13 +6,8 @@ import {
   SwipeableDrawer,
   TextField,
 } from "@mui/material";
-import {
-  addDoc,
-  collection,
-  doc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { converter } from "constants";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, getRates } from "services";
@@ -35,16 +30,6 @@ const initialFormState = {
 };
 
 const paperProps = { style: { backgroundColor: "transparent" } };
-
-const converter = {
-  toFirestore(income) {
-    return {
-      ...income,
-      type: "income",
-      createdAt: Timestamp.fromDate(income.createdAt),
-    };
-  },
-};
 
 export default function IncomeFormDrawer({ open, close, toEdit = null }) {
   const [user] = useAuthState(auth);
@@ -78,7 +63,12 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
 
     const { data } = await getRates();
 
-    const income = { ...formState, createdAt: date, exchangeRates: data };
+    const income = {
+      ...formState,
+      createdAt: date,
+      type: "income",
+      exchangeRates: data,
+    };
 
     if (!toEdit) addDoc(userIncomes, income);
 

@@ -80,7 +80,12 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
 
     const { data } = await getRates();
 
-    const expense = { ...formState, createdAt: date, exchangeRates: data };
+    const expense = {
+      ...formState,
+      createdAt: date,
+      type: "expense",
+      exchangeRates: data,
+    };
 
     if (!toEdit) addDoc(userExpenses, expense);
 

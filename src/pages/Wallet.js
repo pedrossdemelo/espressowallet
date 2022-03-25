@@ -10,6 +10,7 @@ import {
   SpeedDials,
   WalletHeader,
 } from "components";
+import FilteredUserDataProvider from "components/FilteredUserDataProvider";
 import { useAuth } from "hooks";
 import { useHistory } from "react-router-dom";
 
@@ -24,7 +25,7 @@ function Wallet() {
   }
 
   return (
-    <>
+    <FilteredUserDataProvider>
       <WalletHeader />
       <Box component="main" sx={mainStyle}>
         <Box sx={{ height: { xs: 58, sm: 64 } }} />
@@ -43,7 +44,7 @@ function Wallet() {
       </Box>
       <SpeedDials />
       <GoBackFab />
-    </>
+    </FilteredUserDataProvider>
   );
 }
 
