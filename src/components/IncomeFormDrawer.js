@@ -154,7 +154,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
           />
         </ListItem>
 
-        <ListItem sx={{ justifyContent: "space-between" }}>
+        <ListItem sx={{ justifyContent: "space-between", gap: 5 }}>
           <DateTimePicker
             disableFuture
             value={date}

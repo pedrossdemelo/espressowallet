@@ -158,7 +158,7 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
           />
         </ListItem>
 
-        <ListItem sx={{ justifyContent: "space-between" }}>
+        <ListItem sx={{ justifyContent: "space-between", gap: 5 }}>
           <DateTimePicker
             value={date}
             label="Date"
