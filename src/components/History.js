@@ -51,7 +51,6 @@ export default function History() {
       >
         <TransitionGroup>
           {transactions.map(transaction => (
-            // TODO: Use id as key
             <Collapse key={transaction.id}>
               <TransactionListItem transaction={transaction} />
             </Collapse>
