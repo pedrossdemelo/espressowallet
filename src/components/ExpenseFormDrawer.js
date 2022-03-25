@@ -6,16 +6,8 @@ import {
   SwipeableDrawer,
   TextField,
 } from "@mui/material";
-import {
-  addDoc,
-  collection,
-  doc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, getRates } from "services";
+import { addTransaction, editTransaction, getRates } from "services";
 
 const tagInputs = [
   "Food",
@@ -40,27 +32,13 @@ const initialFormState = {
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
-const converter = {
-  toFirestore(expense) {
-    return {
-      ...expense,
-      type: "expense",
-      createdAt: Timestamp.fromDate(expense.createdAt),
-    };
-  },
-};
-
 export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
-  const [user] = useAuthState(auth);
-  const userExpenses = collection(
-    db,
-    `userData/${user.uid}/expenses`
-  ).withConverter(converter);
   const [currencies, setCurrencies] = useState([]);
 
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
-  const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
+
+  const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
 
   function handleChange(e) {
     const { name, value: valuePair } = e.target;
@@ -87,19 +65,9 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
       exchangeRates: data,
     };
 
-    if (!toEdit) addDoc(userExpenses, expense);
+    if (!toEdit) addTransaction(expense);
 
-    if (toEdit) {
-      const updateLocation = doc(
-        db,
-        "userData",
-        user.uid,
-        "expenses",
-        toEdit.id
-      );
-
-      updateDoc(updateLocation, expense);
-    }
+    if (toEdit) editTransaction(expense);
 
     close();
   }

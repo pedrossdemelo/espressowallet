@@ -20,25 +20,18 @@ import {
 } from "@mui/material";
 import { ExpenseFormDrawer, IncomeFormDrawer, Loading } from "components";
 import { colorMap, iconsMap } from "constants";
-import { deleteDoc, doc } from "firebase/firestore";
-import { useUserData } from "hooks";
+import { useFilteredTransactions } from "hooks";
 import { useEffect, useRef, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import SwipeableView from "react-swipeable-views";
 import { TransitionGroup } from "react-transition-group";
-import { auth, db } from "services";
+import { deleteTransaction } from "services";
 
 export default function History() {
-  const [expenses, loadingExpenses] = useUserData("expenses");
-  const [incomes, loadingIncomes] = useUserData("incomes");
+  const [transactions, loading] = useFilteredTransactions();
 
-  if (loadingExpenses || loadingIncomes) return <Loading />;
+  if (loading) return <Loading />;
 
-  if (!expenses.length && !incomes.length) return null;
-
-  const combinedTransactions = [...expenses, ...incomes];
-
-  combinedTransactions.sort((a, b) => b.createdAt - a.createdAt);
+  if (!transactions.length) return null;
 
   return (
     <Box sx={{ flexGrow: 1, display: "flex", flexFlow: "column nowrap" }}>
@@ -57,7 +50,7 @@ export default function History() {
         }}
       >
         <TransitionGroup>
-          {combinedTransactions.map(transaction => (
+          {transactions.map(transaction => (
             // TODO: Use id as key
             <Collapse key={transaction.id}>
               <TransactionListItem transaction={transaction} />
@@ -70,8 +63,6 @@ export default function History() {
 }
 
 function TransactionListItem(props) {
-  const [user] = useAuthState(auth);
-
   const [isHovered, setIsHovered] = useState(false);
   const enter = () => setIsHovered(true);
   const leave = () => setIsHovered(false);
@@ -86,19 +77,7 @@ function TransactionListItem(props) {
 
   const { transaction } = props;
 
-  const delTransaction = type => async () => {
-    console.log("oi");
-    console.log(transaction.id, user.uid, type);
-    const deleteLocation = doc(
-      db,
-      "userData",
-      user.uid,
-      `${type}s`,
-      transaction.id
-    );
-    deleteDoc(deleteLocation);
-    return;
-  };
+  const delTransaction = () => deleteTransaction(transaction);
 
   useEffect(() => {
     // Every time the component is rendered, the mouse leaves the element
@@ -350,7 +329,7 @@ function TransactionListItem(props) {
       <ConfirmationDialog
         open={isDialogOpen}
         close={closeDialog}
-        onConfirm={delTransaction(transaction.type)}
+        onConfirm={delTransaction}
         transaction={transaction}
       />
     </>

@@ -6,11 +6,8 @@ import {
   SwipeableDrawer,
   TextField,
 } from "@mui/material";
-import { converter } from "constants";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, getRates } from "services";
+import { addTransaction, editTransaction, getRates } from "services";
 
 const tagInputs = [
   "Investments",
@@ -32,13 +29,6 @@ const initialFormState = {
 const paperProps = { style: { backgroundColor: "transparent" } };
 
 export default function IncomeFormDrawer({ open, close, toEdit = null }) {
-  const [user] = useAuthState(auth);
-
-  const userIncomes = collection(
-    db,
-    `userData/${user.uid}/incomes`
-  ).withConverter(converter);
-
   const [currencies, setCurrencies] = useState([]);
 
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
@@ -70,18 +60,9 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
       exchangeRates: data,
     };
 
-    if (!toEdit) addDoc(userIncomes, income);
+    if (!toEdit) addTransaction(income);
 
-    if (toEdit) {
-      const updateLocation = doc(
-        db,
-        "userData",
-        user.uid,
-        "incomes",
-        toEdit?.id
-      );
-      updateDoc(updateLocation, income);
-    }
+    if (toEdit) editTransaction(income);
 
     close();
   }

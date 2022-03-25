@@ -8,7 +8,7 @@ function ExpenseProvider({ children }) {
   const [expensesValues, loadingExpenses, errorExpenses] =
     useUserData("expenses");
 
-  const expenses = [expensesValues, loadingExpenses, errorExpenses];
+  const expenses = [expensesValues ?? [], loadingExpenses, errorExpenses];
 
   return (
     <FilteredExpenses.Provider value={expenses}>
@@ -19,7 +19,7 @@ function ExpenseProvider({ children }) {
 
 function IncomeProvider({ children }) {
   const [incomesValues, loadingIncomes, errorIncomes] = useUserData("incomes");
-  const incomes = [incomesValues, loadingIncomes, errorIncomes];
+  const incomes = [incomesValues ?? [], loadingIncomes, errorIncomes];
 
   return (
     <FilteredIncomes.Provider value={incomes}>
