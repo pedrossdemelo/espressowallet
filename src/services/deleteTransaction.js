@@ -8,8 +8,6 @@ export default function deleteTransaction(transaction) {
   const { type: transactionType, id } = transaction;
   const { uid } = user;
 
-  console.log(uid);
-
   const docToDelete = doc(db, "userData", uid, transactionType + "s", id);
 
   deleteDoc(docToDelete);
