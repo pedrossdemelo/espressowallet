@@ -18,7 +18,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { ExpenseFormDrawer, IncomeFormDrawer, Loading } from "components";
+import { ExpenseFormDrawer, IncomeFormDrawer } from "components";
 import { colorMap, iconsMap } from "constants";
 import { useFilteredTransactions } from "hooks";
 import { useEffect, useRef, useState } from "react";
@@ -27,9 +27,7 @@ import { TransitionGroup } from "react-transition-group";
 import { deleteTransaction } from "services";
 
 export default function History() {
-  const [transactions, loading] = useFilteredTransactions();
-
-  if (loading) return <Loading />;
+  const [transactions] = useFilteredTransactions();
 
   if (!transactions.length) return null;
 

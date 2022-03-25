@@ -4,7 +4,7 @@ import {
 } from "components/FilteredUserDataProvider";
 import { useContext } from "react";
 
-const defaultSort = (a, b) => a.createdAt - b.createdAt;
+const defaultSort = (a, b) => b.createdAt - a.createdAt;
 
 export default function useFilteredTransactions({
   sort = defaultSort,
