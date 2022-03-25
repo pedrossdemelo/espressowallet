@@ -1,5 +1,5 @@
-export default function calculateRate(expense) {
-  const { currency, value, exchangeRates } = expense;
+export default function calculateRate(transaction) {
+  const { currency, value, exchangeRates } = transaction;
   const {
     [currency]: { ask: rate },
   } = exchangeRates;
