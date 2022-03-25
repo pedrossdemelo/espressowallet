@@ -11,19 +11,8 @@ import {
   WalletHeader,
 } from "components";
 import FilteredUserDataProvider from "components/FilteredUserDataProvider";
-import { useAuth } from "hooks";
-import { useHistory } from "react-router-dom";
 
 function Wallet() {
-  const [user, loading] = useAuth();
-  const history = useHistory();
-
-  if (loading) return <div>Loading...</div>;
-  if (!user) {
-    history.push("/login");
-    return null;
-  }
-
   return (
     <FilteredUserDataProvider>
       <WalletHeader />

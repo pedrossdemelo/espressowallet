@@ -1,8 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
-import { useAuth } from "hooks";
 import { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { loginEmail, signUpEmail } from "services";
 
 const noErrors = {
@@ -21,9 +19,6 @@ const emptyForm = {
 };
 
 export default function Login() {
-  const [user, pageLoading] = useAuth();
-  const history = useHistory();
-
   const [loading, setLoading] = useState(notLoading);
   const { loginLoading, signUpLoading } = loading;
 
@@ -34,13 +29,6 @@ export default function Login() {
   const { emailError, passwordError } = errorState;
 
   const isSignUp = useRef(false);
-
-  if (pageLoading) return <div>Loading...</div>;
-
-  if (user) {
-    history.push("/");
-    return null;
-  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -58,18 +46,18 @@ export default function Login() {
     if (isSignUp.current) {
       setLoading({ ...notLoading, signUpLoading: true });
       const { error } = await signUpEmail(email, password);
+      setLoading(notLoading);
       if (error) setErrorState(humanErrorParse(error));
     }
 
     if (!isSignUp.current) {
       setLoading({ ...notLoading, loginLoading: true });
       const { error } = await loginEmail(email, password);
+      setLoading(notLoading);
       if (error) setErrorState(humanErrorParse(error));
     }
 
     isSignUp.current = false;
-
-    setLoading(notLoading);
   }
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+\w{2,4}$/g;
@@ -112,7 +100,10 @@ export default function Login() {
 
         <Stack direction="row" justifyContent="space-between">
           <LoadingButton
-            onClick={() => (isSignUp.current = true || handleSubmit())}
+            onClick={e => {
+              isSignUp.current = true;
+              handleSubmit(e);
+            }}
             disabled={disabled || loading !== notLoading}
             loading={signUpLoading}
           >

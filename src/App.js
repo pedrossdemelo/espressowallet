@@ -1,17 +1,28 @@
+import { Loading } from "components";
+import { useAuth } from "hooks";
 import { Login, UserConfig, Wallet } from "pages";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
+  const [user, loadingUser] = useAuth();
+
+  if (loadingUser) return <Loading />;
+
+  const loggedIn = user !== null;
+
   return (
     <Switch>
       <Route exact path="/">
-        <Wallet />
+        {loggedIn ? <Wallet /> : <Redirect to="/login" />}
       </Route>
       <Route exact path="/config">
-        <UserConfig />
+        {loggedIn ? <UserConfig /> : <Redirect to="/login" />}
       </Route>
       <Route exact path="/login">
-        <Login />
+        {loggedIn ? <Redirect to="/" /> : <Login />}
+      </Route>
+      <Route path="*">
+        <Redirect to="/" />
       </Route>
     </Switch>
   );
