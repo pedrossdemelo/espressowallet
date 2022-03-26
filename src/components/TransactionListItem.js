@@ -100,7 +100,11 @@ export function TransactionListItem(props) {
           >
             {description}
             <br />
-            <Typography lineHeight={1.375} variant="caption">
+            <Typography
+              color="text.secondary"
+              lineHeight={1.375}
+              variant="caption"
+            >
               {tag}
             </Typography>
           </Typography>
@@ -126,15 +130,20 @@ export function TransactionListItem(props) {
           textAlign="right"
           lineHeight={1.375}
           className="transaction-details"
+          color={type === "income" ? `success.dark` : `error.dark`}
           sx={{
             display: "flex",
             flexFlow: "column nowrap",
             justifyContent: "center",
           }}
         >
-          {type === "income" ? "+" : "-"} {Number(value).toFixed(2)} {currency}
+          {Number(value).toFixed(2)} {currency}
           <br />
-          <Typography lineHeight={1.375} variant="caption">
+          <Typography
+            color="text.secondary"
+            lineHeight={1.375}
+            variant="caption"
+          >
             {ask !== "1.00" ? `x ${ask} | ` : ""}
             {date}
           </Typography>
@@ -217,7 +226,11 @@ export function TransactionListItem(props) {
             >
               {description}
               <br />
-              <Typography lineHeight={1.375} variant="caption">
+              <Typography
+                color="text.secondary"
+                lineHeight={1.375}
+                variant="caption"
+              >
                 {tag}
               </Typography>
             </Typography>
@@ -226,16 +239,20 @@ export function TransactionListItem(props) {
           <Typography
             textAlign="right"
             lineHeight={1.375}
+            color={type === "income" ? `success.dark` : `error.dark`}
             sx={{
               display: "flex",
               flexFlow: "column nowrap",
               justifyContent: "center",
             }}
           >
-            {type === "income" ? "+" : "-"} {Number(value).toFixed(2)}{" "}
-            {currency}
+            {Number(value).toFixed(2)} {currency}
             <br />
-            <Typography lineHeight={1.375} variant="caption">
+            <Typography
+              color="text.secondary"
+              lineHeight={1.375}
+              variant="caption"
+            >
               {ask !== "1.00" ? `x ${ask} | ` : ""}
               {date}
             </Typography>
