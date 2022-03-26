@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { setDateFilter } from "actions";
+import { useUserData } from "hooks";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function OverviewDate() {
@@ -18,6 +19,26 @@ export default function OverviewDate() {
   const handleChange = newDate => {
     dispatch(setDateFilter(newDate));
   };
+
+  const firstExpense = useUserData("expenses", {
+    limit: 1,
+  })[0]?.[0];
+
+  const firstIncome = useUserData("incomes", {
+    limit: 1,
+  })[0]?.[0];
+
+  let firstTransaction;
+
+  if (firstExpense?.createdAt && firstIncome?.createdAt) {
+    firstTransaction =
+      firstExpense.createdAt < firstIncome.createdAt
+        ? firstExpense
+        : firstIncome;
+  } else {
+    firstTransaction =
+      firstExpense?.createdAt || firstIncome?.createdAt || new Date();
+  }
 
   return (
     <>
@@ -30,11 +51,11 @@ export default function OverviewDate() {
         <Typography variant="h6">Overview</Typography>
 
         <DatePicker
-          views={["year", "month"]}
+          views={["month", "year"]}
           autoFocus
           value={start}
           onChange={handleChange}
-          minDate={new Date("2000-01-01")}
+          minDate={firstTransaction}
           maxDate={new Date()}
           disableFuture
           renderInput={params => (
