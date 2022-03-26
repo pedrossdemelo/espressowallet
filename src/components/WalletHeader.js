@@ -8,30 +8,18 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useAuth, useUserData } from "hooks";
-import React from "react";
+import { useAuth, useUserMetadata } from "hooks";
 import { useHistory } from "react-router-dom";
-import { calculateRate, stringAvatar } from "utils";
+import { stringAvatar } from "utils";
 
 export default function WalletHeader() {
   const [{ email }] = useAuth();
 
-  const [expenses, expensesLoading] = useUserData("expenses");
-  const [incomes, incomesLoading] = useUserData("incomes");
-  const isFetching = expensesLoading || incomesLoading;
-
   const history = useHistory();
   const goToUserConfig = () => history.push("/config");
 
-  const totalExpenses = expenses
-    .reduce((acc, curr) => acc + calculateRate(curr), 0)
-    .toFixed(2);
-
-  const totalIncomes = incomes
-    .reduce((acc, curr) => acc + calculateRate(curr), 0)
-    .toFixed(2);
-
-  const totalBalance = (totalIncomes - totalExpenses).toFixed(2);
+  const [metadata, loading] = useUserMetadata();
+  const { balance = 0 } = metadata;
 
   return (
     <>
@@ -64,12 +52,11 @@ export default function WalletHeader() {
                 Balance:
               </Typography>
               <br />
-              {isFetching ? (
-                <Skeleton type="text" sx={skeletonStyle(totalBalance)} />
+              {loading ? (
+                <Skeleton type="text" sx={skeletonStyle(balance)} />
               ) : (
-                totalBalance
-              )}{" "}
-              BRL
+                <span> {balance.toFixed(2)} BRL </span>
+              )}
             </Typography>
 
             <IconButton edge="end" size="large" color="inherit">
@@ -93,7 +80,7 @@ const toolbarStyle = {
 function skeletonStyle(totalExpenses) {
   return {
     display: "inline-block",
-    width: `calc(${totalExpenses.toString().length}ch - 0.575ch)`,
+    width: `calc(${totalExpenses.toString().length}ch + 4ch)`,
     position: "relative",
     height: "1.5em",
     bottom: "0.3em",

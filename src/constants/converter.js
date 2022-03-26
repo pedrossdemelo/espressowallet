@@ -8,10 +8,10 @@ const converter = {
     };
   },
   fromFirestore(snapshot, options) {
-    const data = snapshot.data(options);
+    const transaction = snapshot.data(options);
     return {
-      ...data,
-      createdAt: data.createdAt.toDate(),
+      ...transaction,
+      createdAt: transaction.createdAt.toDate(),
     };
   },
 };

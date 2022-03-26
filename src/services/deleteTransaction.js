@@ -1,7 +1,9 @@
-import { deleteDoc, doc } from "firebase/firestore";
+import { doc, increment, writeBatch } from "firebase/firestore";
+import { calculateRate } from "utils";
+import dateToMMYYYY from "utils/dateToMMYYY";
 import { auth, db } from "./firebase";
 
-export default function deleteTransaction(transaction) {
+export default async function deleteTransaction(transaction) {
   const user = auth?.currentUser;
   if (!user) return;
 
@@ -10,5 +12,31 @@ export default function deleteTransaction(transaction) {
 
   const docToDelete = doc(db, "userData", uid, transactionType + "s", id);
 
-  deleteDoc(docToDelete);
+  const metadataToUpdate = doc(db, "userData", uid);
+
+  const batch = writeBatch(db);
+
+  batch.delete(docToDelete);
+
+  // since we are deleting the transaction, the operators are reversed
+  const operator = transaction.type === "expense" ? 1 : -1;
+
+  const difference = calculateRate(transaction);
+
+  const MMYYYY = dateToMMYYYY(transaction.createdAt);
+
+  batch.set(
+    metadataToUpdate,
+    {
+      balance: increment(operator * difference),
+      [MMYYYY]: {
+        balance: increment(operator * difference),
+        [transactionType + "s"]: increment(-1),
+        [transactionType + "Total"]: increment(-difference),
+      },
+    },
+    { merge: true }
+  );
+
+  await batch.commit();
 }

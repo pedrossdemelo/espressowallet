@@ -1,10 +1,10 @@
 import {
   collection,
+  limit as limitQuery,
   orderBy,
   query,
   Timestamp,
   where,
-  limit as limitQuery,
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useSelector } from "react-redux";
@@ -60,7 +60,7 @@ export default function useUserData(
 
   const filteredQuery = query(userData, ...filters, ...orders, ...limits);
 
-  const [expenses, loading, error] = useCollectionData(filteredQuery);
+  const [data, loading, error] = useCollectionData(filteredQuery);
 
-  return [expenses ?? [], loading, error];
+  return [data ?? [], loading, error];
 }

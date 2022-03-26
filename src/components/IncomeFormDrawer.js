@@ -22,7 +22,7 @@ const tagInputs = [
 const initialFormState = {
   tag: "Salary",
   value: 1000,
-  currency: "USD",
+  currency: "BRL",
   description: "",
 };
 
@@ -62,7 +62,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
 
     if (!toEdit) addTransaction(income);
 
-    if (toEdit) editTransaction(income);
+    if (toEdit) editTransaction(toEdit, income);
 
     close();
   }

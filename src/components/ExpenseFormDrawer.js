@@ -26,7 +26,7 @@ const tagInputs = [
 const initialFormState = {
   tag: "Food",
   value: 10,
-  currency: "USD",
+  currency: "BRL",
   description: "",
 };
 
@@ -67,7 +67,7 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
 
     if (!toEdit) addTransaction(expense);
 
-    if (toEdit) editTransaction(expense);
+    if (toEdit) editTransaction(toEdit, expense);
 
     close();
   }
