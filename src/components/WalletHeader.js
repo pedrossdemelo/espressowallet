@@ -8,18 +8,22 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { ProfileMenu } from "components";
 import { useAuth, useUserMetadata } from "hooks";
-import { useHistory } from "react-router-dom";
+import { useState } from "react";
 import { stringAvatar } from "utils";
 
 export default function WalletHeader() {
   const [{ email }] = useAuth();
 
-  const history = useHistory();
-  const goToUserConfig = () => history.push("/config");
-
   const [metadata, loading] = useUserMetadata();
   const { balance = 0 } = metadata;
+
+  const [profileAnchor, setProfileAnchor] = useState(null);
+  const openProfile = e => setProfileAnchor(e.currentTarget);
+  const closeProfile = () => setProfileAnchor(null);
+
+  const profileIsOpen = Boolean(profileAnchor);
 
   return (
     <>
@@ -33,13 +37,8 @@ export default function WalletHeader() {
               height: { xs: 58, sm: 64 },
             }}
           >
-            <IconButton
-              onClick={goToUserConfig}
-              edge="start"
-              size="small"
-              color="inherit"
-            >
-              <Avatar {...stringAvatar(email, { height: 36, width: 36 })} />
+            <IconButton edge="start" size="large" color="inherit">
+              <MenuIcon />
             </IconButton>
 
             <Typography
@@ -59,18 +58,29 @@ export default function WalletHeader() {
               )}
             </Typography>
 
-            <IconButton edge="end" size="large" color="inherit">
-              <MenuIcon />
+            <IconButton
+              onClick={openProfile}
+              edge="end"
+              size="small"
+              color="inherit"
+            >
+              <Avatar {...stringAvatar(email, { height: 36, width: 36 })} />
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
+
+      <ProfileMenu
+        anchorEl={profileAnchor}
+        open={profileIsOpen}
+        onClose={closeProfile}
+      />
     </>
   );
 }
 
 const toolbarStyle = {
-  "@media all": { pr: 2.5, pl: 1.75 },
+  "@media all": { px: 2 },
   alignItems: "flex-start",
   justifyContent: "space-between",
   flexDirection: "column",
