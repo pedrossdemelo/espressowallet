@@ -263,7 +263,7 @@ export function TransactionListItem(props) {
               lineHeight={1.375}
               variant="caption"
             >
-              {ask !== "1.00" ? `x ${ask} | ` : ""}
+              {ask !== "1.00" ? `x ${ask} | ${baseCurrency}` : ""}
               {date}
             </Typography>
           </Typography>

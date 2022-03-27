@@ -1,10 +1,12 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import { useUserData } from "hooks";
-import React from "react";
+import React, { useContext } from "react";
 import { calculateRate } from "utils";
+import { UserMetadata } from "./FilteredUserDataProvider";
 
 export default function ExpenseAndIncome() {
+  const [{ currency }] = useContext(UserMetadata);
   const [expenses] = useUserData("expenses");
   const [incomes] = useUserData("incomes");
 
@@ -40,7 +42,7 @@ export default function ExpenseAndIncome() {
             Total income:
           </Typography>
           <br />
-          {totalIncomes} BRL
+          {totalIncomes} {currency}
         </Typography>
       </Box>
 
@@ -55,7 +57,7 @@ export default function ExpenseAndIncome() {
             Total expenses:
           </Typography>
           <br />
-          {totalExpenses} BRL
+          {totalExpenses} {currency}
         </Typography>
 
         <IconButton edge="end">

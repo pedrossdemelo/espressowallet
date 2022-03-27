@@ -2,10 +2,12 @@ import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { colorMap } from "constants";
 import { useUserData } from "hooks";
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import { calculateRate } from "utils";
 import Donut from "./Donut";
 
 export default function ExpenseInfo() {
+  const currency = useSelector(state => state.wallet.baseCurrency.currency);
   const [expenses] = useUserData("expenses");
 
   const total = useMemo(
@@ -79,7 +81,7 @@ export default function ExpenseInfo() {
                   </Typography>
                 </Stack>
                 <Typography textAlign="right" variant="body2">
-                  {amount.toFixed(2)} BRL
+                  {amount.toFixed(2)} {currency}
                 </Typography>
               </Stack>
             ))}

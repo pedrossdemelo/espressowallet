@@ -2,10 +2,12 @@ import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { Donut } from "components";
 import { colorMap } from "constants";
 import React, { useContext, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { calculateRate } from "utils";
 import { FilteredIncomes } from "./FilteredUserDataProvider";
 
 export default function IncomeInfo() {
+  const currency = useSelector(state => state.wallet.baseCurrency.currency);
   const [incomes] = useContext(FilteredIncomes);
 
   const shouldRender = incomes.length > 0;
@@ -79,7 +81,7 @@ export default function IncomeInfo() {
                   </Typography>
                 </Stack>
                 <Typography textAlign="right" variant="body2">
-                  {amount.toFixed(2)} BRL
+                  {amount.toFixed(2)} {currency}
                 </Typography>
               </Stack>
             ))}

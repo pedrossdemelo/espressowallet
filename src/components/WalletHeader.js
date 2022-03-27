@@ -9,10 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useAuth, useUserMetadata } from "hooks";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { stringAvatar } from "utils";
 
 export default function WalletHeader() {
+  const currency = useSelector(state => state.wallet.baseCurrency.currency);
+
   const [{ email }] = useAuth();
 
   const [metadata, loading] = useUserMetadata();
@@ -50,7 +53,10 @@ export default function WalletHeader() {
               {loading ? (
                 <Skeleton type="text" sx={skeletonStyle(balance)} />
               ) : (
-                <span> {balance.toFixed(2)} BRL </span>
+                <span>
+                  {" "}
+                  {balance.toFixed(2)} {currency}{" "}
+                </span>
               )}
             </Typography>
 

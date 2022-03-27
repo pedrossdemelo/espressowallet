@@ -12,19 +12,24 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { Loading } from "components";
 import { currencies } from "constants";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useUserMetadata } from "hooks";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import { changeCurrency, deleteAllTransactions, logout } from "services";
 
 export default function ProfileMenu() {
-  const currentCurrency =
-    useSelector(state => state.wallet.baseCurrency.currency) ?? "USD";
-  const [currency, setCurrency] = useState(currentCurrency);
+  const [{ currency: currentCurrency }, loading] = useUserMetadata();
+  const [currency, setCurrency] = useState(null);
   const handleCurrencyChange = e => setCurrency(e.target.value);
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
+
+  useEffect(() => {
+    setCurrency(currentCurrency);
+  }, [currentCurrency]);
 
   const handleChangeCurrencyDelete = async () => {
     await changeCurrency(currency, "deleteAll");
@@ -35,6 +40,9 @@ export default function ProfileMenu() {
     await changeCurrency(currency, "convertAll");
     closeDialog();
   };
+
+  if (loading) return <Loading />;
+  if (!currentCurrency) return <Redirect to="/" />;
 
   return (
     <Box>
