@@ -1,6 +1,5 @@
 import { AttachMoney, LightModeRounded, Logout } from "@mui/icons-material";
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -12,16 +11,18 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { Loading } from "components";
+import { FilteredUserDataProvider } from "components";
 import { currencies } from "constants";
-import { useUserMetadata } from "hooks";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { changeCurrency, deleteAllTransactions, logout } from "services";
 
 export default function ProfileMenu() {
-  const [{ currency: currentCurrency }, loading] = useUserMetadata();
-  const [currency, setCurrency] = useState(null);
+  const { currency: currentCurrency, loading } = useSelector(
+    state => state.wallet.baseCurrency
+  );
+  const [currency, setCurrency] = useState("USD");
   const handleCurrencyChange = e => setCurrency(e.target.value);
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -41,11 +42,10 @@ export default function ProfileMenu() {
     closeDialog();
   };
 
-  if (loading) return <Loading />;
-  if (!currentCurrency) return <Redirect to="/" />;
+  if (!currentCurrency && !loading) return <Redirect to="/" />;
 
   return (
-    <Box>
+    <FilteredUserDataProvider>
       <ListItem>
         <ListItemIcon>
           <AttachMoney />
@@ -112,6 +112,6 @@ export default function ProfileMenu() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </FilteredUserDataProvider>
   );
 }
