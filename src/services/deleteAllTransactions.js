@@ -1,10 +1,5 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-  writeBatch,
-} from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { batchWrapper } from "services";
 import { auth, db } from "./firebase";
 
 export default async function deleteAllTransactions() {
@@ -30,36 +25,3 @@ export default async function deleteAllTransactions() {
 
   return;
 }
-
-const batchWrapper = async (documentRef, action, update) => {
-  const batchArray = [];
-  batchArray.push(writeBatch(db));
-  let operationCounter = 0;
-  let batchIndex = 0;
-
-  documentRef.forEach(doc => {
-    console.log("Org cleanup: deleting notifications", doc.id);
-    if (action === "delete") {
-      batchArray[batchIndex].delete(doc.ref);
-    }
-    if (action === "update") {
-      batchArray[batchIndex].update(doc.ref, update);
-    }
-    if (action === "set") {
-      batchArray[batchIndex].set(doc.ref, update);
-    }
-    if (action === "setmerge") {
-      batchArray[batchIndex].set(doc.ref, update, { merge: true });
-    }
-    operationCounter++;
-
-    if (operationCounter === 499) {
-      batchArray.push(db.batch());
-      batchIndex++;
-      operationCounter = 0;
-    }
-  });
-
-  batchArray.forEach(async batch => await batch.commit());
-  return;
-};

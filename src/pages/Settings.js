@@ -14,15 +14,27 @@ import {
 } from "@mui/material";
 import { currencies } from "constants";
 import React, { useState } from "react";
-import { deleteAllTransactions, logout } from "services";
+import { useSelector } from "react-redux";
+import { changeCurrency, deleteAllTransactions, logout } from "services";
 
 export default function ProfileMenu() {
-  const currentCurrency = "BRL";
+  const currentCurrency =
+    useSelector(state => state.wallet.baseCurrency.currency) ?? "USD";
   const [currency, setCurrency] = useState(currentCurrency);
   const handleCurrencyChange = e => setCurrency(e.target.value);
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
+
+  const handleChangeCurrencyDelete = async () => {
+    await changeCurrency(currency, "deleteAll");
+    closeDialog();
+  };
+
+  const handleChangeCurrencyConvert = async () => {
+    await changeCurrency(currency, "convertAll");
+    closeDialog();
+  };
 
   return (
     <Box>
@@ -80,10 +92,14 @@ export default function ProfileMenu() {
           <Button onClick={closeDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={closeDialog} color="primary" autoFocus>
+          <Button
+            onClick={handleChangeCurrencyConvert}
+            color="primary"
+            autoFocus
+          >
             Convert
           </Button>
-          <Button onClick={closeDialog} color="primary">
+          <Button onClick={handleChangeCurrencyDelete} color="primary">
             Delete
           </Button>
         </DialogActions>

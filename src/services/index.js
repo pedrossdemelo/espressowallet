@@ -1,5 +1,5 @@
 export { default as addTransaction } from "./addTransaction";
-export { default as changeBaseCurrency } from "./changeBaseCurrency";
+export { default as batchWrapper } from "./batchWrapper";
 export { default as changeCurrency } from "./changeCurrency";
 export { default as deleteAllTransactions } from "./deleteAllTransactions";
 export { default as deleteTransaction } from "./deleteTransaction";

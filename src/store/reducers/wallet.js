@@ -1,15 +1,17 @@
 const initialState = {
-  currencies: [],
+  baseCurrency: {
+    currency: null,
+    loading: true,
+  },
 };
 
 export default function walletReducer(state = initialState, action) {
   switch (action.type) {
-    case "wallet/fetchRates":
+    case "wallet/updateBaseCurrency":
       return {
         ...state,
-        isFetching: true,
+        baseCurrency: action.payload,
       };
-
     default:
       return state;
   }

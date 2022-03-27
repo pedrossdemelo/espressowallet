@@ -8,13 +8,13 @@ export default function ExpenseAndIncome() {
   const [expenses] = useUserData("expenses");
   const [incomes] = useUserData("incomes");
 
-  const totalExpenses = expenses
-    .reduce((acc, curr) => acc + calculateRate(curr), 0)
-    .toFixed(2);
+  const totalExpenses = Number(
+    expenses.reduce((acc, curr) => acc + calculateRate(curr), 0)
+  ).toFixed(2);
 
-  const totalIncomes = incomes
-    .reduce((acc, curr) => acc + calculateRate(curr), 0)
-    .toFixed(2);
+  const totalIncomes = Number(
+    incomes.reduce((acc, curr) => acc + calculateRate(curr), 0)
+  ).toFixed(2);
 
   if (totalExpenses === "0.00" && totalIncomes === "0.00") return null;
 

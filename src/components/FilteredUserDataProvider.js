@@ -1,8 +1,10 @@
-import { useUserData } from "hooks";
-import React, { createContext } from "react";
+import { useUserData, useUserMetadata } from "hooks";
+import React, { createContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export const FilteredExpenses = createContext([[], true, null]);
 export const FilteredIncomes = createContext([[], true, null]);
+export const UserMetadata = createContext([{}, true, null]);
 
 function ExpenseProvider({ children }) {
   const [expensesValues, loadingExpenses, errorExpenses] =
@@ -28,10 +30,36 @@ function IncomeProvider({ children }) {
   );
 }
 
+function UserMetadataProvider({ children }) {
+  const [userData, loading, error] = useUserMetadata();
+  const dispatch = useDispatch();
+
+  const { currency } = userData;
+  console.log(currency);
+
+  useEffect(() => {
+    dispatch({
+      type: "wallet/updateBaseCurrency",
+      payload: {
+        currency,
+        loading,
+      },
+    });
+  }, [currency, loading, dispatch]);
+
+  return (
+    <UserMetadata.Provider value={[userData, loading, error]}>
+      {children}
+    </UserMetadata.Provider>
+  );
+}
+
 export default function FilteredUserDataProvider({ children }) {
   return (
     <ExpenseProvider>
-      <IncomeProvider>{children}</IncomeProvider>
+      <IncomeProvider>
+        <UserMetadataProvider>{children}</UserMetadataProvider>
+      </IncomeProvider>
     </ExpenseProvider>
   );
 }
