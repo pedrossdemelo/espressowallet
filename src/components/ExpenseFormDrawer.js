@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { currencies } from "constants";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { addTransaction, editTransaction, getRates } from "services";
 
 const tagInputs = [
@@ -27,17 +28,17 @@ const tagInputs = [
 const initialFormState = {
   tag: "Food",
   value: 10,
-  currency: "BRL",
   description: "",
 };
 
 const paperProps = { style: { backgroundColor: "transparent" } };
 
 export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
+  const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
+  initialFormState.currency = baseCurrency;
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
-  const baseCurrency = "BRL";
 
   function handleChange(e) {
     const { name, value: valuePair } = e.target;
