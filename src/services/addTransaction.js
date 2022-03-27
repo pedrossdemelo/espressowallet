@@ -1,7 +1,6 @@
 import { converter } from "constants";
 import { collection, doc, increment, writeBatch } from "firebase/firestore";
-import { calculateRate } from "utils";
-import dateToMMYYYY from "utils/dateToMMYYY";
+import { calculateRate, dateToMMYYYY } from "utils";
 import { auth, db } from "./firebase";
 
 export default async function addTransaction(newTransaction) {
@@ -36,7 +35,7 @@ export default async function addTransaction(newTransaction) {
       [MMYYYY]: {
         balance: increment(operator * total),
         [transactionType + "s"]: increment(1),
-        [transactionType + "Total"]: increment(total)
+        [transactionType + "Total"]: increment(total),
       },
     },
     { merge: true }

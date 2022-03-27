@@ -21,10 +21,12 @@ export default function OverviewDate() {
   };
 
   const firstExpense = useUserData("expenses", {
+    currentDateFilters: false,
     limit: 1,
   })[0]?.[0];
 
   const firstIncome = useUserData("incomes", {
+    currentDateFilters: false,
     limit: 1,
   })[0]?.[0];
 

@@ -1,23 +1,29 @@
-export default async function getRates() {
-  try {
-    const response = await fetch("https://economia.awesomeapi.com.br/json/all");
-    if (!response.ok) {
-      return {
-        data: null,
-        error: `Failed to fetch rates. Code: ${response.status}`,
-      };
-    }
-    const data = await response.json();
-    delete data.USDT;
-    data.BRL = { ask: 1 };
-    return { data, error: null };
-  } catch (err) {
-    const fallbackData = {
-      USD: {
-        ask: 4.75,
-      },
-    };
+import { currencies } from "constants";
 
-    return { data: fallbackData };
-  }
+const ratesCache = localStorage.getItem("rates")
+  ? JSON.parse(localStorage.getItem("rates"))
+  : {};
+
+export default async function getRates(date) {
+  const dateFormatted = date.toISOString().slice(0, 10);
+  ratesCache[dateFormatted] =
+    ratesCache[dateFormatted] ?? (await dataFromOpenExchangeRates(date));
+  localStorage.setItem("rates", JSON.stringify(ratesCache));
+  return ratesCache[dateFormatted];
+}
+
+async function dataFromOpenExchangeRates(date) {
+  const request = `https://openexchangerates.org/api/historical/${date
+    .toISOString()
+    .slice(0, 10)}.json?app_id=${"0bca78c8a0b7413b8faa8f2f7ccf24bb"}`;
+
+  const res = await fetch(request);
+  const data = await res.json();
+
+  if (!data.rates) throw new Error("Couldn't fetch rates");
+
+  const rates = {};
+  currencies.forEach(curr => (rates[curr] = data.rates[curr]));
+
+  return rates;
 }

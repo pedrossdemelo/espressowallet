@@ -6,6 +6,7 @@ import {
   SwipeableDrawer,
   TextField,
 } from "@mui/material";
+import { currencies } from "constants";
 import { useEffect, useState } from "react";
 import { addTransaction, editTransaction, getRates } from "services";
 
@@ -33,19 +34,19 @@ const initialFormState = {
 const paperProps = { style: { backgroundColor: "transparent" } };
 
 export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
-  const [currencies, setCurrencies] = useState([]);
-
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
-  const { tag, value, currency, description } = formState;
-
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
+  const { tag, value, currency, description } = formState;
+  const baseCurrency = "BRL";
 
   function handleChange(e) {
     const { name, value: valuePair } = e.target;
     const key = name.split("-")[0];
+    let numValue;
+    if (key === "value") numValue = Number(valuePair);
     setFormState({
       ...formState,
-      [key]: valuePair,
+      [key]: numValue ?? valuePair,
     });
   }
 
@@ -56,13 +57,14 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const { data } = await getRates();
+    const rates = await getRates(date);
 
     const expense = {
       ...formState,
+      baseCurrency,
       createdAt: date,
       type: "expense",
-      exchangeRates: data,
+      exchangeRates: rates,
     };
 
     if (!toEdit) addTransaction(expense);
@@ -71,14 +73,6 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
 
     close();
   }
-
-  useEffect(() => {
-    (async () => {
-      const { data, error } = await getRates();
-      if (error) return;
-      setCurrencies(Object.keys(data));
-    })();
-  }, []);
 
   useEffect(() => {
     if (toEdit) return;

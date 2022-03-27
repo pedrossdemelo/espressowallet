@@ -1,6 +1,6 @@
 import { doc, increment, writeBatch } from "firebase/firestore";
 import { calculateRate } from "utils";
-import dateToMMYYYY from "utils/dateToMMYYY";
+import dateToMMYYYY from "utils/dateToMMYYYY";
 import { auth, db } from "./firebase";
 
 export default async function deleteTransaction(transaction) {

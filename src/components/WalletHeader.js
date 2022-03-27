@@ -8,9 +8,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { ProfileMenu } from "components";
 import { useAuth, useUserMetadata } from "hooks";
-import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { stringAvatar } from "utils";
 
 export default function WalletHeader() {
@@ -19,11 +18,8 @@ export default function WalletHeader() {
   const [metadata, loading] = useUserMetadata();
   const { balance = 0 } = metadata;
 
-  const [profileAnchor, setProfileAnchor] = useState(null);
-  const openProfile = e => setProfileAnchor(e.currentTarget);
-  const closeProfile = () => setProfileAnchor(null);
-
-  const profileIsOpen = Boolean(profileAnchor);
+  const history = useHistory();
+  const goToSettings = () => history.push("/settings");
 
   return (
     <>
@@ -59,7 +55,7 @@ export default function WalletHeader() {
             </Typography>
 
             <IconButton
-              onClick={openProfile}
+              onClick={goToSettings}
               edge="end"
               size="small"
               color="inherit"
@@ -69,12 +65,6 @@ export default function WalletHeader() {
           </Box>
         </Toolbar>
       </AppBar>
-
-      <ProfileMenu
-        anchorEl={profileAnchor}
-        open={profileIsOpen}
-        onClose={closeProfile}
-      />
     </>
   );
 }

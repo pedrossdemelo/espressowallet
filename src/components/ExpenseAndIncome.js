@@ -9,7 +9,7 @@ export default function ExpenseAndIncome() {
   const [incomes] = useUserData("incomes");
 
   const totalExpenses = expenses
-    .reduce((acc, curr) => acc + calculateRate(curr), 0)
+    .reduce((acc, curr) => acc + calculateRate(curr, console.log(acc)), 0)
     .toFixed(2);
 
   const totalIncomes = incomes

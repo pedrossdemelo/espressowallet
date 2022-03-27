@@ -32,10 +32,20 @@ export function TransactionListItem(props) {
 
   const delTransaction = () => deleteTransaction(transaction);
 
-  const { tag, description, exchangeRates, currency, createdAt, value, type } =
-    transaction;
+  const {
+    tag,
+    description,
+    exchangeRates,
+    currency,
+    createdAt,
+    baseCurrency,
+    value,
+    type,
+  } = transaction;
 
-  const ask = Number(exchangeRates[currency].ask).toFixed(2);
+  const realRate = exchangeRates[baseCurrency] / exchangeRates[currency];
+
+  const ask = realRate.toFixed(2);
 
   const date = `${createdAt
     .toLocaleDateString()
@@ -144,7 +154,7 @@ export function TransactionListItem(props) {
             lineHeight={1.375}
             variant="caption"
           >
-            {ask !== "1.00" ? `x ${ask} | ` : ""}
+            {ask !== "1.00" ? `x ${ask} ${baseCurrency} | ` : ""}
             {date}
           </Typography>
         </Typography>

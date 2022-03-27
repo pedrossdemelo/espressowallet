@@ -15,7 +15,7 @@ export { default as IncomeInfo } from "./IncomeInfo";
 export { default as Loading } from "./Loading";
 export { default as NoTransactionsYet } from "./NoTransactionsYet";
 export { default as OverviewDate } from "./OverviewDate";
-export { default as ProfileMenu } from "./ProfileMenu";
+export { default as ProfileMenu } from "./Settings";
 export { default as SpeedDials } from "./SpeedDials";
 export { TransactionListItem } from "./TransactionListItem";
 export { default as WalletHeader } from "./WalletHeader";
