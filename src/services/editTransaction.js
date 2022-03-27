@@ -65,7 +65,6 @@ export default async function editTransaction(
         balance: increment(operator * difference),
         [newMMYYYY]: {
           balance: increment(operator * difference),
-          [transactionType + "s"]: increment(1),
           [transactionType + "Total"]: increment(difference),
         },
       },

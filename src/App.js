@@ -1,6 +1,6 @@
 import { Loading } from "components";
 import { useAuth } from "hooks";
-import { Login, UserConfig, Wallet } from "pages";
+import { Login, Settings, UserConfig, Wallet } from "pages";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -20,6 +20,9 @@ function App() {
       </Route>
       <Route exact path="/login">
         {loggedIn ? <Redirect to="/" /> : <Login />}
+      </Route>
+      <Route exact path="/settings">
+        {loggedIn ? <Settings /> : <Redirect to="/login" />}
       </Route>
       <Route path="*">
         <Redirect to="/" />
