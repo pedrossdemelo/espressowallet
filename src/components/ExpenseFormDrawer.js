@@ -157,6 +157,7 @@ export default function ExpenseFormDrawer({ open, close, toEdit = null }) {
             value={date}
             label="Date"
             disableFuture
+            minDate={new Date(2000, 1, 1)}
             onChange={handleDateChange}
             renderInput={params => <TextField size="small" {...params} />}
             ampm={false}

@@ -149,6 +149,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
 
         <ListItem sx={{ justifyContent: "space-between", gap: 5 }}>
           <DateTimePicker
+            minDate={new Date(2000, 1, 1)}
             disableFuture
             value={date}
             label="Date"
