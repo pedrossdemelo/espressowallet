@@ -189,7 +189,7 @@ export default function ProfileMenu() {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeDialog} color="primary">
+          <Button onClick={closeDeleteDialog} color="primary">
             Cancel
           </Button>
 

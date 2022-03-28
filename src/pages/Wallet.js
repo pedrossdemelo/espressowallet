@@ -43,9 +43,10 @@ function Wallet() {
 }
 
 const mainStyle = {
-  overflowX: "hidden",
   bgcolor: "#fafaf9",
   minHeight: "100vh",
+  maxWidth: "600px",
+  mx: "auto",
   display: "flex",
   flexFlow: "column nowrap",
   gap: 2,

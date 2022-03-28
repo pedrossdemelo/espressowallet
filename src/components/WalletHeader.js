@@ -8,8 +8,9 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { HamburgerMenuDrawer } from "components";
 import { useAuth } from "hooks";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { stringAvatar } from "utils";
@@ -26,6 +27,10 @@ export default function WalletHeader() {
   const history = useHistory();
   const goToSettings = () => history.push("/settings");
 
+  const [hamburgerMenuOpen, setHamburgerMenuOpen] = useState(false);
+  const openMenu = () => setHamburgerMenuOpen(true);
+  const closeMenu = () => setHamburgerMenuOpen(false);
+
   return (
     <>
       <AppBar position="fixed">
@@ -38,7 +43,12 @@ export default function WalletHeader() {
               height: { xs: 58, sm: 64 },
             }}
           >
-            <IconButton edge="start" size="large" color="inherit">
+            <IconButton
+              onClick={openMenu}
+              edge="start"
+              size="large"
+              color="inherit"
+            >
               <MenuIcon />
             </IconButton>
 
@@ -73,6 +83,8 @@ export default function WalletHeader() {
           </Box>
         </Toolbar>
       </AppBar>
+
+      <HamburgerMenuDrawer open={hamburgerMenuOpen} onClose={closeMenu} />
     </>
   );
 }

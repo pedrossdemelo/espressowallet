@@ -10,6 +10,7 @@ export {
   UserMetadata,
 } from "./FilteredUserDataProvider";
 export { default as GoBackFab } from "./GoBackFab";
+export { default as HamburgerMenuDrawer } from "./HamburgerMenuDrawer";
 export { default as History } from "./History";
 export { default as IncomeFormDrawer } from "./IncomeFormDrawer";
 export { default as IncomeInfo } from "./IncomeInfo";
