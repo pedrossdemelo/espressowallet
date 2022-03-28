@@ -1,14 +1,14 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { colorMap } from "constants";
-import { useUserData } from "hooks";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { calculateRate } from "utils";
 import Donut from "./Donut";
+import { FilteredExpenses } from "./FilteredUserDataProvider";
 
 export default function ExpenseInfo() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
-  const [expenses] = useUserData("expenses");
+  const [expenses] = useContext(FilteredExpenses);
 
   const total = useMemo(
     () => expenses.reduce((acc, curr) => acc + calculateRate(curr), 0),
