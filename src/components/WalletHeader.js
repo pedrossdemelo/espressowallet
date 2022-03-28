@@ -8,17 +8,19 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useAuth, useUserMetadata } from "hooks";
+import { useAuth } from "hooks";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { stringAvatar } from "utils";
+import { UserMetadata } from "./FilteredUserDataProvider";
 
 export default function WalletHeader() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
 
   const [{ email }] = useAuth();
 
-  const [metadata, loading] = useUserMetadata();
+  const [metadata, loading] = useContext(UserMetadata);
   const { balance = 0 } = metadata;
 
   const history = useHistory();

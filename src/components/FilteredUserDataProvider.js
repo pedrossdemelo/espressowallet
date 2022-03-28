@@ -31,10 +31,10 @@ function IncomeProvider({ children }) {
 }
 
 function UserMetadataProvider({ children }) {
-  const [userData, loading, error] = useUserMetadata();
+  const [metadata, loading, error] = useUserMetadata();
   const dispatch = useDispatch();
 
-  const { currency } = userData;
+  const { currency } = metadata;
 
   useEffect(() => {
     dispatch({
@@ -47,7 +47,7 @@ function UserMetadataProvider({ children }) {
   }, [currency, loading, dispatch]);
 
   return (
-    <UserMetadata.Provider value={[userData, loading, error]}>
+    <UserMetadata.Provider value={[metadata, loading, error]}>
       {children}
     </UserMetadata.Provider>
   );
