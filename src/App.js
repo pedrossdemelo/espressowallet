@@ -1,6 +1,7 @@
 import { Alert, AlertTitle, Button, Slide } from "@mui/material";
 import { Box } from "@mui/system";
 import { FilteredUserDataProvider, Loading } from "components";
+import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "hooks";
 import { Login, Settings, Wallet } from "pages";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -13,9 +14,9 @@ function App() {
   const loggedIn = Boolean(user);
   const verified = user?.emailVerified === true;
 
-  console.log("user", user);
-
-  console.log(user);
+  const handleResendEmailVerification = () => {
+    sendEmailVerification(user, { url: "http://localhost:3000/" });
+  };
 
   return (
     <UserData verified={verified}>
@@ -41,7 +42,12 @@ function App() {
       >
         <Alert
           action={
-            <Button color="inherit" size="small" sx={{ mt: "-1px" }}>
+            <Button
+              onClick={handleResendEmailVerification}
+              color="inherit"
+              size="small"
+              sx={{ mt: "-1px" }}
+            >
               Resend
             </Button>
           }
@@ -51,7 +57,7 @@ function App() {
           <AlertTitle>Pending verification</AlertTitle>
           <Box sx={{ mr: -6 }}>
             An email has been sent to <strong>{user?.email}</strong> to verify
-            your account.
+            your account. Make sure to check your spam folder.
           </Box>
         </Alert>
       </Slide>
@@ -62,9 +68,9 @@ function App() {
 const alertStyle = {
   position: "fixed",
   bottom: "1rem",
-  width: "calc(min(420px, 90vw) - 32px)",
+  width: "calc(min(480px, 90vw) - 32px)",
   left: "50%",
-  ml: "max(-210px, -45vw)",
+  ml: "max(-240px, -45vw)",
 };
 
 function UserData({ children, verified }) {

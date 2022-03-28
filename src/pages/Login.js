@@ -1,5 +1,12 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useRef, useState } from "react";
 import { loginEmail, signUpEmail } from "services";
 import signInGoogle from "services/signInGoogle";
@@ -129,13 +136,21 @@ export default function Login() {
           </LoadingButton>
         </Stack>
       </Paper>
-      <button onClick={handleGoogleSignIn}>Log in google</button>
+
+      <Divider sx={{ width: "20rem" }}>
+        <Typography>or</Typography>
+      </Divider>
+
+      <button className="login-with-google-btn" onClick={handleGoogleSignIn}>
+        Sign in with Google
+      </button>
     </Box>
   );
 }
 
 const containerStyle = {
   display: "flex",
+  gap: 2,
   flexFlow: "column nowrap",
   alignItems: "center",
   justifyContent: "center",
