@@ -2,6 +2,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { loginEmail, signUpEmail } from "services";
+import signInGoogle from "services/signInGoogle";
 
 const noErrors = {
   emailError: " ",
@@ -58,6 +59,13 @@ export default function Login() {
     }
 
     isSignUp.current = false;
+  }
+
+  async function handleGoogleSignIn() {
+    setLoading({ ...notLoading, loginLoading: true });
+    const { error } = await signInGoogle();
+    setLoading(notLoading);
+    if (error) setErrorState(humanErrorParse(error));
   }
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+\w{2,4}$/g;
@@ -121,12 +129,16 @@ export default function Login() {
           </LoadingButton>
         </Stack>
       </Paper>
+      <button onClick={handleGoogleSignIn}>Log in google</button>
     </Box>
   );
 }
 
 const containerStyle = {
   display: "flex",
+  flexFlow: "column nowrap",
+  alignItems: "center",
+  justifyContent: "center",
   minHeight: "100vh",
   boxSizing: "border-box",
   pb: 8,
@@ -139,7 +151,6 @@ const formStyle = {
   display: "flex",
   flexDirection: "column",
   width: "20rem",
-  m: "auto",
   gap: 2,
 };
 

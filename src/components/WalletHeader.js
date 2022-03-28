@@ -19,7 +19,7 @@ import { UserMetadata } from "./FilteredUserDataProvider";
 export default function WalletHeader() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
 
-  const [{ email }] = useAuth();
+  const [user] = useAuth();
 
   const [metadata, loading] = useContext(UserMetadata);
   const { balance = 0 } = metadata;
@@ -78,7 +78,7 @@ export default function WalletHeader() {
               size="small"
               color="inherit"
             >
-              <Avatar {...stringAvatar(email, { height: 36, width: 36 })} />
+              <Avatar {...stringAvatar(user, { height: 36, width: 36 })} />
             </IconButton>
           </Box>
         </Toolbar>

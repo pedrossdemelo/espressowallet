@@ -1,3 +1,5 @@
+import { Alert, AlertTitle, Button, Slide } from "@mui/material";
+import { Box } from "@mui/system";
 import { FilteredUserDataProvider, Loading } from "components";
 import { useAuth } from "hooks";
 import { Login, Settings, Wallet } from "pages";
@@ -8,30 +10,65 @@ function App() {
 
   if (loadingUser) return <Loading />;
 
-  const loggedIn = user !== null;
+  const loggedIn = Boolean(user);
+  const verified = user?.emailVerified === true;
+
+  console.log("user", user);
+
+  console.log(user);
 
   return (
-    <UserData loggedIn={loggedIn}>
+    <UserData verified={verified}>
       <Switch>
         <Route exact path="/">
-          {loggedIn ? <Wallet /> : <Redirect to="/login" />}
+          {verified ? <Wallet /> : <Redirect to="/login" />}
         </Route>
         <Route exact path="/login">
-          {loggedIn ? <Redirect to="/" /> : <Login />}
+          {verified ? <Redirect to="/" /> : <Login />}
         </Route>
         <Route exact path="/settings">
-          {loggedIn ? <Settings /> : <Redirect to="/login" />}
+          {verified ? <Settings /> : <Redirect to="/login" />}
         </Route>
         <Route path="*">
           <Redirect to="/" />
         </Route>
       </Switch>
+      <Slide
+        direction="up"
+        in={loggedIn && !verified}
+        mountOnEnter
+        unmountOnExit
+      >
+        <Alert
+          action={
+            <Button color="inherit" size="small" sx={{ mt: "-1px" }}>
+              Resend
+            </Button>
+          }
+          sx={alertStyle}
+          severity="info"
+        >
+          <AlertTitle>Pending verification</AlertTitle>
+          <Box sx={{ mr: -6 }}>
+            An email has been sent to <strong>{user?.email}</strong> to verify
+            your account.
+          </Box>
+        </Alert>
+      </Slide>
     </UserData>
   );
 }
 
-function UserData({ children, loggedIn }) {
-  if (!loggedIn) return <>{children}</>;
+const alertStyle = {
+  position: "fixed",
+  bottom: "1rem",
+  width: "calc(min(420px, 90vw) - 32px)",
+  left: "50%",
+  ml: "max(-210px, -45vw)",
+};
+
+function UserData({ children, verified }) {
+  if (!verified) return <>{children}</>;
   return <FilteredUserDataProvider>{children}</FilteredUserDataProvider>;
 }
 

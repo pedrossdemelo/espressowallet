@@ -33,7 +33,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           </ListItemIcon>
 
           <ListItemText primaryTypographyProps={{ variant: "h6" }}>
-            <strong>Poliwallet</strong>
+            Poliwallet
           </ListItemText>
         </ListItem>
 
@@ -52,9 +52,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           <ListItemIcon>
             <AllInbox />
           </ListItemIcon>
-          <ListItemText>
-            <strong>Overview</strong>
-          </ListItemText>
+          <ListItemText>Overview</ListItemText>
         </ListItemButton>
 
         <Box sx={{ flexGrow: 1 }} />
