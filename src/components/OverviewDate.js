@@ -35,12 +35,14 @@ export default function OverviewDate() {
   if (firstExpense?.createdAt && firstIncome?.createdAt) {
     firstTransaction =
       firstExpense.createdAt < firstIncome.createdAt
-        ? firstExpense
-        : firstIncome;
+        ? firstExpense.createdAt
+        : firstIncome.createdAt;
   } else {
     firstTransaction =
       firstExpense?.createdAt || firstIncome?.createdAt || new Date();
   }
+
+  console.log(firstTransaction);
 
   return (
     <>

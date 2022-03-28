@@ -33,7 +33,6 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
   const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
   initialFormState.currency = baseCurrency;
   const [formState, setFormState] = useState(toEdit ?? initialFormState);
-  console.log(formState);
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
 

@@ -35,7 +35,6 @@ function UserMetadataProvider({ children }) {
   const dispatch = useDispatch();
 
   const { currency } = userData;
-  console.log(currency);
 
   useEffect(() => {
     dispatch({

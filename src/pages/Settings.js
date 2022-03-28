@@ -1,24 +1,44 @@
-import { AttachMoney, LightModeRounded, Logout } from "@mui/icons-material";
 import {
+  ArrowBack,
+  AttachMoney,
+  DeleteForever,
+  LightModeRounded,
+  Logout,
+} from "@mui/icons-material";
+import {
+  AppBar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  ListItem,
+  Divider,
+  IconButton,
   ListItemIcon,
   MenuItem,
-  Select,
+  TextField,
+  Toolbar,
+  Typography,
 } from "@mui/material";
+import { Box } from "@mui/system";
 import { FilteredUserDataProvider } from "components";
 import { currencies } from "constants";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { changeCurrency, deleteAllTransactions, logout } from "services";
 
+const toolbarStyle = {
+  "@media all": { px: 2 },
+  alignItems: "flex-start",
+  justifyContent: "space-between",
+  flexDirection: "column",
+  py: 0,
+};
+
 export default function ProfileMenu() {
+  const history = useHistory();
   const { currency: currentCurrency, loading } = useSelector(
     state => state.wallet.baseCurrency
   );
@@ -27,6 +47,10 @@ export default function ProfileMenu() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const openDeleteDialog = () => setDeleteDialogOpen(true);
+  const closeDeleteDialog = () => setDeleteDialogOpen(false);
 
   useEffect(() => {
     setCurrency(currentCurrency);
@@ -46,25 +70,38 @@ export default function ProfileMenu() {
 
   return (
     <FilteredUserDataProvider>
-      <ListItem>
+      <AppBar sx={{ mb: 1 }} position="static">
+        <Toolbar sx={toolbarStyle}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              height: { xs: 58, sm: 64 },
+            }}
+          >
+            <IconButton
+              onClick={() => history.push("/")}
+              edge="start"
+              size="large"
+              color="inherit"
+            >
+              <ArrowBack />
+            </IconButton>
+
+            <Typography ml={1} variant="h6">
+              Settings
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      <MenuItem onClick={openDialog}>
         <ListItemIcon>
           <AttachMoney />
         </ListItemIcon>
-        Currency:
-        <Select
-          variant="standard"
-          native
-          onChange={handleCurrencyChange}
-          value={currency}
-        >
-          {currencies.map(option => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </Select>
-        <Button onClick={openDialog}>Save</Button>
-      </ListItem>
+        Currency: {loading ? "Loading..." : `${currentCurrency}`}
+      </MenuItem>
 
       <MenuItem>
         <ListItemIcon>
@@ -73,15 +110,20 @@ export default function ProfileMenu() {
         Light theme
       </MenuItem>
 
+      <Divider />
+
+      <MenuItem onClick={openDeleteDialog}>
+        <ListItemIcon>
+          <DeleteForever />
+        </ListItemIcon>
+        Delete all transactions
+      </MenuItem>
+
       <MenuItem onClick={() => logout()}>
         <ListItemIcon>
           <Logout />
         </ListItemIcon>
         Logout
-      </MenuItem>
-
-      <MenuItem onClick={() => deleteAllTransactions()}>
-        Delete all transactions
       </MenuItem>
 
       <Dialog open={dialogOpen} onClose={closeDialog}>
@@ -95,6 +137,23 @@ export default function ProfileMenu() {
             <strong>Convert</strong> all your past transactions to the new
             currency or <strong>delete</strong> all your transactions.
           </DialogContentText>
+          <TextField
+            autoFocus
+            select
+            label="New currency"
+            size="small"
+            SelectProps={{ native: true }}
+            margin="normal"
+            onChange={handleCurrencyChange}
+            sx={{ width: "12ch" }}
+            value={currency}
+          >
+            {currencies.map(c => (
+              <option data-testid={c} value={c} key={c}>
+                {c}
+              </option>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog} color="primary">
@@ -108,6 +167,28 @@ export default function ProfileMenu() {
             Convert
           </Button>
           <Button onClick={handleChangeCurrencyDelete} color="primary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+        <DialogTitle>Delete all transactions</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete all your transactions?
+            <br />
+            This action <strong>cannot</strong> be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={async () => await deleteAllTransactions()}
+            color="primary"
+          >
             Delete
           </Button>
         </DialogActions>

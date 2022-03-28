@@ -47,9 +47,10 @@ export default function NewUserPopup() {
           select
           label="Base Currency"
           SelectProps={{ native: true }}
+          size="small"
           margin="normal"
           onChange={handleChange}
-          sx={{ width: "10ch" }}
+          sx={{ width: "12ch" }}
           value={selectedCurrency}
         >
           {currencies.map(c => (
