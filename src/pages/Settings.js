@@ -56,19 +56,15 @@ export default function ProfileMenu() {
     setCurrency(currentCurrency);
   }, [currentCurrency]);
 
-  const handleChangeCurrencyDelete = async () => {
-    await changeCurrency(currency, "deleteAll");
-    closeDialog();
-  };
-
   const handleChangeCurrencyConvert = async () => {
     await changeCurrency(currency, "convertAll");
     closeDialog();
   };
 
   const handleDeleteAllTransactions = async () => {
-    await changeCurrency(currentCurrency, "deleteAll");
+    await changeCurrency(dialogOpen ? currency : currentCurrency, "deleteAll");
     closeDeleteDialog();
+    dialogOpen && closeDialog();
   };
 
   if (!currentCurrency && !loading) return <Redirect to="/" />;
@@ -135,6 +131,7 @@ export default function ProfileMenu() {
         <DialogTitle>
           Are you sure you want to change your currency?
         </DialogTitle>
+
         <DialogContent>
           <DialogContentText>
             You have two options:
@@ -142,6 +139,7 @@ export default function ProfileMenu() {
             <strong>Convert</strong> all your past transactions to the new
             currency or <strong>delete</strong> all your transactions.
           </DialogContentText>
+
           <TextField
             autoFocus
             select
@@ -160,10 +158,16 @@ export default function ProfileMenu() {
             ))}
           </TextField>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={closeDialog} color="primary">
             Cancel
           </Button>
+
+          <Button onClick={openDeleteDialog} color="primary">
+            Delete
+          </Button>
+
           <Button
             onClick={handleChangeCurrencyConvert}
             color="primary"
@@ -171,14 +175,12 @@ export default function ProfileMenu() {
           >
             Convert
           </Button>
-          <Button onClick={handleChangeCurrencyDelete} color="primary">
-            Delete
-          </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
         <DialogTitle>Delete all transactions</DialogTitle>
+
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete all your transactions?
@@ -186,10 +188,12 @@ export default function ProfileMenu() {
             This action <strong>cannot</strong> be undone.
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={closeDialog} color="primary">
             Cancel
           </Button>
+
           <Button onClick={handleDeleteAllTransactions} color="primary">
             Delete
           </Button>
