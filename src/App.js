@@ -15,7 +15,7 @@ function App() {
   const verified = user?.emailVerified === true;
 
   const handleResendEmailVerification = () => {
-    sendEmailVerification(user, { url: "http://www.poliwallet.vercel.app/" });
+    sendEmailVerification(user, { url: "http://poliwallet.vercel.app/" });
   };
 
   return (
