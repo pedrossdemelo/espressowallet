@@ -42,8 +42,6 @@ export default function OverviewDate() {
       firstExpense?.createdAt || firstIncome?.createdAt || new Date();
   }
 
-  console.log(firstTransaction);
-
   return (
     <>
       <Stack

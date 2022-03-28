@@ -15,9 +15,8 @@ export default async function deleteAllTransactions() {
 
   const metadataToUpdate = doc(db, "userData", uid);
 
-  await setDoc(metadataToUpdate, {
-    balance: 0,
-  });
+  // TODO: Find a way to keep the base currency
+  await setDoc(metadataToUpdate, { balance: 0 }, { merge: true });
 
   await batchWrapper(allExpenses, "delete");
 

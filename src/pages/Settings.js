@@ -27,7 +27,7 @@ import { currencies } from "constants";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
-import { changeCurrency, deleteAllTransactions, logout } from "services";
+import { changeCurrency, logout } from "services";
 
 const toolbarStyle = {
   "@media all": { px: 2 },
@@ -64,6 +64,11 @@ export default function ProfileMenu() {
   const handleChangeCurrencyConvert = async () => {
     await changeCurrency(currency, "convertAll");
     closeDialog();
+  };
+
+  const handleDeleteAllTransactions = async () => {
+    await changeCurrency(currentCurrency, "deleteAll");
+    closeDeleteDialog();
   };
 
   if (!currentCurrency && !loading) return <Redirect to="/" />;
@@ -185,10 +190,7 @@ export default function ProfileMenu() {
           <Button onClick={closeDialog} color="primary">
             Cancel
           </Button>
-          <Button
-            onClick={async () => await deleteAllTransactions()}
-            color="primary"
-          >
+          <Button onClick={handleDeleteAllTransactions} color="primary">
             Delete
           </Button>
         </DialogActions>

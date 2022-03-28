@@ -23,9 +23,9 @@ export default async function changeCurrency(newBaseCurrency, type) {
 
   switch (type) {
     case "deleteAll":
-      await setDoc(metadataToUpdate, { currency: newBaseCurrency, balance: 0 });
-
       await deleteAllTransactions();
+
+      await setDoc(metadataToUpdate, { currency: newBaseCurrency, balance: 0 });
       return;
 
     case "convertAll":
