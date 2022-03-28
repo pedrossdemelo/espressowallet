@@ -12,7 +12,7 @@ export default async function signUpEmail(email, password) {
       password
     );
     sendEmailVerification(credentials.user, {
-      url: "http://localhost:3000/",
+      url: "http://www.poliwallet.vercel.app/",
     });
     return { error: null };
   } catch ({ code }) {
