@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
+import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCzHmIfEyWQgg_oFGY8ZccyeDto6WS_SZE",
@@ -13,6 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+getPerformance(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 enableIndexedDbPersistence(db);
