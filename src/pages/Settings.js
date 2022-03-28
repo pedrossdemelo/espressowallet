@@ -22,7 +22,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { FilteredUserDataProvider } from "components";
 import { currencies } from "constants";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -70,7 +69,7 @@ export default function ProfileMenu() {
   if (!currentCurrency && !loading) return <Redirect to="/" />;
 
   return (
-    <FilteredUserDataProvider>
+    <>
       <AppBar sx={{ mb: 1 }} position="static">
         <Toolbar sx={toolbarStyle}>
           <Box
@@ -199,6 +198,6 @@ export default function ProfileMenu() {
           </Button>
         </DialogActions>
       </Dialog>
-    </FilteredUserDataProvider>
+    </>
   );
 }

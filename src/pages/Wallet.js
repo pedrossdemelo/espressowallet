@@ -11,11 +11,10 @@ import {
   SpeedDials,
   WalletHeader,
 } from "components";
-import FilteredUserDataProvider from "components/FilteredUserDataProvider";
 
 function Wallet() {
   return (
-    <FilteredUserDataProvider>
+    <>
       <WalletHeader />
 
       <Box component="main" sx={mainStyle}>
@@ -39,7 +38,7 @@ function Wallet() {
       <GoBackFab />
 
       <NewUserPopup />
-    </FilteredUserDataProvider>
+    </>
   );
 }
 
