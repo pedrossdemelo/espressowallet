@@ -1,5 +1,6 @@
 export { ConfirmationDialog } from "./ConfirmationDialog";
 export { default as Donut } from "./Donut";
+export { default as EmailVerificationAlert } from "./EmailVerificationAlert";
 export { default as ExpenseAndIncome } from "./ExpenseAndIncome";
 export { default as ExpenseFormDrawer } from "./ExpenseFormDrawer";
 export { default as ExpenseInfo } from "./ExpenseInfo";
