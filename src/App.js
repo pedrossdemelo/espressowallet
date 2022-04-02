@@ -18,13 +18,13 @@ function App() {
       <Background>
         <Switch>
           <Route exact path="/">
-            {verified ? <Wallet /> : <Redirect to="/login" />}
+            {loggedIn && verified ? <Wallet /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/login">
-            {verified ? <Redirect to="/" /> : <Login />}
+            {loggedIn && verified ? <Redirect to="/" /> : <Login />}
           </Route>
           <Route exact path="/settings">
-            {verified ? <Settings /> : <Redirect to="/login" />}
+            {loggedIn && verified ? <Settings /> : <Redirect to="/login" />}
           </Route>
           <Route path="*">
             <Redirect to="/" />

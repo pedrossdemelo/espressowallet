@@ -1,4 +1,9 @@
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  createTheme,
+  CssBaseline,
+  darkScrollbar,
+  ThemeProvider,
+} from "@mui/material";
 import React from "react";
 
 const headingFont = "Montserrat, sans-serif";
@@ -6,23 +11,16 @@ const bodyFont = "Inter, sans-serif";
 
 export const ModeContext = React.createContext({
   mode: "light",
+  isLight: true,
   setMode: () => {},
   toggleMode: () => {},
+  theme: {},
 });
 
 export default function ThemeContextProvider({ children }) {
   const [mode, setMode] = React.useState("light");
 
-  const modeContextValue = React.useMemo(
-    () => ({
-      mode,
-      setMode,
-      toggleMode: () => setMode(mode === "light" ? "dark" : "light"),
-    }),
-    [mode]
-  );
-
-  const isLight = mode === "light";
+  const isLight = React.useMemo(() => mode === "light", [mode]);
 
   const theme = React.useMemo(
     () =>
@@ -31,7 +29,7 @@ export default function ThemeContextProvider({ children }) {
           mode,
 
           background: {
-            default: isLight ? "#fafafa" : "#1a1a1a",
+            default: isLight ? "#EDF0F1" : "#1a1a1a",
           },
         },
 
@@ -80,18 +78,41 @@ export default function ThemeContextProvider({ children }) {
 
         components: {
           MuiAppBar: {
+            styleOverrides: {
+              root: ({ theme }) => ({
+                backgroundColor: theme.palette.background.default,
+                color: theme.palette.text.primary,
+              }),
+            },
             defaultProps: {
-              variant: "outlined",
-              sx: {
-                bgcolor: "background.default",
-                color: "text.primary",
-                border: "none",
-              },
+              elevation: 0,
+            },
+          },
+          MuiCssBaseline: {
+            styleOverrides: {
+              body: isLight ? null : darkScrollbar(),
+            },
+          },
+          MuiCard: {
+            defaultProps: {
+              elevation: 0,
+              sx: { borderRadius: 2 },
             },
           },
         },
       }),
-    [mode]
+    [mode, isLight]
+  );
+
+  const modeContextValue = React.useMemo(
+    () => ({
+      mode,
+      isLight: mode === "light",
+      setMode,
+      toggleMode: () => setMode(mode === "light" ? "dark" : "light"),
+      theme,
+    }),
+    [mode, theme]
   );
 
   return (

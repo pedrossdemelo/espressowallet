@@ -23,6 +23,7 @@ export default function stringAvatar(user, sx) {
     sx: {
       ...sx,
       bgcolor: stringToColor(user.email),
+      fontWeight: 500,
     },
     children: `${user.email[0].toUpperCase()}`,
   };

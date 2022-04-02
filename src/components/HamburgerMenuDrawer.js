@@ -2,6 +2,7 @@ import {
   AccountBalanceWallet,
   AllInbox,
   Code,
+  DarkModeRounded,
   LightModeRounded,
 } from "@mui/icons-material";
 import {
@@ -14,9 +15,12 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { useMode } from "hooks";
 import React from "react";
 
 export default function HamburgerMenuDrawer({ open, onClose }) {
+  const { isLight, toggleMode } = useMode();
+
   return (
     <SwipeableDrawer open={open} onClose={onClose}>
       <List
@@ -43,7 +47,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           sx={{
             flexGrow: 0,
             mt: 1,
-            bgcolor: "#bed8fd",
+            bgcolor: isLight ? "#cee4ef" : "#323e45",
             borderTopRightRadius: 99,
             borderBottomRightRadius: 99,
             mr: 1,
@@ -57,11 +61,11 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <ListItemButton sx={{ flexGrow: 0 }}>
+        <ListItemButton onClick={toggleMode} sx={{ flexGrow: 0 }}>
           <ListItemIcon>
-            <LightModeRounded />
+            {isLight ? <LightModeRounded /> : <DarkModeRounded />}
           </ListItemIcon>
-          <ListItemText>Light theme</ListItemText>
+          <ListItemText>{isLight ? "Light" : "Dark"} theme</ListItemText>
         </ListItemButton>
 
         <Divider sx={{ my: 1 }} />

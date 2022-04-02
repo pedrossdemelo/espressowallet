@@ -15,11 +15,14 @@ import {
   IncomeFormDrawer,
 } from "components";
 import { colorMap, iconsMap } from "constants";
+import { useMode } from "hooks";
 import { useRef, useState } from "react";
 import SwipeableView from "react-swipeable-views";
 import { deleteTransaction } from "services";
 
 export function TransactionListItem(props) {
+  const { theme, isLight } = useMode();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const open = () => setIsDrawerOpen(true);
   const close = () => setIsDrawerOpen(false);
@@ -59,10 +62,17 @@ export function TransactionListItem(props) {
   const DesktopListItem = () => (
     <ListItem
       sx={{
+        "&:focus": {
+          bgcolor: isLight ? theme.palette.action.hover : "#2a2a2a",
+          "& .edit-delete": {
+            display: "flex",
+          },
+          "& .transaction-details": {
+            display: "none",
+          },
+        },
         "&:hover": {
-          boxShadow: 2,
-          borderRadius: 2,
-          outline: ".5px solid lightgray",
+          bgcolor: isLight ? theme.palette.action.hover : "#2a2a2a",
           "& .edit-delete": {
             display: "flex",
           },
@@ -195,7 +205,9 @@ export function TransactionListItem(props) {
           justifyContent: "flex-end",
           bgcolor: "error.light",
           height: "100%",
-          borderRadius: 2,
+          borderRadius: 1,
+          borderBottomLeftRadius: 0,
+          borderTopLeftRadius: 0,
           overflow: "visible",
         }}
       >
@@ -272,7 +284,9 @@ export function TransactionListItem(props) {
 
       <ListItem
         sx={{
-          borderRadius: 2,
+          borderRadius: 1,
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
           color: "white",
           bgcolor: "primary.light",
           height: "100%",
