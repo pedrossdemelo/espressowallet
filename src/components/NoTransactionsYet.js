@@ -1,8 +1,8 @@
 import { HistoryToggleOff } from "@mui/icons-material";
 import { Typography } from "@mui/material";
+import { FilteredExpenses, FilteredIncomes } from "context";
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { FilteredExpenses, FilteredIncomes } from "./FilteredUserDataProvider";
 
 const months = [
   "January",

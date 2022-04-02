@@ -1,8 +1,5 @@
-import {
-  EmailVerificationAlert,
-  FilteredUserDataProvider,
-  Loading,
-} from "components";
+import { EmailVerificationAlert, Loading } from "components";
+import { FilteredUserDataProvider } from "context";
 import { useAuth } from "hooks";
 import { Login, Settings, Wallet } from "pages";
 import { Redirect, Route, Switch } from "react-router-dom";

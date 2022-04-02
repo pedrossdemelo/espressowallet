@@ -4,12 +4,6 @@ export { default as EmailVerificationAlert } from "./EmailVerificationAlert";
 export { default as ExpenseAndIncome } from "./ExpenseAndIncome";
 export { default as ExpenseFormDrawer } from "./ExpenseFormDrawer";
 export { default as ExpenseInfo } from "./ExpenseInfo";
-export {
-  default as FilteredUserDataProvider,
-  FilteredExpenses,
-  FilteredIncomes,
-  UserMetadata,
-} from "./FilteredUserDataProvider";
 export { default as GoBackFab } from "./GoBackFab";
 export { default as HamburgerMenuDrawer } from "./HamburgerMenuDrawer";
 export { default as History } from "./History";

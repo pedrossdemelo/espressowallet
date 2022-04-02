@@ -1,12 +1,8 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import { FilteredExpenses, FilteredIncomes, UserMetadata } from "context";
 import React, { useContext } from "react";
 import { calculateRate } from "utils";
-import {
-  FilteredExpenses,
-  FilteredIncomes,
-  UserMetadata,
-} from "./FilteredUserDataProvider";
 
 export default function ExpenseAndIncome() {
   const [{ currency }] = useContext(UserMetadata);

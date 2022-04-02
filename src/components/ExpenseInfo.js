@@ -1,10 +1,10 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { colorMap } from "constants";
+import { FilteredExpenses } from "context";
 import { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { calculateRate } from "utils";
 import Donut from "./Donut";
-import { FilteredExpenses } from "./FilteredUserDataProvider";
 
 export default function ExpenseInfo() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);

@@ -1,7 +1,4 @@
-import {
-  FilteredExpenses,
-  FilteredIncomes,
-} from "components/FilteredUserDataProvider";
+import { FilteredExpenses, FilteredIncomes } from "context";
 import { useContext } from "react";
 
 const defaultSort = (a, b) => b.createdAt - a.createdAt;

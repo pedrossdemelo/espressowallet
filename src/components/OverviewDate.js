@@ -88,7 +88,8 @@ export default function OverviewDate() {
 
 const h6Style = {
   textAlign: "right",
-  fontWeight: 500,
+  fontFamily: "Montserrat",
+  fontWeight: 600,
   fontSize: "1.25rem",
   lineHeight: 1.6,
   letterSpacing: "0.0075em",
