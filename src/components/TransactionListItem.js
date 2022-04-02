@@ -48,7 +48,7 @@ export function TransactionListItem(props) {
 
   const realRate = exchangeRates[baseCurrency] / exchangeRates[currency];
 
-  const ask = realRate.toFixed(2);
+  const ask = realRate;
 
   const date = `${createdAt
     .toLocaleDateString()
@@ -102,6 +102,7 @@ export function TransactionListItem(props) {
               sx={{
                 bgcolor: colorMap[tag],
                 mr: 2,
+                color: "background.paper",
               }}
             >
               {iconsMap[tag]}
@@ -164,7 +165,9 @@ export function TransactionListItem(props) {
             lineHeight={1.375}
             variant="caption"
           >
-            {ask !== "1.00" ? `x ${ask} ${baseCurrency} | ` : ""}
+            {ask !== "1.00"
+              ? `${(ask * value).toFixed(2)} ${baseCurrency} | `
+              : ""}
             {date}
           </Typography>
         </Typography>
@@ -203,7 +206,7 @@ export function TransactionListItem(props) {
         sx={{
           color: "white",
           justifyContent: "flex-end",
-          bgcolor: "error.light",
+          bgcolor: isLight ? "error.light" : "error.dark",
           height: "100%",
           borderRadius: 1,
           borderBottomLeftRadius: 0,
@@ -230,6 +233,7 @@ export function TransactionListItem(props) {
                 sx={{
                   bgcolor: colorMap[tag],
                   mr: 2,
+                  color: "background.paper",
                 }}
               >
                 {iconsMap[tag]}
@@ -275,7 +279,9 @@ export function TransactionListItem(props) {
               lineHeight={1.375}
               variant="caption"
             >
-              {ask !== "1.00" ? `x ${ask} ${baseCurrency} | ` : ""}
+              {ask !== "1.00"
+                ? `${(ask * value).toFixed(2)} ${baseCurrency} | `
+                : ""}
               {date}
             </Typography>
           </Typography>
@@ -288,7 +294,7 @@ export function TransactionListItem(props) {
           borderTopRightRadius: 0,
           borderBottomRightRadius: 0,
           color: "white",
-          bgcolor: "primary.light",
+          bgcolor: isLight ? "primary.light" : "primary.dark",
           height: "100%",
         }}
       >

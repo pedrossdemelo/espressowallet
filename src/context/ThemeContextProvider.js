@@ -6,7 +6,8 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const headingFont = "Montserrat, sans-serif";
+const headingFont = "Poppins, sans-serif";
+const headingWeight = 500;
 const bodyFont = "Inter, sans-serif";
 
 export const ModeContext = React.createContext({
@@ -29,7 +30,14 @@ export default function ThemeContextProvider({ children }) {
           mode,
 
           background: {
-            default: isLight ? "#EDF0F1" : "#1a1a1a",
+            default: isLight ? "#f1f0ed" : "#1a1a1a",
+            paper: isLight ? "#fafafa" : "#444444",
+          },
+
+          primary: {
+            main: "#988366",
+            light: "rgb(172, 155, 132)",
+            dark: "#2a2a2a",
           },
         },
 
@@ -39,40 +47,42 @@ export default function ThemeContextProvider({ children }) {
 
         typography: {
           fontFamily: bodyFont,
+          fontWeightBold: 600,
 
           h6: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           h5: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           h4: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           h3: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           h2: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           h1: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
           },
 
           button: {
             fontFamily: headingFont,
-            fontWeight: 600,
+            fontWeight: headingWeight,
+            fontSize: "0.975rem",
           },
         },
 
@@ -114,6 +124,8 @@ export default function ThemeContextProvider({ children }) {
     }),
     [mode, theme]
   );
+
+  console.log(theme);
 
   return (
     <ModeContext.Provider value={modeContextValue}>

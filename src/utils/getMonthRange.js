@@ -7,7 +7,9 @@ export default function getMonthRange(date) {
 
   end.setMonth(end.getMonth() + 1);
   end.setDate(0);
-  end.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
+
+  console.log(start, end);
 
   return { start, end };
 }

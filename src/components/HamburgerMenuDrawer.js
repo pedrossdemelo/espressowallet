@@ -47,7 +47,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           sx={{
             flexGrow: 0,
             mt: 1,
-            bgcolor: isLight ? "#cee4ef" : "#323e45",
+            bgcolor: "background.default",
             borderTopRightRadius: 99,
             borderBottomRightRadius: 99,
             mr: 1,

@@ -2,14 +2,11 @@ import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { Donut } from "components";
 import { colorMap } from "constants";
 import { FilteredIncomes } from "context";
-import { useMode } from "hooks";
 import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { calculateRate } from "utils";
 
 export default function IncomeInfo() {
-  const { isLight } = useMode();
-
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
   const [incomes] = useContext(FilteredIncomes);
 
@@ -58,7 +55,7 @@ export default function IncomeInfo() {
     <Collapse in={shouldRender}>
       <Box sx={{ px: 2 }}>
         <Card>
-          <Typography my={1} ml={1.5} variant="h6">
+          <Typography my={1} ml={2} variant="h6">
             Your income sources
           </Typography>
 

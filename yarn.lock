@@ -1664,6 +1664,21 @@
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.7.tgz#5fa342958655d3309eeae552a409f75a5453173f"
   integrity sha512-eROpR2P7faJpXtjPx7XGESSNJXT6zUKUnLuUalR8YRpAi7Z4Hg+++LSTRX2GItQDaQliScGapTW10cYunhQDiw==
 
+"@fontsource/open-sans@^4.5.8":
+  version "4.5.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/open-sans/-/open-sans-4.5.8.tgz#31f727353e89ce886e1076bd58536834e0778fda"
+  integrity sha512-3b94XDdRLqL7OlE7OjWg/4pgG825Juw8PLVEDm6h5pio0gMU89ICxfatGxHsBxMGfqad+wnvdmUweZWlELDFpQ==
+
+"@fontsource/poppins@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.5.5.tgz#db08da1c37db30eb06d75c2abdd9c62118dbab8b"
+  integrity sha512-fqRWOQDhfoJoxP98qwMQLvLcgOu13yib6rZjL5UqpurobIaWTweqzo95uOLOGBjEE0bMMAbfDMoFUTL8Byrdeg==
+
+"@fontsource/roboto@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.5.tgz#4ecc38e690469378e2ec2a97f9c12282c654cc93"
+  integrity sha512-Pe1p+gAO6K0aLxBXlLoJRHVx352tVc/v/7DOnvM3t+FYXb+KUga9aCD1NpnDfd0kKnWXqrZyAXguyyFWDDuphw==
+
 "@grpc/grpc-js@^1.3.2":
   version "1.5.9"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.5.9.tgz#df44b3d6bc1d5eb4779aab96e00f6084fd07a3c8"

@@ -31,7 +31,7 @@ export default function ExpenseAndIncome() {
     >
       <Box sx={{ display: "flex" }}>
         <IconButton edge="start">
-          <Avatar sx={{ bgcolor: "success.light" }}>
+          <Avatar sx={{ bgcolor: "success.light", color: "background.paper" }}>
             <ArrowUpward />
           </Avatar>
         </IconButton>
@@ -60,7 +60,7 @@ export default function ExpenseAndIncome() {
         </Typography>
 
         <IconButton edge="end">
-          <Avatar sx={{ bgcolor: "error.light" }}>
+          <Avatar sx={{ bgcolor: "error.light", color: "background.paper" }}>
             <ArrowDownward />
           </Avatar>
         </IconButton>

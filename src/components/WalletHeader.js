@@ -78,7 +78,13 @@ export default function WalletHeader() {
               size="small"
               color="inherit"
             >
-              <Avatar {...stringAvatar(user, { height: 36, width: 36 })} />
+              <Avatar
+                {...stringAvatar(user, {
+                  height: 36,
+                  width: 36,
+                  color: "background.paper",
+                })}
+              />
             </IconButton>
           </Box>
         </Toolbar>
