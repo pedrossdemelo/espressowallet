@@ -16,7 +16,7 @@ export default function History() {
 
       <List
         sx={{
-          pt: 1,
+          pt: 1.5,
           bgcolor: "background.paper",
           borderRadius: 2,
           borderBottomLeftRadius: 0,

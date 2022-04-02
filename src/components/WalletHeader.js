@@ -33,7 +33,7 @@ export default function WalletHeader() {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar variant="outlined" position="fixed">
         <Toolbar sx={toolbarStyle}>
           <Box
             sx={{

@@ -6,7 +6,7 @@ import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/600.css";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { ThemeContextProvider } from "context";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -15,59 +15,15 @@ import App from "./App";
 import "./index.css";
 import store from "./store";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    background: {
-      default: "#fafafa",
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  typography: {
-    h6: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    h5: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    h4: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    h3: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    h2: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    h1: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    button: {
-      fontFamily: "Montserrat",
-      fontWeight: 600,
-    },
-    fontFamily: "Inter",
-  },
-});
-
 ReactDOM.render(
   <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeContextProvider>
       <Provider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <App />
         </LocalizationProvider>
       </Provider>
-    </ThemeProvider>
+    </ThemeContextProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

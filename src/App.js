@@ -38,8 +38,7 @@ function App() {
 
 const Background = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  minHeight: "100vh",
-  minWidth: "100vw",
+  minHeight: "-webkit-fill-available",
 }));
 
 function UserData({ children, verified }) {
