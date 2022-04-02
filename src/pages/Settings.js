@@ -100,14 +100,16 @@ export default function ProfileMenu() {
         <ListItemIcon>
           <AttachMoney />
         </ListItemIcon>
-        Currency: {loading ? "Loading..." : `${currentCurrency}`}
+        <Typography>
+          Currency: {loading ? "Loading..." : `${currentCurrency}`}
+        </Typography>
       </MenuItem>
 
       <MenuItem>
         <ListItemIcon>
           <LightModeRounded />
         </ListItemIcon>
-        Light theme
+        <Typography>Light theme</Typography>
       </MenuItem>
 
       <Divider />
@@ -116,14 +118,14 @@ export default function ProfileMenu() {
         <ListItemIcon>
           <DeleteForever />
         </ListItemIcon>
-        Delete all transactions
+        <Typography>Delete all transactions</Typography>
       </MenuItem>
 
       <MenuItem onClick={() => logout()}>
         <ListItemIcon>
           <Logout />
         </ListItemIcon>
-        Logout
+        <Typography>Logout</Typography>
       </MenuItem>
 
       <Dialog open={dialogOpen} onClose={closeDialog}>

@@ -1,3 +1,4 @@
+import { Box, styled } from "@mui/material";
 import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
 import { useAuth } from "hooks";
@@ -14,24 +15,32 @@ function App() {
 
   return (
     <UserData verified={verified}>
-      <Switch>
-        <Route exact path="/">
-          {verified ? <Wallet /> : <Redirect to="/login" />}
-        </Route>
-        <Route exact path="/login">
-          {verified ? <Redirect to="/" /> : <Login />}
-        </Route>
-        <Route exact path="/settings">
-          {verified ? <Settings /> : <Redirect to="/login" />}
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-      <EmailVerificationAlert shown={loggedIn && !verified} />
+      <Background>
+        <Switch>
+          <Route exact path="/">
+            {verified ? <Wallet /> : <Redirect to="/login" />}
+          </Route>
+          <Route exact path="/login">
+            {verified ? <Redirect to="/" /> : <Login />}
+          </Route>
+          <Route exact path="/settings">
+            {verified ? <Settings /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+        <EmailVerificationAlert shown={loggedIn && !verified} />
+      </Background>
     </UserData>
   );
 }
+
+const Background = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  minHeight: "100vh",
+  minWidth: "100vw",
+}));
 
 function UserData({ children, verified }) {
   if (!verified) return <>{children}</>;

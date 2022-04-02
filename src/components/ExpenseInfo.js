@@ -52,7 +52,7 @@ export default function ExpenseInfo() {
   }
 
   return (
-    <Collapse unmountOnExit in={shouldRender}>
+    <Collapse in={shouldRender}>
       <Box sx={{ px: 2 }}>
         <Typography mb={1} ml={1.5} variant="h6">
           Your expense sources
@@ -62,7 +62,6 @@ export default function ExpenseInfo() {
             display: "flex",
             alignItems: "center",
             p: 2,
-            borderRadius: "0.5rem",
           }}
         >
           <Donut data={tagsArray} height="7rem" />

@@ -62,7 +62,7 @@ export function TransactionListItem(props) {
         "&:hover": {
           boxShadow: 2,
           borderRadius: 2,
-          outline: "0.5px solid lightgray",
+          outline: ".5px solid lightgray",
           "& .edit-delete": {
             display: "flex",
           },

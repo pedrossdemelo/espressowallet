@@ -85,7 +85,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
       <List
         component="form"
         sx={{
-          borderRadius: "1rem 1rem 0 0",
+          borderRadius: "12px 12px 0 0",
           bgcolor: "background.paper",
           boxShadow: 3,
         }}

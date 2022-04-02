@@ -50,7 +50,9 @@ export default function OverviewDate() {
         justifyContent="space-between"
         sx={{ mx: 3.5, mb: -0.5 }}
       >
-        <Typography variant="h6">Overview</Typography>
+        <Typography color="currentColor" variant="h6">
+          Overview
+        </Typography>
 
         <DatePicker
           views={["month", "year"]}

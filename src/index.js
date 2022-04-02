@@ -6,7 +6,7 @@ import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/600.css";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -18,6 +18,9 @@ import store from "./store";
 const theme = createTheme({
   palette: {
     mode: "light",
+    background: {
+      default: "#fafafa",
+    },
   },
   shape: {
     borderRadius: 8,
@@ -55,11 +58,10 @@ const theme = createTheme({
   },
 });
 
-console.log(theme);
-
 ReactDOM.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Provider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <App />

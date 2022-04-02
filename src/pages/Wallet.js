@@ -43,12 +43,12 @@ function Wallet() {
 }
 
 const mainStyle = {
-  bgcolor: "#fafaf9",
   minHeight: "100vh",
   maxWidth: "600px",
   mx: "auto",
   display: "flex",
   flexFlow: "column nowrap",
+  color: "text.primary",
   gap: 2,
 };
 

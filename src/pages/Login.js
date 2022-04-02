@@ -88,9 +88,10 @@ export default function Login() {
         sx={formStyle}
         onSubmit={handleSubmit}
       >
-        <Typography mb={2} textAlign="center" fontWeight={600} variant="h5">
+        <Typography mb={2} textAlign="center" variant="h5">
           Poliwallet 💼
         </Typography>
+
         <TextField
           name="email"
           type="email"
@@ -157,15 +158,14 @@ const containerStyle = {
   minHeight: "100vh",
   boxSizing: "border-box",
   pb: 8,
-  bgcolor: "grey.50",
 };
 
 const formStyle = {
   p: 4,
-  borderRadius: 4,
+  borderRadius: 2,
   display: "flex",
   flexDirection: "column",
-  width: "20rem",
+  width: "min(24rem, 90vw)",
   gap: 2,
 };
 
