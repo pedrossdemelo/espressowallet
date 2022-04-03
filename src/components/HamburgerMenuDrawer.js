@@ -1,9 +1,9 @@
 import {
-  AccountBalanceWallet,
   AllInbox,
   Code,
   DarkModeRounded,
   LightModeRounded,
+  LocalCafe,
 } from "@mui/icons-material";
 import {
   Divider,
@@ -34,7 +34,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
       >
         <ListItem sx={{ mt: -0.5 }}>
           <ListItemIcon>
-            <AccountBalanceWallet />
+            <LocalCafe />
           </ListItemIcon>
 
           <ListItemText primaryTypographyProps={{ variant: "h6" }}>

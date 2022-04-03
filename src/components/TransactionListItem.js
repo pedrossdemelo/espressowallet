@@ -63,7 +63,7 @@ export function TransactionListItem(props) {
     <ListItem
       sx={{
         "&:focus": {
-          bgcolor: isLight ? theme.palette.action.hover : "#2a2a2a",
+          bgcolor: theme.palette.action.hover,
           "& .edit-delete": {
             display: "flex",
           },
@@ -72,7 +72,7 @@ export function TransactionListItem(props) {
           },
         },
         "&:hover": {
-          bgcolor: isLight ? theme.palette.action.hover : "#2a2a2a",
+          bgcolor: theme.palette.action.hover,
           "& .edit-delete": {
             display: "flex",
           },

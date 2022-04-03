@@ -1,4 +1,4 @@
-import { Google } from "@mui/icons-material";
+import { Google, LocalCafe } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -91,7 +91,7 @@ export default function Login() {
         onSubmit={handleSubmit}
       >
         <Typography mb={2} textAlign="center" variant="h5">
-          Espresso Wallet ☕️
+          Espresso Wallet <LocalCafe />
         </Typography>
 
         <TextField
