@@ -148,6 +148,7 @@ export default function OverviewDate() {
                   inputProps={{
                     sx: {
                       ...theme.typography.h6,
+                      pointerEvents: "none",
                       width: dateWidth,
                       overflow: "visible",
                       flexShrink: 0,

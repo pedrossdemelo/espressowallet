@@ -53,6 +53,8 @@ export default function ThemeContextProvider({ children }) {
             focus: isLight ? "#3b332a20" : "#efefef1f",
             hover: isLight ? "#3b332a0a" : "#efefef0a",
           },
+
+          disable: isLight ? "#3b332a3a" : "#efefef27",
         },
 
         shape: {

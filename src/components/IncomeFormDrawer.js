@@ -27,7 +27,9 @@ const initialFormState = {
   description: "",
 };
 
-const paperProps = { style: { backgroundColor: "transparent" } };
+const paperProps = {
+  style: { backgroundColor: "transparent", backgroundImage: "none" },
+};
 
 export default function IncomeFormDrawer({ open, close, toEdit = null }) {
   const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
