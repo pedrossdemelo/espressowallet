@@ -145,7 +145,6 @@ export default function OverviewDate() {
               <FormControl>
                 <Input
                   disableUnderline
-                  autoWidth
                   inputProps={{
                     sx: {
                       ...theme.typography.h6,

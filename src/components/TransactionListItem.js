@@ -151,7 +151,11 @@ export function TransactionListItem(props) {
           textAlign="right"
           lineHeight={1.375}
           className="transaction-details"
-          color={type === "income" ? `success.dark` : `error.dark`}
+          color={
+            type === "income"
+              ? `success.${isLight ? "dark" : "light"}`
+              : `error.${isLight ? "dark" : "light"}`
+          }
           sx={{
             display: "flex",
             flexFlow: "column nowrap",
@@ -265,7 +269,11 @@ export function TransactionListItem(props) {
           <Typography
             textAlign="right"
             lineHeight={1.375}
-            color={type === "income" ? `success.dark` : `error.dark`}
+            color={
+              type === "income"
+                ? `success.${isLight ? "dark" : "light"}`
+                : `error.${isLight ? "dark" : "light"}`
+            }
             sx={{
               display: "flex",
               flexFlow: "column nowrap",

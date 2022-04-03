@@ -32,7 +32,7 @@ export default function ThemeContextProvider({ children }) {
 
           background: {
             default: isLight ? "#f1f0ed" : "#111111",
-            paper: isLight ? "#fafafa" : "#212121",
+            paper: isLight ? "#fafafa" : "#1e1e1e",
           },
 
           primary: {
@@ -114,6 +114,8 @@ export default function ThemeContextProvider({ children }) {
       }),
     [mode, isLight]
   );
+
+  console.log(theme);
 
   const modeContextValue = React.useMemo(
     () => ({
