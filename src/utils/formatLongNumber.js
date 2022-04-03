@@ -14,9 +14,10 @@ export default function formatLongNumber(number, maxLength = 5) {
     return `${millions.toFixed(2)}M`;
   }
 
-  const decathousands = number / 100000;
-  if (decathousands > 1) {
-    return `${decathousands.toFixed(2)}K`;
+  const centithousands = number / 100000;
+  if (centithousands > 1) {
+    const thousands = centithousands * 100;
+    return `${thousands.toFixed(2)}K`;
   }
 
   return number.toFixed(2);

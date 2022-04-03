@@ -15,6 +15,8 @@ import App from "./App";
 import "./index.css";
 import store from "./store";
 
+document.title = "Wallet";
+
 ReactDOM.render(
   <BrowserRouter>
     <ThemeContextProvider>
