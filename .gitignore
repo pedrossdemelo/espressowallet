@@ -4,6 +4,9 @@
 /functions/lib/**/*.js
 /functions/lib/**/*.js.map
 
+# Firebase cache
+.firebase
+
 # Debug files
 /functions/*-debug.*
 
