@@ -18,5 +18,5 @@
     "theme_color": "#f1f0ed",
     "background_color": "#f1f0ed",
     "start_url": "https://espressowallet.com",
-    "display": "fullscreen"
+    "display": "standalone"
 }
