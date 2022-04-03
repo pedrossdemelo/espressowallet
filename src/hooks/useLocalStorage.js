@@ -7,7 +7,8 @@ function writeInitialState(key, value) {
 
 export default function useLocalStorage(key, initialState) {
   const [storedValue, setStoredValue] = useState(
-    JSON.parse(localStorage.getItem(key)) ?? writeInitialState(initialState)
+    JSON.parse(localStorage.getItem(key)) ??
+      writeInitialState(key, initialState)
   );
 
   function setValue(value) {
