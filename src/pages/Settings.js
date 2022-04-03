@@ -126,12 +126,12 @@ export default function ProfileMenu() {
         <Divider sx={{ my: 1 }} />
 
         <ListItemButton
-          sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+          sx={{ color: `error.${isLight ? "dark" : "light"}` }}
           onClick={openDeleteDialog}
         >
           <ListItemIcon>
             <DeleteForever
-              sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+              sx={{ color: `error.${isLight ? "dark" : "light"}` }}
             />
           </ListItemIcon>
 
@@ -139,11 +139,11 @@ export default function ProfileMenu() {
         </ListItemButton>
 
         <ListItemButton
-          sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+          sx={{ color: `error.${isLight ? "dark" : "light"}` }}
           onClick={logout}
         >
           <ListItemIcon>
-            <Logout sx={{ color: `error.${isLight ? "light" : "dark"}` }} />
+            <Logout sx={{ color: `error.${isLight ? "dark" : "light"}` }} />
           </ListItemIcon>
 
           <ListItemText>Logout</ListItemText>
