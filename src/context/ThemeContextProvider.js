@@ -54,7 +54,7 @@ export default function ThemeContextProvider({ children }) {
             hover: isLight ? "#3b332a0a" : "#efefef0a",
           },
 
-          disable: isLight ? "#3b332a3a" : "#efefef27",
+          divider: isLight ? "#3b332a3a" : "#efefef27",
         },
 
         shape: {
