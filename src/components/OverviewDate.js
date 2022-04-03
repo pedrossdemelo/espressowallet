@@ -134,7 +134,7 @@ export default function OverviewDate() {
           </IconButton>
 
           <DatePicker
-            views={["month", "year"]}
+            views={["year", "month"]}
             autoFocus
             value={start}
             onChange={handleChange}
