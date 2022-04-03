@@ -40,6 +40,19 @@ export default function ThemeContextProvider({ children }) {
             light: isLight ? "#AC9B84" : "rgb(255, 194, 51)",
             dark: isLight ? "#6A5B47" : "rgb(227, 154, 7)",
           },
+
+          text: {
+            primary: isLight ? "#3b332a" : "#efefef",
+            secondary: isLight ? "#3b332ac9" : "#efefefc9",
+            disabled: isLight ? "#3b332a85" : "#efefef88",
+          },
+
+          action: {
+            active: isLight ? "#3b332a85" : "#efefef88",
+            disabled: isLight ? "#3b332a4a" : "#efefef4b",
+            focus: isLight ? "#3b332a20" : "#efefef1f",
+            hover: isLight ? "#3b332a13" : "#efefef13",
+          },
         },
 
         shape: {
