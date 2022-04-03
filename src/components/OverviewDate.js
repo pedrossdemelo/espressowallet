@@ -60,18 +60,14 @@ export default function OverviewDate() {
     limit: 1,
   })[0]?.[0];
 
-  console.log(firstExpense, firstIncome);
-
   const dateWidth = useMemo(() => {
     const month = months[start.getMonth()];
     const year = start.getFullYear();
     const result = `${month} ${year}..`;
-    console.log(result);
     const width = getTextWidth(
       result,
       `${theme.typography.h6.fontSize} ${theme.typography.h6.fontFamily}`
     );
-    console.log(width);
     return width;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start]);

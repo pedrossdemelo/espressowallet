@@ -4,7 +4,6 @@ import { auth, db } from "./firebase";
 
 export default async function deleteAllTransactions() {
   const user = auth?.currentUser;
-  console.log(user);
   if (!user) return;
 
   const { uid } = user;
