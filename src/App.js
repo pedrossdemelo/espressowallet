@@ -1,12 +1,14 @@
 import { Box, styled } from "@mui/material";
 import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
-import { useAuth } from "hooks";
+import { useAuth, useMode } from "hooks";
 import { Login, Settings, Wallet } from "pages";
+import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
   const [user, loadingUser] = useAuth();
+  const { isLight } = useMode();
 
   if (loadingUser) return <Loading />;
 
@@ -14,25 +16,35 @@ function App() {
   const verified = user?.emailVerified === true;
 
   return (
-    <UserData verified={verified}>
-      <Background>
-        <Switch>
-          <Route exact path="/">
-            {loggedIn && verified ? <Wallet /> : <Redirect to="/login" />}
-          </Route>
-          <Route exact path="/login">
-            {loggedIn && verified ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route exact path="/settings">
-            {loggedIn && verified ? <Settings /> : <Redirect to="/login" />}
-          </Route>
-          <Route path="*">
-            <Redirect to="/" />
-          </Route>
-        </Switch>
-        <EmailVerificationAlert shown={loggedIn && !verified} />
-      </Background>
-    </UserData>
+    <>
+      <Helmet>
+        {isLight ? (
+          <meta name="theme-color" content="#f1f0ed" />
+        ) : (
+          <meta name="theme-color" content="#111111" />
+        )}
+      </Helmet>
+
+      <UserData verified={verified}>
+        <Background>
+          <Switch>
+            <Route exact path="/">
+              {loggedIn && verified ? <Wallet /> : <Redirect to="/login" />}
+            </Route>
+            <Route exact path="/login">
+              {loggedIn && verified ? <Redirect to="/" /> : <Login />}
+            </Route>
+            <Route exact path="/settings">
+              {loggedIn && verified ? <Settings /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+          <EmailVerificationAlert shown={loggedIn && !verified} />
+        </Background>
+      </UserData>
+    </>
   );
 }
 
