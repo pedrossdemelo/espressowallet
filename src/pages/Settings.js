@@ -1,6 +1,7 @@
 import {
   ArrowBack,
   AttachMoney,
+  DarkModeRounded,
   DeleteForever,
   LightModeRounded,
   Logout,
@@ -15,14 +16,17 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  List,
+  ListItemButton,
   ListItemIcon,
-  MenuItem,
+  ListItemText,
   TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { currencies } from "constants";
+import { useMode } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
@@ -38,11 +42,15 @@ const toolbarStyle = {
 
 export default function ProfileMenu() {
   const history = useHistory();
+
+  const { isLight, toggleMode } = useMode();
+
   const { currency: currentCurrency, loading } = useSelector(
     state => state.wallet.baseCurrency
   );
   const [currency, setCurrency] = useState("USD");
   const handleCurrencyChange = e => setCurrency(e.target.value);
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
@@ -70,7 +78,7 @@ export default function ProfileMenu() {
 
   return (
     <>
-      <AppBar sx={{ mb: 1 }} position="static">
+      <AppBar position="static">
         <Toolbar sx={toolbarStyle}>
           <Box
             sx={{
@@ -96,37 +104,51 @@ export default function ProfileMenu() {
         </Toolbar>
       </AppBar>
 
-      <MenuItem onClick={openDialog}>
-        <ListItemIcon>
-          <AttachMoney />
-        </ListItemIcon>
-        <Typography>
-          Currency: {loading ? "Loading..." : `${currentCurrency}`}
-        </Typography>
-      </MenuItem>
+      <List sx={{ mt: -1 }}>
+        <ListItemButton onClick={openDialog}>
+          <ListItemIcon>
+            <AttachMoney />
+          </ListItemIcon>
 
-      <MenuItem>
-        <ListItemIcon>
-          <LightModeRounded />
-        </ListItemIcon>
-        <Typography>Light theme</Typography>
-      </MenuItem>
+          <ListItemText>
+            Currency: {loading ? "Loading..." : `${currentCurrency}`}
+          </ListItemText>
+        </ListItemButton>
 
-      <Divider />
+        <ListItemButton onClick={toggleMode}>
+          <ListItemIcon>
+            {isLight ? <LightModeRounded /> : <DarkModeRounded />}
+          </ListItemIcon>
 
-      <MenuItem onClick={openDeleteDialog}>
-        <ListItemIcon>
-          <DeleteForever />
-        </ListItemIcon>
-        <Typography>Delete all transactions</Typography>
-      </MenuItem>
+          <ListItemText>{isLight ? "Light" : "Dark"} theme</ListItemText>
+        </ListItemButton>
 
-      <MenuItem onClick={() => logout()}>
-        <ListItemIcon>
-          <Logout />
-        </ListItemIcon>
-        <Typography>Logout</Typography>
-      </MenuItem>
+        <Divider sx={{ my: 1 }} />
+
+        <ListItemButton
+          sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+          onClick={openDeleteDialog}
+        >
+          <ListItemIcon>
+            <DeleteForever
+              sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+            />
+          </ListItemIcon>
+
+          <ListItemText>Delete all transactions</ListItemText>
+        </ListItemButton>
+
+        <ListItemButton
+          sx={{ color: `error.${isLight ? "light" : "dark"}` }}
+          onClick={logout}
+        >
+          <ListItemIcon>
+            <Logout sx={{ color: `error.${isLight ? "light" : "dark"}` }} />
+          </ListItemIcon>
+
+          <ListItemText>Logout</ListItemText>
+        </ListItemButton>
+      </List>
 
       <Dialog open={dialogOpen} onClose={closeDialog}>
         <DialogTitle>
