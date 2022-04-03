@@ -43,8 +43,8 @@ export default function ThemeContextProvider({ children }) {
 
           text: {
             primary: isLight ? "#3b332a" : "#efefef",
-            secondary: isLight ? "#3b332ac9" : "#efefefc9",
-            disabled: isLight ? "#3b332a85" : "#efefef88",
+            secondary: isLight ? "#3b332ae8" : "#efefefe8",
+            disabled: isLight ? "#3b332a5a" : "#efefef5a",
           },
 
           action: {
