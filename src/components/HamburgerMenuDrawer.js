@@ -28,6 +28,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           width: "min(90vw, 300px)",
           flexGrow: 1,
           display: "flex",
+          bgcolor: "background.paper",
           flexFlow: "column nowrap",
         }}
       >

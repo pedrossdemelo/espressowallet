@@ -4,6 +4,7 @@ import {
   darkScrollbar,
   ThemeProvider,
 } from "@mui/material";
+import { useLocalStorage } from "hooks";
 import React from "react";
 
 const headingFont = "Poppins, sans-serif";
@@ -19,7 +20,7 @@ export const ModeContext = React.createContext({
 });
 
 export default function ThemeContextProvider({ children }) {
-  const [mode, setMode] = React.useState("light");
+  const [mode, setMode] = useLocalStorage("mode", "light");
 
   const isLight = React.useMemo(() => mode === "light", [mode]);
 
@@ -30,14 +31,14 @@ export default function ThemeContextProvider({ children }) {
           mode,
 
           background: {
-            default: isLight ? "#f1f0ed" : "#1a1a1a",
-            paper: isLight ? "#fafafa" : "#444444",
+            default: isLight ? "#f1f0ed" : "#111111",
+            paper: isLight ? "#fafafa" : "#212121",
           },
 
           primary: {
-            main: "#988366",
-            light: "rgb(172, 155, 132)",
-            dark: "#2a2a2a",
+            main: isLight ? "#988366" : "#ffb300",
+            light: isLight ? "#AC9B84" : "rgb(255, 194, 51)",
+            dark: isLight ? "#6A5B47" : "rgb(227, 154, 7)",
           },
         },
 
@@ -122,10 +123,8 @@ export default function ThemeContextProvider({ children }) {
       toggleMode: () => setMode(mode === "light" ? "dark" : "light"),
       theme,
     }),
-    [mode, theme]
+    [mode, theme, setMode]
   );
-
-  console.log(theme);
 
   return (
     <ModeContext.Provider value={modeContextValue}>

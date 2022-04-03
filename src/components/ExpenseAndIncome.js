@@ -1,10 +1,13 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import { FilteredExpenses, FilteredIncomes, UserMetadata } from "context";
+import { useMode } from "hooks";
 import React, { useContext } from "react";
 import { calculateRate } from "utils";
 
 export default function ExpenseAndIncome() {
+  const { isLight } = useMode();
+
   const [{ currency }] = useContext(UserMetadata);
   const [expenses] = useContext(FilteredExpenses);
   const [incomes] = useContext(FilteredIncomes);
@@ -31,7 +34,12 @@ export default function ExpenseAndIncome() {
     >
       <Box sx={{ display: "flex" }}>
         <IconButton edge="start">
-          <Avatar sx={{ bgcolor: "success.light", color: "background.paper" }}>
+          <Avatar
+            sx={{
+              bgcolor: isLight ? "success.light" : "success.dark",
+              color: "common.white",
+            }}
+          >
             <ArrowUpward />
           </Avatar>
         </IconButton>
@@ -60,7 +68,12 @@ export default function ExpenseAndIncome() {
         </Typography>
 
         <IconButton edge="end">
-          <Avatar sx={{ bgcolor: "error.light", color: "background.paper" }}>
+          <Avatar
+            sx={{
+              bgcolor: isLight ? "error.light" : "error.dark",
+              color: "common.white",
+            }}
+          >
             <ArrowDownward />
           </Avatar>
         </IconButton>

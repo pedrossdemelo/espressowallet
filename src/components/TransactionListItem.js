@@ -102,7 +102,7 @@ export function TransactionListItem(props) {
               sx={{
                 bgcolor: colorMap[tag],
                 mr: 2,
-                color: "background.paper",
+                color: "common.white",
               }}
             >
               {iconsMap[tag]}
@@ -233,7 +233,7 @@ export function TransactionListItem(props) {
                 sx={{
                   bgcolor: colorMap[tag],
                   mr: 2,
-                  color: "background.paper",
+                  color: "common.white",
                 }}
               >
                 {iconsMap[tag]}

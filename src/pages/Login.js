@@ -84,7 +84,7 @@ export default function Login() {
     <Box sx={containerStyle}>
       <Paper
         component="form"
-        elevation={2}
+        variant="outlined"
         sx={formStyle}
         onSubmit={handleSubmit}
       >
@@ -130,7 +130,6 @@ export default function Login() {
             disabled={disabled || loading !== notLoading}
             type="submit"
             variant="contained"
-            disableElevation
             loading={loginLoading}
           >
             Login

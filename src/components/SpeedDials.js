@@ -1,9 +1,12 @@
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import { ExpenseFormDrawer, IncomeFormDrawer } from "components";
+import { useMode } from "hooks";
 import { useState } from "react";
 
 export default function SpeedDials() {
+  const { isLight } = useMode();
+
   const [expenseDrawerOpen, setExpenseDrawerOpen] = useState(false);
   const openExpense = () => setExpenseDrawerOpen(true);
   const closeExpense = () => setExpenseDrawerOpen(false);
@@ -17,14 +20,14 @@ export default function SpeedDials() {
       icon: <ArrowDownward />,
       name: "Expense",
       onClick: openExpense,
-      color: "error.light",
+      color: `error.${isLight ? "light" : "dark"}`,
       colorHover: "error.main",
     },
     {
       icon: <ArrowUpward />,
       name: "Income",
       onClick: openIncome,
-      color: "success.light",
+      color: `success.${isLight ? "light" : "dark"}`,
       colorHover: "success.main",
     },
   ];
