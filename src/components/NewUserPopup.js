@@ -36,11 +36,11 @@ export default function NewUserPopup() {
 
   return (
     <Dialog open={show} onClose={close} disableEscapeKeyDown>
-      <DialogTitle>Welcome to Poliwallet!</DialogTitle>
+      <DialogTitle>Welcome to Espresso!</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Since you are a new user, we need to set up your wallet. First, choose
-          your base currency.
+          Thank you for choosing espresso. Let's set you up by selecting your
+          base currency.
         </DialogContentText>
         <TextField
           autoFocus
