@@ -38,7 +38,7 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
           </ListItemIcon>
 
           <ListItemText primaryTypographyProps={{ variant: "h6" }}>
-            Poliwallet
+            Espresso Wallet
           </ListItemText>
         </ListItem>
 

@@ -49,7 +49,7 @@ export default function SpeedDials() {
             FabProps={{
               sx: {
                 bgcolor: action.color,
-                color: "background.paper",
+                color: "common.white",
                 "&:hover": { bgcolor: action.colorHover },
               },
             }}

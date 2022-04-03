@@ -1,6 +1,8 @@
+import { Google } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
+  Button,
   Divider,
   Paper,
   Stack,
@@ -84,12 +86,12 @@ export default function Login() {
     <Box sx={containerStyle}>
       <Paper
         component="form"
-        variant="outlined"
         sx={formStyle}
+        elevation={0}
         onSubmit={handleSubmit}
       >
         <Typography mb={2} textAlign="center" variant="h5">
-          Poliwallet 💼
+          Espresso Wallet ☕️
         </Typography>
 
         <TextField
@@ -129,6 +131,7 @@ export default function Login() {
           <LoadingButton
             disabled={disabled || loading !== notLoading}
             type="submit"
+            disableElevation
             variant="contained"
             loading={loginLoading}
           >
@@ -141,9 +144,13 @@ export default function Login() {
         <Typography>or</Typography>
       </Divider>
 
-      <button className="login-with-google-btn" onClick={handleGoogleSignIn}>
+      <Button
+        startIcon={<Google />}
+        variant="outlined"
+        onClick={handleGoogleSignIn}
+      >
         Sign in with Google
-      </button>
+      </Button>
     </Box>
   );
 }

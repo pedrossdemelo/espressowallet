@@ -48,10 +48,10 @@ export default function ThemeContextProvider({ children }) {
           },
 
           action: {
-            active: isLight ? "#3b332a85" : "#efefef88",
+            active: isLight ? "#3b332abd" : "#efefefbd",
             disabled: isLight ? "#3b332a4a" : "#efefef4b",
             focus: isLight ? "#3b332a20" : "#efefef1f",
-            hover: isLight ? "#3b332a13" : "#efefef13",
+            hover: isLight ? "#3b332a0a" : "#efefef0a",
           },
         },
 
@@ -115,6 +115,11 @@ export default function ThemeContextProvider({ children }) {
           MuiCssBaseline: {
             styleOverrides: {
               body: isLight ? null : darkScrollbar(),
+              "*::selection": {
+                backgroundColor: isLight
+                  ? "#ac9b8445"
+                  : "rgba(255, 194, 51, 0.688)",
+              },
             },
           },
           MuiCard: {
@@ -144,7 +149,7 @@ export default function ThemeContextProvider({ children }) {
   return (
     <ModeContext.Provider value={modeContextValue}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         {children}
       </ThemeProvider>
     </ModeContext.Provider>
