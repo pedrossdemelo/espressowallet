@@ -11,10 +11,15 @@ import {
   SpeedDials,
   WalletHeader,
 } from "components";
+import { Helmet } from "react-helmet";
 
 function Wallet() {
   return (
     <>
+      <Helmet>
+        <title>Espresso Wallet</title>
+      </Helmet>
+
       <WalletHeader />
 
       <Box component="main" sx={mainStyle}>
