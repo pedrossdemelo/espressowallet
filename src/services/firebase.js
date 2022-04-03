@@ -4,13 +4,13 @@ import { enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
 import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCzHmIfEyWQgg_oFGY8ZccyeDto6WS_SZE",
-  authDomain: "poliwallet.firebaseapp.com",
-  projectId: "poliwallet",
-  storageBucket: "poliwallet.appspot.com",
-  messagingSenderId: "823847112364",
-  appId: "1:823847112364:web:bc2a032be8e3e7ffdcd909",
-  measurementId: "G-RW8GN5MJBY",
+  apiKey: "AIzaSyDk4HjU5PHhrT8MNvDNGkMKe_UblpK1hiU",
+  authDomain: "espressowallet.firebaseapp.com",
+  projectId: "espressowallet",
+  storageBucket: "espressowallet.appspot.com",
+  messagingSenderId: "658281377636",
+  appId: "1:658281377636:web:ab4474e1104d9d71701471",
+  measurementId: "G-0818VVPL4B",
 };
 
 const app = initializeApp(firebaseConfig);

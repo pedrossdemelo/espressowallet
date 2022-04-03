@@ -8,7 +8,7 @@ export default function EmailVerificationAlert({ shown }) {
   const [user] = useAuth();
 
   const handleResendEmailVerification = () => {
-    sendEmailVerification(user, { url: "http://poliwallet.vercel.app/" });
+    sendEmailVerification(user, { url: "http://www.espressowallet.com/" });
   };
 
   return (
