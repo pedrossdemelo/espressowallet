@@ -3,7 +3,7 @@ import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import { FilteredExpenses, FilteredIncomes, UserMetadata } from "context";
 import { useMode } from "hooks";
 import React, { useContext } from "react";
-import { calculateRate } from "utils";
+import { calculateRate, formatLongNumber } from "utils";
 
 export default function ExpenseAndIncome() {
   const { isLight } = useMode();
@@ -12,13 +12,13 @@ export default function ExpenseAndIncome() {
   const [expenses] = useContext(FilteredExpenses);
   const [incomes] = useContext(FilteredIncomes);
 
-  const totalExpenses = Number(
-    expenses.reduce((acc, curr) => acc + calculateRate(curr), 0)
-  ).toFixed(2);
+  const totalExpenses = formatLongNumber(
+    Number(expenses.reduce((acc, curr) => acc + calculateRate(curr), 0))
+  );
 
-  const totalIncomes = Number(
-    incomes.reduce((acc, curr) => acc + calculateRate(curr), 0)
-  ).toFixed(2);
+  const totalIncomes = formatLongNumber(
+    Number(incomes.reduce((acc, curr) => acc + calculateRate(curr), 0))
+  );
 
   if (totalExpenses === "0.00" && totalIncomes === "0.00") return null;
 

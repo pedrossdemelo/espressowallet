@@ -3,7 +3,7 @@ import { colorMap } from "constants";
 import { FilteredExpenses } from "context";
 import { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { calculateRate } from "utils";
+import { calculateRate, formatLongNumber } from "utils";
 import Donut from "./Donut";
 
 export default function ExpenseInfo() {
@@ -79,7 +79,7 @@ export default function ExpenseInfo() {
                     </Typography>
                   </Stack>
                   <Typography textAlign="right" variant="body2">
-                    {amount.toFixed(2)} {currency}
+                    {formatLongNumber(amount)} {currency}
                   </Typography>
                 </Stack>
               ))}

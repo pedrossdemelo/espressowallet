@@ -4,7 +4,7 @@ import { colorMap } from "constants";
 import { FilteredIncomes } from "context";
 import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { calculateRate } from "utils";
+import { calculateRate, formatLongNumber } from "utils";
 
 export default function IncomeInfo() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
@@ -79,7 +79,7 @@ export default function IncomeInfo() {
                     </Typography>
                   </Stack>
                   <Typography textAlign="right" variant="body2">
-                    {amount.toFixed(2)} {currency}
+                    {formatLongNumber(amount)} {currency}
                   </Typography>
                 </Stack>
               ))}
