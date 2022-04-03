@@ -141,7 +141,7 @@ export default function Login() {
       </Paper>
 
       <Divider sx={{ width: "20rem" }}>
-        <Typography>or</Typography>
+        <Typography color="text.secondary">or</Typography>
       </Divider>
 
       <Button
