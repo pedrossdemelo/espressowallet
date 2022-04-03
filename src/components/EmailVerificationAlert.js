@@ -40,7 +40,7 @@ export default function EmailVerificationAlert({ shown }) {
 const alertStyle = {
   position: "fixed",
   bottom: "1rem",
-  width: "calc(min(480px, 90vw) - 32px)",
+  width: "calc(min(28rem, 90vw) - 32px)",
   left: "50%",
-  ml: "max(-240px, -45vw)",
+  ml: "calc(max(-14rem, -45vw) + 16px)",
 };
