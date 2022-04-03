@@ -135,8 +135,6 @@ export default function ThemeContextProvider({ children }) {
     [mode, isLight]
   );
 
-  console.log(theme);
-
   const modeContextValue = React.useMemo(
     () => ({
       mode,
