@@ -91,7 +91,7 @@ export default function Login() {
         onSubmit={handleSubmit}
       >
         <Typography mb={2} textAlign="center" variant="h5">
-          Espresso Wallet <LocalCafe />
+          Espresso Wallet <LocalCafe sx={{ mb: -0.5 }} />
         </Typography>
 
         <TextField
