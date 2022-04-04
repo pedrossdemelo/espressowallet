@@ -2,6 +2,7 @@ import {
   AllInbox,
   Code,
   DarkModeRounded,
+  Favorite,
   LightModeRounded,
   LocalCafe,
 } from "@mui/icons-material";
@@ -61,6 +62,21 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
         </ListItemButton>
 
         <Box sx={{ flexGrow: 1 }} />
+
+        <ListItemButton
+          onClick={() => {
+            window.open(
+              "https://www.vakinha.com.br/vaquinha/manutencao-do-espresso-wallet",
+              "_blank"
+            );
+          }}
+          sx={{ flexGrow: 0 }}
+        >
+          <ListItemIcon>
+            <Favorite />
+          </ListItemIcon>
+          <ListItemText>Keep us running!</ListItemText>
+        </ListItemButton>
 
         <ListItemButton onClick={toggleMode} sx={{ flexGrow: 0 }}>
           <ListItemIcon>
