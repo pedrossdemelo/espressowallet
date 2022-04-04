@@ -2,6 +2,7 @@ import {
   AllInbox,
   Code,
   DarkModeRounded,
+  GetApp,
   LightModeRounded,
   LocalCafe,
 } from "@mui/icons-material";
@@ -18,8 +19,36 @@ import { Box } from "@mui/system";
 import { useMode } from "hooks";
 import React from "react";
 
+const useInstall = () => {
+  let defferedPrompt;
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    defferedPrompt = e;
+  });
+
+  const install = () => {
+    if (defferedPrompt) {
+      defferedPrompt.prompt();
+      defferedPrompt.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the A2HS prompt");
+        } else {
+          console.log("User dismissed the A2HS prompt");
+        }
+        defferedPrompt = null;
+      });
+    }
+  };
+
+  const canInstall = defferedPrompt !== undefined;
+
+  return { canInstall, install };
+};
+
 export default function HamburgerMenuDrawer({ open, onClose }) {
   const { isLight, toggleMode } = useMode();
+
+  const { canInstall, install } = useInstall();
 
   return (
     <SwipeableDrawer open={open} onClose={onClose}>
@@ -61,6 +90,13 @@ export default function HamburgerMenuDrawer({ open, onClose }) {
         </ListItemButton>
 
         <Box sx={{ flexGrow: 1 }} />
+
+        <ListItemButton onClick={install} sx={{ flexGrow: 0 }}>
+          <ListItemIcon>
+            <GetApp />
+          </ListItemIcon>
+          <ListItemText>Install the app</ListItemText>
+        </ListItemButton>
 
         <ListItemButton onClick={toggleMode} sx={{ flexGrow: 0 }}>
           <ListItemIcon>
