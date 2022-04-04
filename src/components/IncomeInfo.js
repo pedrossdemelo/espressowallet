@@ -52,7 +52,7 @@ export default function IncomeInfo() {
   }
 
   return (
-    <Collapse in={shouldRender}>
+    <Collapse unmountOnExit in={shouldRender}>
       <Box sx={{ px: 2 }}>
         <Card>
           <Typography my={1} ml={2} variant="h6">
