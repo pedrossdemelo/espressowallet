@@ -1,18 +1,17 @@
 {
     "name": "Espresso Wallet",
     "short_name": "Espresso",
+    "description": "Espresso Wallet - A simple and free multi currency expense tracker!",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
+            "type": "image/png"
         },
         {
             "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
+            "type": "image/png"
         }
     ],
     "theme_color": "#f1f0ed",
