@@ -5,7 +5,8 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { useLocalStorage } from "hooks";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 
 const headingFont = "Poppins, sans-serif";
 const headingWeight = 500;
@@ -19,10 +20,22 @@ export const ModeContext = React.createContext({
   theme: {},
 });
 
+const useQuery = () => {
+  const { search } = useLocation();
+  return useMemo(() => new URLSearchParams(search), [search]);
+};
+
 export default function ThemeContextProvider({ children }) {
+  const query = useQuery();
+
   const [mode, setMode] = useLocalStorage("mode", "light");
 
   const isLight = React.useMemo(() => mode === "light", [mode]);
+
+  useEffect(() => {
+    if (!query.get("theme")) return;
+    setMode(query.get("theme"));
+  }, [query, setMode]);
 
   const theme = React.useMemo(
     () =>
