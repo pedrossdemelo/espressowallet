@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import store from "./store";
 
 ReactDOM.render(
@@ -27,3 +28,5 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
+
+serviceWorkerRegistration.register();
