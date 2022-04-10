@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import { useLocalStorage } from "hooks";
 import React, { useEffect, useMemo } from "react";
+import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
 
 const headingFont = "Poppins, sans-serif";
@@ -162,6 +163,13 @@ export default function ThemeContextProvider({ children }) {
   return (
     <ModeContext.Provider value={modeContextValue}>
       <ThemeProvider theme={theme}>
+        <Helmet>
+          {isLight ? (
+            <meta name="theme-color" content="#f1f0ed" />
+          ) : (
+            <meta name="theme-color" content="#111111" />
+          )}
+        </Helmet>
         <CssBaseline enableColorScheme />
         {children}
       </ThemeProvider>

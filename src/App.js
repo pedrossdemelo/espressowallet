@@ -1,14 +1,12 @@
 import { Box, styled } from "@mui/material";
 import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
-import { useAuth, useMode } from "hooks";
+import { useAuth } from "hooks";
 import { Login, Settings, Wallet } from "pages";
-import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
   const [user, loadingUser] = useAuth();
-  const { isLight } = useMode();
 
   if (loadingUser) return <Loading />;
 
@@ -17,14 +15,6 @@ function App() {
 
   return (
     <>
-      <Helmet>
-        {isLight ? (
-          <meta name="theme-color" content="#f1f0ed" />
-        ) : (
-          <meta name="theme-color" content="#111111" />
-        )}
-      </Helmet>
-
       <UserData verified={verified}>
         <Background>
           <Switch>
