@@ -53,6 +53,7 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
   <ol>
     <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#built-with">Built with</a></li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#known-issues">Known issues</a></li>
     <li><a href="#license">License</a></li>
@@ -70,6 +71,11 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
   <img src="docs/assets/Frame 5.png" height="450px" />
   <img src="docs/assets/Frame 6.png" height="450px" />
 </div>
+
+## Installation
+
+- [Chrome](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DDesktop)
+- [Safari](https://mobilesyrup.com/2020/05/24/how-install-progressive-web-app-pwa-android-ios-pc-mac/#:~:text=Navigate%20to%20the%20website%20you,like%20a%20native%20iOS%20app)
 
 ## Built with
 
