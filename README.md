@@ -102,7 +102,7 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
 
 ## Known issues
 
-These are the known issues at the moment. If you find another, please [open an issue](https://github.com/PedroSSM2000/espressowallet/issues), it would be greatly appreciated!
+These are the known issues at the moment. If you find another, please [open an issue](https://github.com/pedrossdemelo/espressowallet/issues), it would be greatly appreciated!
 
 <details>
   <summary>Firefox charts don't work</summary>
@@ -128,15 +128,15 @@ Distributed under the GPL 3.0 License. See `LICENSE` for more information.
 
 <p align="right"><a href="#top">Back to top</a></p>
 
-[contributors-shield]: https://img.shields.io/github/contributors/PedroSSM2000/espressowallet?style=for-the-badge
-[contributors-url]: https://github.com/PedroSSM2000/espressowallet/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/PedroSSM2000/espressowallet?style=for-the-badge
-[forks-url]: https://github.com/PedroSSM2000/espressowallet/network/members
-[stars-shield]: https://img.shields.io/github/stars/PedroSSM2000/espressowallet?style=for-the-badge
-[stars-url]: https://github.com/PedroSSM2000/espressowallet/stargazers
-[issues-shield]: https://img.shields.io/github/issues/PedroSSM2000/espressowallet?style=for-the-badge
-[issues-url]: https://github.com/PedroSSM2000/espressowallet/issues
-[license-shield]: https://img.shields.io/github/license/PedroSSM2000/espressowallet?style=for-the-badge
-[license-url]: https://github.com/PedroSSM2000/espressowallet/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/pedrossdemelo/espressowallet?style=for-the-badge
+[contributors-url]: https://github.com/pedrossdemelo/espressowallet/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/pedrossdemelo/espressowallet?style=for-the-badge
+[forks-url]: https://github.com/pedrossdemelo/espressowallet/network/members
+[stars-shield]: https://img.shields.io/github/stars/pedrossdemelo/espressowallet?style=for-the-badge
+[stars-url]: https://github.com/pedrossdemelo/espressowallet/stargazers
+[issues-shield]: https://img.shields.io/github/issues/pedrossdemelo/espressowallet?style=for-the-badge
+[issues-url]: https://github.com/pedrossdemelo/espressowallet/issues
+[license-shield]: https://img.shields.io/github/license/pedrossdemelo/espressowallet?style=for-the-badge
+[license-url]: https://github.com/pedrossdemelo/espressowallet/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/pedrossdemelo/
