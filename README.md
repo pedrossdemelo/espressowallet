@@ -17,7 +17,7 @@
 
   <p>
     <strong>Free & open-source multi-currency wallet</strong><br>
-    <a href="https://espressowallet.com">espressowallet.com</a>
+    <a href="https://espressowallet.pedrosousa.dev">espressowallet.pedrosousa.dev</a>
   </p>
 
   <br>
