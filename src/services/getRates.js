@@ -15,7 +15,7 @@ export default async function getRates(date) {
 async function dataFromOpenExchangeRates(date) {
   const request = `https://openexchangerates.org/api/historical/${date
     .toISOString()
-    .slice(0, 10)}.json?app_id=${"0bca78c8a0b7413b8faa8f2f7ccf24bb"}`;
+    .slice(0, 10)}.json?app_id=${"c57af901ca824ab9bd1c49bfccc11fa5"}`;
 
   const res = await fetch(request);
   const data = await res.json();
