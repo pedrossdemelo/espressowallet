@@ -2,10 +2,9 @@
 // register() is not called by default.
 
 // This lets the app load faster on subsequent visits in production, and gives
-// it offline capabilities. However, it also means that developers (and users)
-// will only see deployed updates on subsequent visits to a page, after all the
-// existing tabs open on the page have been closed, since previously cached
-// resources are updated in the background.
+// it offline capabilities. The custom service worker activates updates
+// immediately and reloads open app windows so they cannot remain on a broken
+// cached release indefinitely.
 
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
@@ -61,8 +60,14 @@ export function register(config?: ServiceWorkerConfig) {
 
 function registerValidSW(swUrl: string, config?: ServiceWorkerConfig) {
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl, { updateViaCache: "none" })
     .then(registration => {
+      // Do not wait for the browser's periodic update check. Firebase Hosting
+      // serves this file separately from immutable hashed assets.
+      registration.update().catch(error => {
+        console.error("Couldn't check for an app update:", error);
+      });
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -71,12 +76,9 @@ function registerValidSW(swUrl: string, config?: ServiceWorkerConfig) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === "installed") {
             if (navigator.serviceWorker.controller) {
-              // At this point, the updated precached content has been fetched,
-              // but the previous service worker will still serve the older
-              // content until all client tabs are closed.
+              // The custom worker activates immediately and reloads clients.
               console.log(
-                "New content is available and will be used when all " +
-                  "tabs for this page are closed. See https://cra.link/PWA.",
+                "New content is available. The app will update automatically.",
               );
 
               // Execute callback
