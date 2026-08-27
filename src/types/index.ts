@@ -37,12 +37,15 @@ export interface UserMetadata {
   [monthKey: string]: unknown;
 }
 
+// All four counters are always present (see changeCurrency, which is the
+// only writer) — a bucket touched by only one of incomes/expenses still
+// initializes the other side to 0, so this never needs a non-null assertion.
 export interface MonthMetadata {
   balance: number;
-  incomes?: number;
-  totalIncome?: number;
-  expenses?: number;
-  totalExpense?: number;
+  incomes: number;
+  totalIncome: number;
+  expenses: number;
+  totalExpense: number;
 }
 
 export interface DateRange {

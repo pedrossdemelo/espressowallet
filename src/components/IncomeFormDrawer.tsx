@@ -63,9 +63,11 @@ export default function IncomeFormDrawer({
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value: valuePair } = e.target;
     const key = name.split("-")[0];
+    let numValue;
+    if (key === "value") numValue = Number(valuePair);
     setFormState({
       ...formState,
-      [key]: valuePair,
+      [key]: numValue ?? valuePair,
     });
   }
 
@@ -217,7 +219,10 @@ export default function IncomeFormDrawer({
         <ListItem>
           <Button
             disabled={
-              description.length < 3 || description.length >= 25 || value <= 0
+              description.length < 3 ||
+              description.length >= 25 ||
+              value <= 0 ||
+              !currency
             }
             sx={{ ml: "auto", mt: 1 }}
             type="submit"

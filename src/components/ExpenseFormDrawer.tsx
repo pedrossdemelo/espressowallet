@@ -226,7 +226,10 @@ export default function ExpenseFormDrawer({
         <ListItem>
           <Button
             disabled={
-              description.length < 3 || description.length >= 25 || value <= 0
+              description.length < 3 ||
+              description.length >= 25 ||
+              value <= 0 ||
+              !currency
             }
             sx={{ ml: "auto", mt: 1 }}
             type="submit"

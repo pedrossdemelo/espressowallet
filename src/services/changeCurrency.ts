@@ -11,15 +11,26 @@ type NewMetadata = {
   balance: number;
 } & { [monthKey: string]: MonthMetadata | Currency | number };
 
+const emptyMonth = (): MonthMetadata => ({
+  balance: 0,
+  incomes: 0,
+  totalIncome: 0,
+  expenses: 0,
+  totalExpense: 0,
+});
+
 // `metadata[key]` can statically be a MonthMetadata, a Currency, or a number
 // (see NewMetadata above) — but by convention every key besides "currency"
 // and "balance" is an "MM/YYYY" string holding a MonthMetadata bucket.
-function getMonthMetadata(
+function getOrCreateMonthMetadata(
   metadata: NewMetadata,
   key: string,
-): MonthMetadata | undefined {
+): MonthMetadata {
   const value = metadata[key];
-  return typeof value === "object" ? value : undefined;
+  if (typeof value === "object") return value;
+  const month = emptyMonth();
+  metadata[key] = month;
+  return month;
 }
 
 export default async function changeCurrency(
@@ -73,22 +84,10 @@ export default async function changeCurrency(
 
         newMetadata.balance += total;
 
-        const month = getMonthMetadata(newMetadata, date);
-
-        if (month) {
-          month.balance += total;
-          // Non-null: matches the original untyped arithmetic exactly,
-          // including its behavior (NaN) for a month that has both incomes
-          // and expenses — see the migration report for details.
-          month.incomes! += 1;
-          month.totalIncome! += total;
-        } else {
-          newMetadata[date] = {
-            balance: total,
-            incomes: 1,
-            totalIncome: total,
-          };
-        }
+        const month = getOrCreateMonthMetadata(newMetadata, date);
+        month.balance += total;
+        month.incomes += 1;
+        month.totalIncome += total;
       });
 
       allExpenses.forEach(expense => {
@@ -99,20 +98,10 @@ export default async function changeCurrency(
 
         const total = calculateRate(data);
 
-        const month = getMonthMetadata(newMetadata, date);
-
-        if (month) {
-          month.balance -= total;
-          // Non-null: see the matching comment in the incomes loop above.
-          month.expenses! += 1;
-          month.totalExpense! += total;
-        } else {
-          newMetadata[date] = {
-            balance: -total,
-            expenses: 1,
-            totalExpense: total,
-          };
-        }
+        const month = getOrCreateMonthMetadata(newMetadata, date);
+        month.balance -= total;
+        month.expenses += 1;
+        month.totalExpense += total;
       });
 
       await setDoc(metadataToUpdate, newMetadata);

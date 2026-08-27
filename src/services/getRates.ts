@@ -27,7 +27,10 @@ async function dataFromOpenExchangeRates(date: Date): Promise<ExchangeRates> {
   const rates: Partial<ExchangeRates> = {};
   currencies.forEach(curr => (rates[curr] = data.rates[curr]));
 
-  // Built up one currency at a time above; by convention every entry in
-  // `currencies` gets filled in, matching the original untyped behavior.
+  const missing = currencies.filter(curr => rates[curr] === undefined);
+  if (missing.length > 0) {
+    throw new Error(`Rates response is missing: ${missing.join(", ")}`);
+  }
+
   return rates as ExchangeRates;
 }

@@ -8,11 +8,23 @@ import { db } from "./firebase";
 
 type BatchAction = "delete" | "update" | "set" | "setmerge";
 
+// Overloads: "delete" needs no update payload, but "update"/"set"/"setmerge"
+// require one — a caller that forgets it fails to compile instead of
+// silently queuing no writes at all.
+export default function batchWrapper(
+  documentRef: QuerySnapshot<DocumentData>,
+  action: "delete",
+): Promise<void>;
+export default function batchWrapper(
+  documentRef: QuerySnapshot<DocumentData>,
+  action: "update" | "set" | "setmerge",
+  update: Record<string, unknown>,
+): Promise<void>;
 export default async function batchWrapper(
   documentRef: QuerySnapshot<DocumentData>,
   action: BatchAction,
   update?: Record<string, unknown>,
-) {
+): Promise<void> {
   const batchArray: WriteBatch[] = [];
   batchArray.push(writeBatch(db));
   let operationCounter = 0;
@@ -40,6 +52,5 @@ export default async function batchWrapper(
     }
   });
 
-  batchArray.forEach(async batch => await batch.commit());
-  return;
+  await Promise.all(batchArray.map(batch => batch.commit()));
 }
