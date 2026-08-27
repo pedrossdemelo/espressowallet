@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "types": ["vite/client", "vite-plugin-pwa/client"],
+
+    "baseUrl": ".",
+    "paths": {
+      "actions": ["src/actions"],
+      "actions/*": ["src/actions/*"],
+      "components": ["src/components"],
+      "components/*": ["src/components/*"],
+      "constants": ["src/constants"],
+      "constants/*": ["src/constants/*"],
+      "context": ["src/context"],
+      "context/*": ["src/context/*"],
+      "hooks": ["src/hooks"],
+      "hooks/*": ["src/hooks/*"],
+      "pages": ["src/pages"],
+      "pages/*": ["src/pages/*"],
+      "services": ["src/services"],
+      "services/*": ["src/services/*"],
+      "types": ["src/types"],
+      "types/*": ["src/types/*"],
+      "utils": ["src/utils"],
+      "utils/*": ["src/utils/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}
