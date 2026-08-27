@@ -14,6 +14,16 @@ describe("getWalletDataStatus", () => {
     ).toBe("error");
   });
 
+  it("stops waiting when a Firestore listener never resolves", () => {
+    expect(getWalletDataStatus([true, true], [null, null], true)).toBe("error");
+  });
+
+  it("ignores an elapsed timeout once all listeners have resolved", () => {
+    expect(getWalletDataStatus([false, false], [null, null], true)).toBe(
+      "ready",
+    );
+  });
+
   it("is ready only after all queries resolve without an error", () => {
     expect(getWalletDataStatus([false, false, false], [null, undefined])).toBe(
       "ready",
