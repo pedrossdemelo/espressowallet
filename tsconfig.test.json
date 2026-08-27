@@ -15,7 +15,9 @@
     // @types/node is in scope here. That's exactly why tests are a separate
     // program: @types/node declares an ambient "constants" module which would
     // otherwise shadow this project's `constants` path alias in app code.
-    "types": ["node"],
+    // vite/client is here too because tests reach into app modules that read
+    // import.meta.env (services/firebase.ts picks the emulator target from it).
+    "types": ["node", "vite/client"],
 
     "baseUrl": ".",
     "paths": {
