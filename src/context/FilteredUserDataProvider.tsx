@@ -7,13 +7,13 @@ import { TransactionWithId, UserMetadata as UserMetadataValue } from "types";
 type TransactionsContextValue = readonly [
   TransactionWithId[],
   boolean,
-  Error | null | undefined
+  Error | null | undefined,
 ];
 
 type UserMetadataContextValue = readonly [
   UserMetadataValue,
   boolean,
-  Error | null | undefined
+  Error | null | undefined,
 ];
 
 export const FilteredExpenses = createContext<TransactionsContextValue>([

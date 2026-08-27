@@ -25,7 +25,7 @@ function stringToColor(string: string) {
 
 export default function stringAvatar(
   user: User,
-  sx?: SxObject
+  sx?: SxObject,
 ): Pick<AvatarProps, "src" | "sx" | "children"> {
   if (!user.email) return { sx };
   if (user.photoURL) return { src: user.photoURL, sx };

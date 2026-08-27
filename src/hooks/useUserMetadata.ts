@@ -17,7 +17,7 @@ export default function useUserMetadata() {
   // Non-null: matches the original code, which also assumed a signed-in
   // user here without guarding.
   const userData = doc(db, "userData", user!.uid).withConverter(
-    metadataConverter
+    metadataConverter,
   );
 
   const [data, loading, error] = useDocumentData(userData);

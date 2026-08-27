@@ -16,7 +16,7 @@ type NewMetadata = {
 // and "balance" is an "MM/YYYY" string holding a MonthMetadata bucket.
 function getMonthMetadata(
   metadata: NewMetadata,
-  key: string
+  key: string,
 ): MonthMetadata | undefined {
   const value = metadata[key];
   return typeof value === "object" ? value : undefined;
@@ -24,7 +24,7 @@ function getMonthMetadata(
 
 export default async function changeCurrency(
   newBaseCurrency: Currency,
-  type: "deleteAll" | "convertAll"
+  type: "deleteAll" | "convertAll",
 ) {
   const user = auth?.currentUser;
   if (!user) return;
@@ -34,11 +34,11 @@ export default async function changeCurrency(
   const metadataToUpdate = doc(db, "userData", uid);
 
   const allIncomes = await getDocs(
-    collection(db, "userData", uid, "incomes").withConverter(converter)
+    collection(db, "userData", uid, "incomes").withConverter(converter),
   );
 
   const allExpenses = await getDocs(
-    collection(db, "userData", uid, "expenses").withConverter(converter)
+    collection(db, "userData", uid, "expenses").withConverter(converter),
   );
 
   switch (type) {

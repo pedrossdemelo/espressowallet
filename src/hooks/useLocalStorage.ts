@@ -10,7 +10,7 @@ export default function useLocalStorage<T>(key: string, initialState: T) {
   const parsed: T | null = raw !== null ? JSON.parse(raw) : null;
 
   const [storedValue, setStoredValue] = useState<T>(
-    parsed ?? writeInitialState(key, initialState)
+    parsed ?? writeInitialState(key, initialState),
   );
 
   function setValue(value: T) {

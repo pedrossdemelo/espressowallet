@@ -166,7 +166,7 @@ export default function ThemeContextProvider({
           },
         },
       }),
-    [mode, isLight]
+    [mode, isLight],
   );
 
   const modeContextValue = React.useMemo(
@@ -177,7 +177,7 @@ export default function ThemeContextProvider({
       toggleMode: () => setMode(mode === "light" ? "dark" : "light"),
       theme,
     }),
-    [mode, theme, setMode]
+    [mode, theme, setMode],
   );
 
   return (

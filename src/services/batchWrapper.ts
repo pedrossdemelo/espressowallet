@@ -11,7 +11,7 @@ type BatchAction = "delete" | "update" | "set" | "setmerge";
 export default async function batchWrapper(
   documentRef: QuerySnapshot<DocumentData>,
   action: BatchAction,
-  update?: Record<string, unknown>
+  update?: Record<string, unknown>,
 ) {
   const batchArray: WriteBatch[] = [];
   batchArray.push(writeBatch(db));

@@ -13,11 +13,11 @@ export default function ExpenseAndIncome() {
   const [incomes] = useContext(FilteredIncomes);
 
   const totalExpenses = formatLongNumber(
-    Number(expenses.reduce((acc, curr) => acc + calculateRate(curr), 0))
+    Number(expenses.reduce((acc, curr) => acc + calculateRate(curr), 0)),
   );
 
   const totalIncomes = formatLongNumber(
-    Number(incomes.reduce((acc, curr) => acc + calculateRate(curr), 0))
+    Number(incomes.reduce((acc, curr) => acc + calculateRate(curr), 0)),
   );
 
   if (totalExpenses === "0.00" && totalIncomes === "0.00") return null;

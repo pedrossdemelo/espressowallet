@@ -1,13 +1,29 @@
 {
-  "extends": ["prettier", "react-app", "react-app/jest"],
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
   "plugins": ["prettier", "only-warn"],
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "babelOptions": {
-      "presets": ["@babel/preset-react"]
-    },
-    "requireConfigFile": false,
+    "ecmaVersion": "latest",
     "sourceType": "module",
-    "jsx": true
-  }
+    "ecmaFeatures": { "jsx": true }
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "no-undef": "off"
+  },
+  "ignorePatterns": ["dist", "build", "node_modules"]
 }

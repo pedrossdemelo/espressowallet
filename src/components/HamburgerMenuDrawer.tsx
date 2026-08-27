@@ -82,7 +82,7 @@ export default function HamburgerMenuDrawer({
           onClick={() => {
             window.open(
               "https://www.vakinha.com.br/vaquinha/manutencao-do-espresso-wallet",
-              "_blank"
+              "_blank",
             );
           }}
           sx={{ flexGrow: 0 }}

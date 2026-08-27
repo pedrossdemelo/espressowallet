@@ -16,7 +16,7 @@ export type FilterAction = SetDateFilterAction;
 
 export default function filterReducer(
   state = initialState,
-  action: FilterAction
+  action: FilterAction,
 ) {
   switch (action.type) {
     case "filter/setDateFilter": {

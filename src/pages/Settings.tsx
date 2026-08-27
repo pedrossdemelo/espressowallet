@@ -47,7 +47,7 @@ export default function ProfileMenu() {
   const { isLight, toggleMode } = useMode();
 
   const { currency: currentCurrency, loading } = useSelector(
-    state => state.wallet.baseCurrency
+    state => state.wallet.baseCurrency,
   );
   const [currency, setCurrency] = useState<Currency | null | undefined>("USD");
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -75,10 +75,10 @@ export default function ProfileMenu() {
   const handleDeleteAllTransactions = async () => {
     await changeCurrency(
       (dialogOpen ? currency : currentCurrency)!,
-      "deleteAll"
+      "deleteAll",
     );
     closeDeleteDialog();
-    dialogOpen && closeDialog();
+    if (dialogOpen) closeDialog();
   };
 
   if (!currentCurrency && !loading) return <Redirect to="/" />;

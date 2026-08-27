@@ -27,7 +27,7 @@ ReactDOM.render(
     </ThemeContextProvider>
   </BrowserRouter>,
   // Non-null: index.html always has this element.
-  document.getElementById("root")!
+  document.getElementById("root")!,
 );
 
 serviceWorkerRegistration.register();

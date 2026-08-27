@@ -20,7 +20,7 @@ export default function IncomeInfo() {
 
   const total = useMemo(
     () => incomes.reduce((acc, curr) => acc + calculateRate(curr), 0),
-    [incomes]
+    [incomes],
   );
 
   const tags = useMemo(
@@ -38,19 +38,19 @@ export default function IncomeInfo() {
         else acc[tag] = { percentage, amount };
         return acc;
       }, {}),
-    [incomes, total]
+    [incomes, total],
   );
 
   let tagsArray = useMemo(
     // Object.entries widens keys to `string` — cast back to Tag, which is
     // what every key actually is here (see the reduce above).
     () => Object.entries(tags) as [Tag, TagSummary][],
-    [tags]
+    [tags],
   );
 
   tagsArray = useMemo(
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
-    [tagsArray]
+    [tagsArray],
   );
 
   function dotStyle(tag: Tag) {

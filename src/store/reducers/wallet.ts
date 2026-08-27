@@ -21,7 +21,7 @@ export type WalletAction = UpdateBaseCurrencyAction;
 
 export default function walletReducer(
   state = initialState,
-  action: WalletAction
+  action: WalletAction,
 ) {
   switch (action.type) {
     case "wallet/updateBaseCurrency":

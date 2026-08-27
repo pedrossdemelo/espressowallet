@@ -9,7 +9,7 @@ export default async function deleteAllTransactions() {
   const { uid } = user;
 
   const allExpenses = await getDocs(
-    collection(db, "userData", uid, "expenses")
+    collection(db, "userData", uid, "expenses"),
   );
   const allIncomes = await getDocs(collection(db, "userData", uid, "incomes"));
 

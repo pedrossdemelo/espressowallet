@@ -77,14 +77,14 @@ export default function OverviewDate() {
     const result = `${month} ${year}..`;
     // Safari doesn't resolve rem in detached canvas elements, so convert to px explicitly
     const rootFontSize = parseFloat(
-      getComputedStyle(document.documentElement).fontSize
+      getComputedStyle(document.documentElement).fontSize,
     );
     const fontSizePx = `${
       parseFloat(String(theme.typography.h6.fontSize)) * rootFontSize
     }px`;
     return getTextWidth(
       result,
-      `${fontSizePx} ${theme.typography.h6.fontFamily}`
+      `${fontSizePx} ${theme.typography.h6.fontFamily}`,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start]);

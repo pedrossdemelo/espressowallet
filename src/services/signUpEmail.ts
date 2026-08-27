@@ -10,7 +10,7 @@ export default async function signUpEmail(email: string, password: string) {
     const credentials = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     sendEmailVerification(credentials.user, {
       url: "http://www.espressowallet.com/",

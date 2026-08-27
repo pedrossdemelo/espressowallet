@@ -59,7 +59,7 @@ export default function ExpenseFormDrawer({
   const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
   initialFormState.currency = baseCurrency ?? undefined;
   const [formState, setFormState] = useState<FormState>(
-    toEdit ?? initialFormState
+    toEdit ?? initialFormState,
   );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;

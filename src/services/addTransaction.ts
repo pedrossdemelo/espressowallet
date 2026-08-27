@@ -13,8 +13,8 @@ export default async function addTransaction(newTransaction: Transaction) {
 
   const collectionToAdd = doc(
     collection(db, "userData", uid, transactionType + "s").withConverter(
-      converter
-    )
+      converter,
+    ),
   );
 
   const metadataToUpdate = doc(db, "userData", uid);
@@ -39,7 +39,7 @@ export default async function addTransaction(newTransaction: Transaction) {
         [transactionType + "Total"]: increment(total),
       },
     },
-    { merge: true }
+    { merge: true },
   );
 
   await batch.commit();

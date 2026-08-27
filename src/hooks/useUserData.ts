@@ -46,7 +46,7 @@ export default function useUserData(
     order = ["createdAt"],
     limit = null,
     converter = transactionConverter,
-  }: UseUserDataOptions = {}
+  }: UseUserDataOptions = {},
 ) {
   const [user] = useAuth();
 
@@ -58,7 +58,7 @@ export default function useUserData(
   // here without guarding — this hook is only ever used once auth resolves.
   const userData = collection(
     db,
-    `userData/${user!.uid}/${type}`
+    `userData/${user!.uid}/${type}`,
   ).withConverter(converter);
 
   const filters =
@@ -71,7 +71,7 @@ export default function useUserData(
               ]
             : []),
           ...extraFilters.map(([field, operator, value]) =>
-            where(field, operator, value)
+            where(field, operator, value),
           ),
         ]
       : [];

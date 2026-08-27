@@ -18,7 +18,7 @@ export default function ExpenseInfo() {
 
   const total = useMemo(
     () => expenses.reduce((acc, curr) => acc + calculateRate(curr), 0),
-    [expenses]
+    [expenses],
   );
 
   const tags = useMemo(
@@ -36,19 +36,19 @@ export default function ExpenseInfo() {
         else acc[tag] = { percentage, amount };
         return acc;
       }, {}),
-    [expenses, total]
+    [expenses, total],
   );
 
   let tagsArray = useMemo(
     // Object.entries widens keys to `string` — cast back to Tag, which is
     // what every key actually is here (see the reduce above).
     () => Object.entries(tags) as [Tag, TagSummary][],
-    [tags]
+    [tags],
   );
 
   tagsArray = useMemo(
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
-    [tagsArray]
+    [tagsArray],
   );
 
   const shouldRender = expenses.length > 0;

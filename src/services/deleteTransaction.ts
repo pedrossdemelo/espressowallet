@@ -5,7 +5,7 @@ import dateToMMYYYY from "utils/dateToMMYYYY";
 import { auth, db } from "./firebase";
 
 export default async function deleteTransaction(
-  transaction: TransactionWithId
+  transaction: TransactionWithId,
 ) {
   const user = auth?.currentUser;
   if (!user) return;
@@ -38,7 +38,7 @@ export default async function deleteTransaction(
         [transactionType + "Total"]: increment(-difference),
       },
     },
-    { merge: true }
+    { merge: true },
   );
 
   await batch.commit();

@@ -7,7 +7,7 @@ import { auth, db } from "./firebase";
 
 export default async function editTransaction(
   oldTransaction: TransactionWithId,
-  updatedTransaction: TransactionWithId
+  updatedTransaction: TransactionWithId,
 ) {
   const user = auth?.currentUser;
   if (!user) return;
@@ -20,7 +20,7 @@ export default async function editTransaction(
     "userData",
     uid,
     transactionType + "s",
-    id
+    id,
   ).withConverter(converter);
 
   const metadataToUpdate = doc(db, "userData", uid);
@@ -55,7 +55,7 @@ export default async function editTransaction(
           [transactionType + "Total"]: increment(-oldTotal),
         },
       },
-      { merge: true }
+      { merge: true },
     );
   }
 
@@ -69,7 +69,7 @@ export default async function editTransaction(
           [transactionType + "Total"]: increment(difference),
         },
       },
-      { merge: true }
+      { merge: true },
     );
   }
 
