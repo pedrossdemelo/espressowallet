@@ -64,7 +64,7 @@ export default function Login() {
       if (error) setErrorState(humanErrorParse(error));
       if (verificationError)
         showError(
-          "Your account was created, but the verification email could not be sent. Use Resend to try again.",
+          `Your account was created, but the verification email could not be sent (${verificationError}). Use Resend to try again.`,
         );
     }
 
