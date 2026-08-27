@@ -1,4 +1,4 @@
-import { converter as baseConverter } from "constants";
+import baseConverter from "../constants/converter";
 import { StoredTransaction } from "constants/converter";
 import {
   collection,

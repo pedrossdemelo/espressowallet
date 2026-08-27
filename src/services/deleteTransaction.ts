@@ -11,6 +11,8 @@ export default async function deleteTransaction(
   if (!user) return;
 
   const { type: transactionType, id } = transaction;
+  const totalKey =
+    transactionType === "expense" ? "totalExpense" : "totalIncome";
   const { uid } = user;
 
   const docToDelete = doc(db, "userData", uid, transactionType + "s", id);
@@ -35,7 +37,7 @@ export default async function deleteTransaction(
       [MMYYYY]: {
         balance: increment(operator * difference),
         [transactionType + "s"]: increment(-1),
-        [transactionType + "Total"]: increment(-difference),
+        [totalKey]: increment(-difference),
       },
     },
     { merge: true },
