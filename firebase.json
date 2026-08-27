@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "headers": [
       {
         "source": "/service-worker.js",
@@ -25,6 +29,9 @@
     "indexes": "firestore.indexes.json"
   },
   "emulators": {
+    "auth": {
+      "port": 9099
+    },
     "firestore": {
       "port": 8080
     },
