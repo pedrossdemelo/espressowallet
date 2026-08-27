@@ -18,7 +18,23 @@ jobs:
         env:
           HUSKY: 0
       - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ESPRESSOWALLET }}'
+          channelId: live
+          projectId: espressowallet
+      # Best-effort: the FIREBASE_SERVICE_ACCOUNT_ESPRESSOWALLET service
+      # account currently lacks the IAM permissions Firestore deploys need
+      # (serviceusage.services.get, at minimum a Firebase Rules Admin /
+      # Cloud Datastore Owner role). Runs after hosting so a permissions
+      # failure here never blocks the site itself from deploying; doesn't
+      # fail the job, so it needs to be watched rather than relied on to
+      # go red. Grant the missing role, or deploy rules manually with
+      # `firebase deploy --only firestore` from an authenticated session,
+      # to close this gap.
       - name: Deploy Firestore rules and indexes
+        continue-on-error: true
         run: |
           echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-service-account.json
           npx firebase-tools deploy --only firestore --project espressowallet --non-interactive
@@ -26,9 +42,3 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ESPRESSOWALLET }}'
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-service-account.json
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ESPRESSOWALLET }}'
-          channelId: live
-          projectId: espressowallet
