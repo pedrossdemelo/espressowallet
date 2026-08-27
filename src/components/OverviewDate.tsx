@@ -6,9 +6,9 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { Card, FormControl, IconButton, Input, Stack } from "@mui/material";
 import { setDateFilter } from "actions";
-import { useMode, useUserData } from "hooks";
+import { useAppSelector, useMode, useUserData } from "hooks";
 import { ReactNode, Ref, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getTextWidth } from "utils";
 
 // renderInput hands back full TextField props, but this DatePicker renders
@@ -52,7 +52,7 @@ export default function OverviewDate() {
 
   const dispatch = useDispatch();
 
-  const { start } = useSelector(state => state.filter.date);
+  const { start } = useAppSelector(state => state.filter.date);
 
   const handleChange = (newDate: Date | null) => {
     // Non-null: matches the original, which also dispatched whatever the

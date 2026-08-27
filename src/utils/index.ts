@@ -5,3 +5,4 @@ export { default as formatLongNumber } from "./formatLongNumber";
 export { default as getMonthRange } from "./getMonthRange";
 export { default as getTextWidth } from "./getTextWidth";
 export { default as stringAvatar } from "./stringAvatar";
+export { default as swipeAction, swipeThreshold } from "./swipeAction";

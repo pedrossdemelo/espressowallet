@@ -3,7 +3,7 @@ import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
 import { useAuth } from "hooks";
 import { lazy, ReactNode, Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 // Route-level code splitting: each page (and everything it alone pulls in —
 // Wallet drags in the bulk of Firestore usage, Settings its own dialogs) only
@@ -15,6 +15,7 @@ const Wallet = lazy(() => import("pages/Wallet"));
 
 function App() {
   const [user, loadingUser] = useAuth();
+  const { pathname } = useLocation();
 
   if (loadingUser) return <Loading />;
 
@@ -41,7 +42,11 @@ function App() {
               </Route>
             </Switch>
           </Suspense>
-          <EmailVerificationAlert shown={loggedIn && !verified} />
+          {/* /login renders its own pending-verification screen, so the
+              floating alert there would just repeat it. */}
+          <EmailVerificationAlert
+            shown={loggedIn && !verified && pathname !== "/login"}
+          />
         </Background>
       </UserData>
     </>

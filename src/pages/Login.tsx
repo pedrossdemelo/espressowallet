@@ -200,9 +200,16 @@ function PendingVerification({ email }: { email: string | null }) {
     setChecking(true);
     try {
       await user.reload();
-      if (!user.emailVerified)
+      if (!user.emailVerified) {
         showError("Still not verified. Check your inbox and spam folder.");
-      else window.location.reload();
+        return;
+      }
+      // reload() refreshes the user record but not the cached ID token, and
+      // the Firestore rules read email_verified off the token. Without a
+      // forced refresh the wallet loads with a stale unverified token and
+      // every read is denied.
+      await user.getIdToken(true);
+      window.location.reload();
     } catch (err) {
       showError(errorMessage(err, "Couldn't check your verification status."));
     } finally {

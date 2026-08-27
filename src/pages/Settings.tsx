@@ -28,9 +28,9 @@ import {
 import { Box } from "@mui/system";
 import { currencies } from "constants";
 import { errorMessage, useSnackbar } from "context";
-import { useMode } from "hooks";
+import { useAppSelector, useMode } from "hooks";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+
 import { Redirect, useHistory } from "react-router-dom";
 import { changeCurrency, logout } from "services";
 import { Currency } from "types";
@@ -49,7 +49,7 @@ export default function ProfileMenu() {
   const { isLight, toggleMode } = useMode();
   const { showError } = useSnackbar();
 
-  const { currency: currentCurrency, loading } = useSelector(
+  const { currency: currentCurrency, loading } = useAppSelector(
     state => state.wallet.baseCurrency,
   );
   const [currency, setCurrency] = useState<Currency | null | undefined>("USD");
@@ -75,7 +75,9 @@ export default function ProfileMenu() {
       await changeCurrency(currency!, "convertAll");
       closeDialog();
     } catch (err) {
-      showError(errorMessage(err, "Couldn't convert your currency. Try again."));
+      showError(
+        errorMessage(err, "Couldn't convert your currency. Try again."),
+      );
     }
   };
 
@@ -88,7 +90,9 @@ export default function ProfileMenu() {
       closeDeleteDialog();
       if (dialogOpen) closeDialog();
     } catch (err) {
-      showError(errorMessage(err, "Couldn't delete your transactions. Try again."));
+      showError(
+        errorMessage(err, "Couldn't delete your transactions. Try again."),
+      );
     }
   };
 

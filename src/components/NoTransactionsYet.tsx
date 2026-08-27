@@ -1,8 +1,8 @@
+import { useAppSelector } from "hooks";
 import { HistoryToggleOff } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { FilteredExpenses, FilteredIncomes } from "context";
 import React, { useContext } from "react";
-import { useSelector } from "react-redux";
 
 const months = [
   "January",
@@ -20,7 +20,7 @@ const months = [
 ];
 
 export default function NoTransactionsYet() {
-  const { date } = useSelector(state => state.filter);
+  const { date } = useAppSelector(state => state.filter);
 
   const [expenses] = useContext(FilteredExpenses);
   const [incomes] = useContext(FilteredIncomes);

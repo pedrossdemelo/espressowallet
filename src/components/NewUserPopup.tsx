@@ -1,3 +1,4 @@
+import { useAppSelector } from "hooks";
 import {
   Button,
   Dialog,
@@ -10,7 +11,7 @@ import {
 import { currencies } from "constants";
 import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+
 import { changeCurrency } from "services";
 import { Currency } from "types";
 
@@ -18,7 +19,9 @@ export default function NewUserPopup() {
   const [show, setShow] = useState(false);
   const { showError } = useSnackbar();
 
-  const { currency, loading } = useSelector(state => state.wallet.baseCurrency);
+  const { currency, loading } = useAppSelector(
+    state => state.wallet.baseCurrency,
+  );
 
   const [selectedCurrency, setSelectedCurrency] = useState(currency ?? "USD");
 
@@ -37,7 +40,9 @@ export default function NewUserPopup() {
       await changeCurrency(selectedCurrency, "convertAll");
       setShow(false);
     } catch (err) {
-      showError(errorMessage(err, "Couldn't set your base currency. Try again."));
+      showError(
+        errorMessage(err, "Couldn't set your base currency. Try again."),
+      );
     }
   };
 

@@ -13,12 +13,12 @@ import {
   ConfirmationDialog,
   ExpenseFormDrawer,
   IncomeFormDrawer,
+  SwipeRevealItem,
 } from "components";
 import { colorMap, iconsMap } from "constants";
 import { errorMessage, useSnackbar } from "context";
 import { useMode } from "hooks";
-import { useRef, useState } from "react";
-import SwipeableView from "react-swipeable-views";
+import { useState } from "react";
 import { deleteTransaction } from "services";
 import { TransactionWithId } from "types";
 
@@ -187,145 +187,132 @@ export function TransactionListItem(props: TransactionListItemProps) {
     </ListItem>
   );
 
-  const reachedThreshHold = useRef<"left" | "right" | null>(null);
-
-  const handleSwitching = (index: number) => {
-    // When the gesture stops, the index will always be 1, so ignore it
-    if (index === 1) return;
-    // If the user has reached the left threshold, open the delete confirmation dialog once the gesture stops
-    if (index <= 0.75) reachedThreshHold.current = "left";
-    // If the user has reached the right threshold, open the edit dialog once the gesture stops
-    else if (index >= 1.25) reachedThreshHold.current = "right";
-    // If the user has reached neither threshold, or decided not to delete or edit by going back, reset the threshold
-    else reachedThreshHold.current = null;
-  };
-
-  const handleSwipeEnd = () => {
-    if (reachedThreshHold.current === "left") openDialog();
-    if (reachedThreshHold.current === "right") open();
-    reachedThreshHold.current = null;
-  };
-
-  const MobileListItem = () => (
-    <SwipeableView
-      hysteresis={99}
-      threshold={99}
-      onSwitching={handleSwitching}
-      onTransitionEnd={handleSwipeEnd}
-      index={1}
+  const deletePanel = (
+    <ListItem
+      sx={{
+        color: "white",
+        justifyContent: "flex-end",
+        bgcolor: isLight ? "error.light" : "error.dark",
+        height: "100%",
+        borderRadius: 1,
+        borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0,
+        overflow: "visible",
+      }}
     >
-      <ListItem
+      <Stack direction="row">
+        <DeleteOutline />
+      </Stack>
+    </ListItem>
+  );
+
+  const mobileContent = (
+    <ListItem>
+      <Stack
+        direction="row"
         sx={{
-          color: "white",
-          justifyContent: "flex-end",
-          bgcolor: isLight ? "error.light" : "error.dark",
-          height: "100%",
-          borderRadius: 1,
-          borderBottomLeftRadius: 0,
-          borderTopLeftRadius: 0,
-          overflow: "visible",
+          flexGrow: 1,
         }}
+        justifyContent="space-between"
       >
         <Stack direction="row">
-          <DeleteOutline />
-        </Stack>
-      </ListItem>
-
-      <ListItem>
-        <Stack
-          direction="row"
-          sx={{
-            flexGrow: 1,
-          }}
-          justifyContent="space-between"
-        >
-          <Stack direction="row">
-            <ListItemAvatar>
-              <Avatar
-                sx={{
-                  bgcolor: colorMap[tag],
-                  mr: 2,
-                  color: "common.white",
-                }}
-              >
-                {iconsMap[tag]}
-              </Avatar>
-            </ListItemAvatar>
-
-            <Typography
-              lineHeight={1.375}
+          <ListItemAvatar>
+            <Avatar
               sx={{
-                display: "flex",
-                flexFlow: "column nowrap",
-                justifyContent: "center",
-                textTransform: "capitalize",
+                bgcolor: colorMap[tag],
+                mr: 2,
+                color: "common.white",
               }}
-              textAlign="left"
             >
-              {description}
-              <br />
-              <Typography
-                color="text.secondary"
-                lineHeight={1.375}
-                variant="caption"
-              >
-                {tag}
-              </Typography>
-            </Typography>
-          </Stack>
+              {iconsMap[tag]}
+            </Avatar>
+          </ListItemAvatar>
 
           <Typography
-            textAlign="right"
             lineHeight={1.375}
-            color={
-              type === "income"
-                ? `success.${isLight ? "dark" : "light"}`
-                : `error.${isLight ? "dark" : "light"}`
-            }
             sx={{
               display: "flex",
               flexFlow: "column nowrap",
               justifyContent: "center",
+              textTransform: "capitalize",
             }}
+            textAlign="left"
           >
-            {Number(value).toFixed(2)} {currency}
+            {description}
             <br />
             <Typography
               color="text.secondary"
               lineHeight={1.375}
               variant="caption"
             >
-              {ask !== 1
-                ? `${(ask * value).toFixed(2)} ${baseCurrency} | `
-                : ""}
-              {date}
+              {tag}
             </Typography>
           </Typography>
         </Stack>
-      </ListItem>
 
-      <ListItem
-        sx={{
-          borderRadius: 1,
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-          color: "white",
-          bgcolor: isLight ? "primary.light" : "primary.dark",
-          height: "100%",
-        }}
-      >
-        <Stack direction="row">
-          <Edit />
-        </Stack>
-      </ListItem>
-    </SwipeableView>
+        <Typography
+          textAlign="right"
+          lineHeight={1.375}
+          color={
+            type === "income"
+              ? `success.${isLight ? "dark" : "light"}`
+              : `error.${isLight ? "dark" : "light"}`
+          }
+          sx={{
+            display: "flex",
+            flexFlow: "column nowrap",
+            justifyContent: "center",
+          }}
+        >
+          {Number(value).toFixed(2)} {currency}
+          <br />
+          <Typography
+            color="text.secondary"
+            lineHeight={1.375}
+            variant="caption"
+          >
+            {ask !== 1 ? `${(ask * value).toFixed(2)} ${baseCurrency} | ` : ""}
+            {date}
+          </Typography>
+        </Typography>
+      </Stack>
+    </ListItem>
+  );
+
+  const editPanel = (
+    <ListItem
+      sx={{
+        borderRadius: 1,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        color: "white",
+        bgcolor: isLight ? "primary.light" : "primary.dark",
+        height: "100%",
+      }}
+    >
+      <Stack direction="row">
+        <Edit />
+      </Stack>
+    </ListItem>
+  );
+
+  // Dragging the row towards its end uncovers delete; the other way, edit.
+  const mobileListItem = (
+    <SwipeRevealItem
+      startPanel={deletePanel}
+      endPanel={editPanel}
+      onStartAction={openDialog}
+      onEndAction={open}
+    >
+      {mobileContent}
+    </SwipeRevealItem>
   );
 
   const isDesktop = useMediaQuery("(pointer: fine)");
 
   return (
     <>
-      {isDesktop ? <DesktopListItem /> : <MobileListItem />}
+      {isDesktop ? <DesktopListItem /> : mobileListItem}
 
       {type === "income" ? (
         <IncomeFormDrawer

@@ -15,6 +15,7 @@ export { default as NewUserPopup } from "./NewUserPopup";
 export { default as NoTransactionsYet } from "./NoTransactionsYet";
 export { default as OverviewDate } from "./OverviewDate";
 export { default as SpeedDials } from "./SpeedDials";
+export { default as SwipeRevealItem } from "./SwipeRevealItem";
 export { default as TagBreakdownCard } from "./TagBreakdownCard";
 export { default as TransactionFormDrawer } from "./TransactionFormDrawer";
 export { TransactionListItem } from "./TransactionListItem";

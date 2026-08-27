@@ -8,8 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ErrorBoundary } from "components";
 import { SnackbarProvider, ThemeContextProvider } from "context";
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
@@ -17,7 +16,10 @@ import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import store from "./store";
 
-ReactDOM.render(
+// Non-null: index.html always has this element.
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ThemeContextProvider>
@@ -31,8 +33,6 @@ ReactDOM.render(
       </ThemeContextProvider>
     </BrowserRouter>
   </ErrorBoundary>,
-  // Non-null: index.html always has this element.
-  document.getElementById("root")!,
 );
 
 serviceWorkerRegistration.register();
