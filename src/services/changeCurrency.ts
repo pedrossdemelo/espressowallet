@@ -1,4 +1,4 @@
-import { converter } from "constants";
+import converter from "../constants/converter";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { Currency, Transaction } from "types";
 import batchWrapper from "./batchWrapper";
@@ -8,7 +8,7 @@ import { auth, db } from "./firebase";
 
 export default async function changeCurrency(
   newBaseCurrency: Currency,
-  type: "deleteAll" | "convertAll"
+  type: "deleteAll" | "convertAll",
 ) {
   const user = auth?.currentUser;
   if (!user) return;
@@ -18,11 +18,11 @@ export default async function changeCurrency(
   const metadataToUpdate = doc(db, "userData", uid);
 
   const allIncomes = await getDocs(
-    collection(db, "userData", uid, "incomes").withConverter(converter)
+    collection(db, "userData", uid, "incomes").withConverter(converter),
   );
 
   const allExpenses = await getDocs(
-    collection(db, "userData", uid, "expenses").withConverter(converter)
+    collection(db, "userData", uid, "expenses").withConverter(converter),
   );
 
   switch (type) {
@@ -50,7 +50,7 @@ export default async function changeCurrency(
 
       await setDoc(
         metadataToUpdate,
-        buildConvertedMetadata(incomes, expenses, newBaseCurrency)
+        buildConvertedMetadata(incomes, expenses, newBaseCurrency),
       );
       return;
     }

@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "context";
 import React, { useRef, useState } from "react";
 import { loginEmail, signUpEmail } from "services";
 import signInGoogle from "services/signInGoogle";
@@ -29,6 +30,7 @@ const emptyForm = {
 };
 
 export default function Login() {
+  const { showError } = useSnackbar();
   const [loading, setLoading] = useState(notLoading);
   const { loginLoading, signUpLoading } = loading;
 
@@ -57,9 +59,13 @@ export default function Login() {
 
     if (isSignUp.current) {
       setLoading({ ...notLoading, signUpLoading: true });
-      const { error } = await signUpEmail(email, password);
+      const { error, verificationError } = await signUpEmail(email, password);
       setLoading(notLoading);
       if (error) setErrorState(humanErrorParse(error));
+      if (verificationError)
+        showError(
+          "Your account was created, but the verification email could not be sent. Use Resend to try again.",
+        );
     }
 
     if (!isSignUp.current) {

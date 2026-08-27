@@ -1,38 +1,55 @@
-import { Alert, AlertTitle, Button, Slide } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Alert, AlertTitle, Slide } from "@mui/material";
 import { Box } from "@mui/system";
-import { sendEmailVerification } from "firebase/auth";
+import { errorMessage, useSnackbar } from "context";
 import { useAuth } from "hooks";
-import React from "react";
+import React, { useState } from "react";
+import { sendVerificationEmail } from "services";
 
 export default function EmailVerificationAlert({ shown }: { shown: boolean }) {
   const [user] = useAuth();
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const { showError } = useSnackbar();
 
-  const handleResendEmailVerification = () => {
-    // Non-null: only reachable while logged in but unverified (see App.js),
-    // matching the original code's assumption.
-    sendEmailVerification(user!, { url: "http://www.espressowallet.com/" });
+  const handleResendEmailVerification = async () => {
+    if (!user || sending) return;
+    setSending(true);
+    setSent(false);
+    try {
+      await sendVerificationEmail(user);
+      setSent(true);
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't resend the verification email."));
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <Slide direction="up" in={shown} mountOnEnter unmountOnExit>
       <Alert
         action={
-          <Button
+          <LoadingButton
             onClick={handleResendEmailVerification}
             color="inherit"
             size="small"
             sx={{ mt: "-1px" }}
+            loading={sending}
           >
             Resend
-          </Button>
+          </LoadingButton>
         }
         sx={alertStyle}
         severity="info"
       >
         <AlertTitle>Pending verification</AlertTitle>
         <Box sx={{ mr: -6 }}>
-          An email has been sent to <strong>{user?.email}</strong> to verify
-          your account. Make sure to check your spam folder.
+          {sent ? "Verification email sent. " : "Verify "}
+          <strong>{user?.email}</strong>
+          {sent
+            ? " Check your inbox and spam folder."
+            : " to continue. Check your inbox or resend the email."}
         </Box>
       </Alert>
     </Slide>

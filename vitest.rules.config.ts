@@ -1,10 +1,11 @@
 import { defineConfig } from "vitest/config";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 // Firestore security-rules tests. Run through `npm run test:rules`, which wraps
 // this in `firebase emulators:exec` so the emulator is up on 127.0.0.1:8080.
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     environment: "node",
     include: ["src/__tests__/firestore.rules.test.ts"],

@@ -1,4 +1,4 @@
-import { converter } from "constants";
+import converter from "../constants/converter";
 import { doc, increment, writeBatch } from "firebase/firestore";
 import { TransactionWithId } from "types";
 import { calculateRate } from "utils";
@@ -13,6 +13,8 @@ export default async function editTransaction(
   if (!user) return;
 
   const { type: transactionType, id } = updatedTransaction;
+  const totalKey =
+    transactionType === "expense" ? "totalExpense" : "totalIncome";
   const { uid } = user;
 
   const docToUpdate = doc(
@@ -47,12 +49,12 @@ export default async function editTransaction(
         [newMMYYYY]: {
           balance: increment(operator * newTotal),
           [transactionType + "s"]: increment(1),
-          [transactionType + "Total"]: increment(newTotal),
+          [totalKey]: increment(newTotal),
         },
         [oldMMYYYY]: {
           balance: increment(operator * -oldTotal),
           [transactionType + "s"]: increment(-1),
-          [transactionType + "Total"]: increment(-oldTotal),
+          [totalKey]: increment(-oldTotal),
         },
       },
       { merge: true },
@@ -66,7 +68,7 @@ export default async function editTransaction(
         balance: increment(operator * difference),
         [newMMYYYY]: {
           balance: increment(operator * difference),
-          [transactionType + "Total"]: increment(difference),
+          [totalKey]: increment(difference),
         },
       },
       { merge: true },

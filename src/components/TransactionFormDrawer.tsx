@@ -11,7 +11,11 @@ import { currencies } from "constants";
 import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { addTransaction, editTransaction, getRates } from "services";
+import {
+  addTransaction,
+  editTransaction,
+  resolveTransactionRates,
+} from "services";
 import { Tag, Transaction, TransactionType, TransactionWithId } from "types";
 
 // A transaction in progress: always has tag/value/description, and — once
@@ -68,7 +72,7 @@ export default function TransactionFormDrawer({
   initialFormStateRef.current.currency = baseCurrency ?? undefined;
 
   const [formState, setFormState] = useState<FormState>(
-    toEdit ?? initialFormStateRef.current
+    toEdit ?? initialFormStateRef.current,
   );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const [submitting, setSubmitting] = useState(false);
@@ -97,7 +101,7 @@ export default function TransactionFormDrawer({
 
     setSubmitting(true);
     try {
-      const rates = await getRates(date);
+      const rates = await resolveTransactionRates(toEdit, date);
 
       const transaction = {
         ...formState,
