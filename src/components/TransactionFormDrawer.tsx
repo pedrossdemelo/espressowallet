@@ -1,6 +1,5 @@
-import { DateTimePicker } from "@mui/lab";
+import { DateTimePicker, LoadingButton } from "@mui/lab";
 import {
-  Button,
   List,
   ListItem,
   SwipeableDrawer,
@@ -17,6 +16,7 @@ import {
   resolveTransactionRates,
 } from "services";
 import { Tag, Transaction, TransactionType, TransactionWithId } from "types";
+import createSubmissionLock from "utils/createSubmissionLock";
 
 // A transaction in progress: always has tag/value/description, and — once
 // seeded from `toEdit` — everything else a real Transaction has too.
@@ -76,6 +76,7 @@ export default function TransactionFormDrawer({
   );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const [submitting, setSubmitting] = useState(false);
+  const submitOnce = useRef(createSubmissionLock()).current;
   const { tag, value, currency, description } = formState;
   const { showError } = useSnackbar();
 
@@ -99,34 +100,36 @@ export default function TransactionFormDrawer({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setSubmitting(true);
-    try {
-      const rates = await resolveTransactionRates(toEdit, date);
+    await submitOnce(async () => {
+      setSubmitting(true);
+      try {
+        const rates = await resolveTransactionRates(toEdit, date);
 
-      const transaction = {
-        ...formState,
-        baseCurrency,
-        createdAt: date,
-        type,
-        exchangeRates: rates,
-      };
+        const transaction = {
+          ...formState,
+          baseCurrency,
+          createdAt: date,
+          type,
+          exchangeRates: rates,
+        };
 
-      // Cast: `formState.currency` is optional on the type (it models an
-      // in-progress draft) but is always set by submit time — the form only
-      // reaches here once a base currency has loaded. `.id` is only relied
-      // on below when `toEdit` is set, in which case formState was seeded
-      // from it and still carries it.
-      if (!toEdit) await addTransaction(transaction as Transaction);
+        // Cast: `formState.currency` is optional on the type (it models an
+        // in-progress draft) but is always set by submit time — the form only
+        // reaches here once a base currency has loaded. `.id` is only relied
+        // on below when `toEdit` is set, in which case formState was seeded
+        // from it and still carries it.
+        if (!toEdit) await addTransaction(transaction as Transaction);
 
-      if (toEdit)
-        await editTransaction(toEdit, transaction as TransactionWithId);
+        if (toEdit)
+          await editTransaction(toEdit, transaction as TransactionWithId);
 
-      close();
-    } catch (err) {
-      showError(errorMessage(err, `Couldn't save the ${type}. Try again.`));
-    } finally {
-      setSubmitting(false);
-    }
+        close();
+      } catch (err) {
+        showError(errorMessage(err, `Couldn't save the ${type}. Try again.`));
+      } finally {
+        setSubmitting(false);
+      }
+    });
   }
 
   useEffect(() => {
@@ -147,6 +150,7 @@ export default function TransactionFormDrawer({
     >
       <List
         component="form"
+        aria-busy={submitting}
         sx={{
           borderRadius,
           bgcolor: "background.paper",
@@ -162,6 +166,7 @@ export default function TransactionFormDrawer({
             // the original literal value via a cast rather than changed.
             size={"large" as TextFieldProps["size"]}
             name="value-input"
+            disabled={submitting}
             error={value <= 0}
             helperText={value <= 0 ? "Value must be greater than 0" : " "}
             autoFocus
@@ -180,6 +185,7 @@ export default function TransactionFormDrawer({
             name="currency-input"
             helperText=" "
             data-testid="currency-input"
+            disabled={submitting}
             onChange={handleChange}
             value={currency}
           >
@@ -208,6 +214,7 @@ export default function TransactionFormDrawer({
             name="description-input"
             label="Description"
             data-testid="description-input"
+            disabled={submitting}
             onChange={handleChange}
             value={description}
           />
@@ -215,6 +222,7 @@ export default function TransactionFormDrawer({
 
         <ListItem sx={{ justifyContent: "space-between", gap: 5 }}>
           <DateTimePicker
+            disabled={submitting}
             value={date}
             label="Date"
             disableFuture
@@ -237,6 +245,7 @@ export default function TransactionFormDrawer({
             id="tag-input"
             name="tag-input"
             data-testid="tag-input"
+            disabled={submitting}
             value={tag}
           >
             {tagInputs.map(t => (
@@ -248,7 +257,7 @@ export default function TransactionFormDrawer({
         </ListItem>
 
         <ListItem>
-          <Button
+          <LoadingButton
             disabled={
               description.length < 3 ||
               description.length >= 25 ||
@@ -258,9 +267,10 @@ export default function TransactionFormDrawer({
             }
             sx={{ ml: "auto", mt: 1 }}
             type="submit"
+            loading={submitting}
           >
             {toEdit ? "Edit" : "Add"} {type}
-          </Button>
+          </LoadingButton>
         </ListItem>
       </List>
     </SwipeableDrawer>
