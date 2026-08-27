@@ -6,7 +6,8 @@ import "@fontsource/poppins/500.css";
 import "@fontsource/poppins/600.css";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { ThemeContextProvider } from "context";
+import { ErrorBoundary } from "components";
+import { SnackbarProvider, ThemeContextProvider } from "context";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -17,15 +18,19 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import store from "./store";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ThemeContextProvider>
-      <Provider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <App />
-        </LocalizationProvider>
-      </Provider>
-    </ThemeContextProvider>
-  </BrowserRouter>,
+  <ErrorBoundary>
+    <BrowserRouter>
+      <ThemeContextProvider>
+        <Provider store={store}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <SnackbarProvider>
+              <App />
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </Provider>
+      </ThemeContextProvider>
+    </BrowserRouter>
+  </ErrorBoundary>,
   // Non-null: index.html always has this element.
   document.getElementById("root")!,
 );

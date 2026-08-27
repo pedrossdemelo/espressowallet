@@ -8,6 +8,7 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import { currencies } from "constants";
+import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, editTransaction, getRates } from "services";
@@ -58,7 +59,9 @@ export default function IncomeFormDrawer({
     toEdit ?? initialFormState,
   );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
+  const [submitting, setSubmitting] = useState(false);
   const { tag, value, currency, description } = formState;
+  const { showError } = useSnackbar();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value: valuePair } = e.target;
@@ -80,22 +83,29 @@ export default function IncomeFormDrawer({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const rates = await getRates(date);
+    setSubmitting(true);
+    try {
+      const rates = await getRates(date);
 
-    const income = {
-      ...formState,
-      baseCurrency,
-      createdAt: date,
-      type: "income" as const,
-      exchangeRates: rates,
-    };
+      const income = {
+        ...formState,
+        baseCurrency,
+        createdAt: date,
+        type: "income" as const,
+        exchangeRates: rates,
+      };
 
-    // Cast: see the matching comment in ExpenseFormDrawer.
-    if (!toEdit) addTransaction(income as Transaction);
+      // Cast: see the matching comment in ExpenseFormDrawer.
+      if (!toEdit) await addTransaction(income as Transaction);
 
-    if (toEdit) editTransaction(toEdit, income as TransactionWithId);
+      if (toEdit) await editTransaction(toEdit, income as TransactionWithId);
 
-    close();
+      close();
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't save the income. Try again."));
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   useEffect(() => {
@@ -222,7 +232,8 @@ export default function IncomeFormDrawer({
               description.length < 3 ||
               description.length >= 25 ||
               value <= 0 ||
-              !currency
+              !currency ||
+              submitting
             }
             sx={{ ml: "auto", mt: 1 }}
             type="submit"

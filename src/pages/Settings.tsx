@@ -7,6 +7,7 @@ import {
   Logout,
 } from "@mui/icons-material";
 import {
+  Alert,
   AppBar,
   Button,
   Dialog,
@@ -26,6 +27,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { currencies } from "constants";
+import { errorMessage, useSnackbar } from "context";
 import { useMode } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -45,6 +47,7 @@ export default function ProfileMenu() {
   const history = useHistory();
 
   const { isLight, toggleMode } = useMode();
+  const { showError } = useSnackbar();
 
   const { currency: currentCurrency, loading } = useSelector(
     state => state.wallet.baseCurrency,
@@ -68,20 +71,36 @@ export default function ProfileMenu() {
   // Non-null: matches the original, which also never guarded these against
   // a currency that hasn't loaded yet.
   const handleChangeCurrencyConvert = async () => {
-    await changeCurrency(currency!, "convertAll");
-    closeDialog();
+    try {
+      await changeCurrency(currency!, "convertAll");
+      closeDialog();
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't convert your currency. Try again."));
+    }
   };
 
   const handleDeleteAllTransactions = async () => {
-    await changeCurrency(
-      (dialogOpen ? currency : currentCurrency)!,
-      "deleteAll",
-    );
-    closeDeleteDialog();
-    if (dialogOpen) closeDialog();
+    try {
+      await changeCurrency(
+        (dialogOpen ? currency : currentCurrency)!,
+        "deleteAll",
+      );
+      closeDeleteDialog();
+      if (dialogOpen) closeDialog();
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't delete your transactions. Try again."));
+    }
   };
 
   if (!currentCurrency && !loading) return <Redirect to="/" />;
+
+  // Frankfurter (see getRates.ts) dropped LKR/TWD from the supported list.
+  // A user whose base currency is one of those isn't broken — every past
+  // transaction keeps its own stored rate snapshot — but a *new* transaction
+  // would look up a currency the rates table no longer has. Surface it
+  // instead of letting that fail silently.
+  const currencyUnsupported =
+    !loading && !!currentCurrency && !currencies.includes(currentCurrency);
 
   return (
     <>
@@ -110,6 +129,21 @@ export default function ProfileMenu() {
           </Box>
         </Toolbar>
       </AppBar>
+
+      {currencyUnsupported && (
+        <Alert
+          severity="warning"
+          sx={{ m: 2 }}
+          action={
+            <Button color="inherit" size="small" onClick={openDialog}>
+              Change
+            </Button>
+          }
+        >
+          {currentCurrency} is no longer a supported base currency. Pick a new
+          one to keep adding transactions.
+        </Alert>
+      )}
 
       <List sx={{ mt: -1 }}>
         <ListItemButton onClick={openDialog}>

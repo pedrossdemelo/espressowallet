@@ -18,4 +18,8 @@ getPerformance(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const gProvider = new GoogleAuthProvider();
-enableIndexedDbPersistence(db);
+// Rejects with "failed-precondition" when another tab already has
+// persistence enabled, and "unimplemented" on browsers that lack the
+// needed APIs — both are fine to ignore (the app just falls back to
+// in-memory caching for this tab).
+enableIndexedDbPersistence(db).catch(() => {});

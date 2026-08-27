@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { currencies } from "constants";
+import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { changeCurrency } from "services";
@@ -15,6 +16,7 @@ import { Currency } from "types";
 
 export default function NewUserPopup() {
   const [show, setShow] = useState(false);
+  const { showError } = useSnackbar();
 
   const { currency, loading } = useSelector(state => state.wallet.baseCurrency);
 
@@ -31,9 +33,12 @@ export default function NewUserPopup() {
 
   const close = async (_event?: unknown, reason?: string) => {
     if (reason && reason === "backdropClick") return;
-    await changeCurrency(selectedCurrency, "convertAll");
-    setShow(false);
-    return;
+    try {
+      await changeCurrency(selectedCurrency, "convertAll");
+      setShow(false);
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't set your base currency. Try again."));
+    }
   };
 
   return (

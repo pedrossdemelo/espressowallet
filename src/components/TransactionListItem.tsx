@@ -15,6 +15,7 @@ import {
   IncomeFormDrawer,
 } from "components";
 import { colorMap, iconsMap } from "constants";
+import { errorMessage, useSnackbar } from "context";
 import { useMode } from "hooks";
 import { useRef, useState } from "react";
 import SwipeableView from "react-swipeable-views";
@@ -37,8 +38,12 @@ export function TransactionListItem(props: TransactionListItemProps) {
   const closeDialog = () => setIsDialogOpen(false);
 
   const { transaction } = props;
+  const { showError } = useSnackbar();
 
-  const delTransaction = () => deleteTransaction(transaction);
+  const delTransaction = () =>
+    deleteTransaction(transaction).catch(err =>
+      showError(errorMessage(err, "Couldn't delete the transaction.")),
+    );
 
   const {
     tag,

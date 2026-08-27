@@ -8,6 +8,7 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import { currencies } from "constants";
+import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, editTransaction, getRates } from "services";
@@ -62,7 +63,9 @@ export default function ExpenseFormDrawer({
     toEdit ?? initialFormState,
   );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
+  const [submitting, setSubmitting] = useState(false);
   const { tag, value, currency, description } = formState;
+  const { showError } = useSnackbar();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value: valuePair } = e.target;
@@ -84,26 +87,33 @@ export default function ExpenseFormDrawer({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const rates = await getRates(date);
+    setSubmitting(true);
+    try {
+      const rates = await getRates(date);
 
-    const expense = {
-      ...formState,
-      baseCurrency,
-      createdAt: date,
-      type: "expense" as const,
-      exchangeRates: rates,
-    };
+      const expense = {
+        ...formState,
+        baseCurrency,
+        createdAt: date,
+        type: "expense" as const,
+        exchangeRates: rates,
+      };
 
-    // Cast: `formState.currency` is optional on the type (it models an
-    // in-progress draft) but is always set by submit time — the form only
-    // reaches here once a base currency has loaded, same as the original.
-    // `.id` is only relied on below when `toEdit` is set, in which case
-    // formState was seeded from it and still carries it.
-    if (!toEdit) addTransaction(expense as Transaction);
+      // Cast: `formState.currency` is optional on the type (it models an
+      // in-progress draft) but is always set by submit time — the form only
+      // reaches here once a base currency has loaded, same as the original.
+      // `.id` is only relied on below when `toEdit` is set, in which case
+      // formState was seeded from it and still carries it.
+      if (!toEdit) await addTransaction(expense as Transaction);
 
-    if (toEdit) editTransaction(toEdit, expense as TransactionWithId);
+      if (toEdit) await editTransaction(toEdit, expense as TransactionWithId);
 
-    close();
+      close();
+    } catch (err) {
+      showError(errorMessage(err, "Couldn't save the expense. Try again."));
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   useEffect(() => {
@@ -229,7 +239,8 @@ export default function ExpenseFormDrawer({
               description.length < 3 ||
               description.length >= 25 ||
               value <= 0 ||
-              !currency
+              !currency ||
+              submitting
             }
             sx={{ ml: "auto", mt: 1 }}
             type="submit"
