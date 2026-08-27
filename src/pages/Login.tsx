@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { loginEmail, signUpEmail } from "services";
 import signInGoogle from "services/signInGoogle";
 
@@ -40,7 +40,7 @@ export default function Login() {
 
   const isSignUp = useRef(false);
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm({
       ...form,
@@ -48,7 +48,9 @@ export default function Login() {
     });
   }
 
-  async function handleSubmit(e) {
+  // SyntheticEvent (not FormEvent): also invoked from the "Sign up" button's
+  // onClick below, which only ever calls .preventDefault() on it too.
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
     setErrorState(noErrors);
@@ -175,7 +177,7 @@ const formStyle = {
   gap: 2,
 };
 
-function humanErrorParse(error) {
+function humanErrorParse(error: string) {
   error = error.split("/")[1].split("-").join(" ");
   error = error.charAt(0).toUpperCase() + error.slice(1);
   return /password/g.test(error)

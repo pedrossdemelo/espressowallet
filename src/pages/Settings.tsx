@@ -31,6 +31,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { changeCurrency, logout } from "services";
+import { Currency } from "types";
 
 const toolbarStyle = {
   "@media all": { px: 2 },
@@ -48,8 +49,9 @@ export default function ProfileMenu() {
   const { currency: currentCurrency, loading } = useSelector(
     state => state.wallet.baseCurrency
   );
-  const [currency, setCurrency] = useState("USD");
-  const handleCurrencyChange = e => setCurrency(e.target.value);
+  const [currency, setCurrency] = useState<Currency | null | undefined>("USD");
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCurrency(e.target.value as Currency);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -63,13 +65,18 @@ export default function ProfileMenu() {
     setCurrency(currentCurrency);
   }, [currentCurrency]);
 
+  // Non-null: matches the original, which also never guarded these against
+  // a currency that hasn't loaded yet.
   const handleChangeCurrencyConvert = async () => {
-    await changeCurrency(currency, "convertAll");
+    await changeCurrency(currency!, "convertAll");
     closeDialog();
   };
 
   const handleDeleteAllTransactions = async () => {
-    await changeCurrency(dialogOpen ? currency : currentCurrency, "deleteAll");
+    await changeCurrency(
+      (dialogOpen ? currency : currentCurrency)!,
+      "deleteAll"
+    );
     closeDeleteDialog();
     dialogOpen && closeDialog();
   };
