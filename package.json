@@ -46,9 +46,10 @@
     "format": "prettier --write src",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:rules": "firebase emulators:exec --only firestore \"vitest run -c vitest.rules.config.ts\"",
+    "test:rules": "bash scripts/with-jre.sh npx firebase emulators:exec --only firestore \"vitest run -c vitest.rules.config.ts\"",
     "prepare": "husky",
-    "test:e2e": "node e2e/wallet.mjs"
+    "test:e2e": "bash e2e/run.sh",
+    "test:e2e:run": "node e2e/wallet.mjs"
   },
   "browserslist": {
     "production": [
