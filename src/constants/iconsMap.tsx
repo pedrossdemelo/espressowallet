@@ -1,0 +1,42 @@
+import {
+  AttachMoney,
+  CardGiftcard,
+  Checkroom,
+  DevicesOther,
+  DirectionsCar,
+  EmojiEvents,
+  House,
+  LocalHospital,
+  MoreHoriz,
+  Payments,
+  Restaurant,
+  Savings,
+  School,
+  Sell,
+  TheaterComedy,
+  TrendingUp,
+  Work,
+} from "@mui/icons-material";
+import { Tag } from "types";
+
+const iconsMap: Record<Tag, JSX.Element> = {
+  Entertainment: <TheaterComedy />,
+  Food: <Restaurant />,
+  Health: <LocalHospital />,
+  Education: <School />,
+  Transportation: <DirectionsCar />,
+  Savings: <Savings />,
+  Payment: <Payments />,
+  Clothing: <Checkroom />,
+  Household: <House />,
+  Eletronics: <DevicesOther />,
+  Work: <Work />,
+  Salary: <AttachMoney />,
+  Investments: <TrendingUp />,
+  Gift: <CardGiftcard />,
+  Prize: <EmojiEvents />,
+  Sale: <Sell />,
+  Other: <MoreHoriz />,
+};
+
+export default iconsMap;
