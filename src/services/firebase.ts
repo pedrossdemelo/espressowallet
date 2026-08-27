@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
-import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDk4HjU5PHhrT8MNvDNGkMKe_UblpK1hiU",
@@ -14,8 +13,20 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-getPerformance(app);
+
+// Deferred: it's metrics-only, so it shouldn't compete with the app's own
+// code for bandwidth/parse time on first load.
+window.addEventListener("load", () => {
+  import("firebase/performance").then(({ getPerformance }) =>
+    getPerformance(app),
+  );
+});
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const gProvider = new GoogleAuthProvider();
-enableIndexedDbPersistence(db);
+// Rejects with "failed-precondition" when another tab already has
+// persistence enabled, and "unimplemented" on browsers that lack the
+// needed APIs — both are fine to ignore (the app just falls back to
+// in-memory caching for this tab).
+enableIndexedDbPersistence(db).catch(() => {});

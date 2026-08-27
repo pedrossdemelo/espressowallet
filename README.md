@@ -54,6 +54,7 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
     <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#built-with">Built with</a></li>
     <li><a href="#installation">Installation</a></li>
+    <li><a href="#development">Development</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#known-issues">Known issues</a></li>
     <li><a href="#license">License</a></li>
@@ -80,10 +81,31 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
 ## Built with
 
 - [React.js](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/)
 - [React Router](https://reactrouter.com/)
 - [Firebase](https://firebase.google.com/)
 - [Redux](https://redux.js.org/)
 - [Material UI](https://mui.com/)
+- [Vitest](https://vitest.dev/)
+
+## Development
+
+```sh
+npm ci              # install dependencies
+npm run dev         # start the dev server (http://localhost:3000)
+npm run typecheck   # tsc across app, vite config, service worker, and tests
+npm run lint        # eslint
+npm test            # unit tests
+npm run test:rules  # Firestore security-rules tests (needs the Firestore emulator)
+npm run build       # production build to build/
+npm run preview     # serve the production build locally
+```
+
+Firestore access control lives in [`firestore.rules`](firestore.rules) and is
+covered by [`src/__tests__/firestore.rules.test.ts`](src/__tests__/firestore.rules.test.ts).
+`npm run test:rules` wraps the test run in `firebase emulators:exec`, so it
+needs a JRE available locally (CI already has one).
 
 ## Roadmap
 
@@ -103,13 +125,6 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
 ## Known issues
 
 These are the known issues at the moment. If you find another, please [open an issue](https://github.com/pedrossdemelo/espressowallet/issues), it would be greatly appreciated!
-
-<details>
-  <summary>Firefox charts don't work</summary>
-
-  Expense and income visualization charts don't work on Firefox <br>
-  ![Firefox charts bug](https://i.imgur.com/R76T6lH.png)
-</details>
 
 <details>
   <summary>Safari calendar clipping</summary>
