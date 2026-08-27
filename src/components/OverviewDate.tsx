@@ -3,7 +3,7 @@ import {
   ArrowForwardIosRounded,
   Event,
 } from "@mui/icons-material";
-import { DatePicker } from "@mui/lab";
+import { DatePicker } from "@mui/x-date-pickers";
 import { Card, FormControl, IconButton, Input, Stack } from "@mui/material";
 import { setDateFilter } from "actions";
 import { useMode, useUserData } from "hooks";
@@ -11,9 +11,8 @@ import { ReactNode, Ref, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTextWidth } from "utils";
 
-// @mui/lab's DatePicker ships its props as `Record<any, any>` (the
-// component is deprecated in favor of @mui/x-date-pickers), so renderInput
-// gets no real typing from the library — this covers what's used below.
+// renderInput hands back full TextField props, but this DatePicker renders
+// a bare Input rather than a TextField — this covers just what's used below.
 interface DatePickerRenderInputParams {
   inputRef?: Ref<HTMLInputElement>;
   inputProps?: Record<string, unknown>;
