@@ -17,8 +17,9 @@ import {
   TrendingUp,
   Work,
 } from "@mui/icons-material";
+import { Tag } from "types";
 
-const iconsMap = {
+const iconsMap: Record<Tag, JSX.Element> = {
   Entertainment: <TheaterComedy />,
   Food: <Restaurant />,
   Health: <LocalHospital />,

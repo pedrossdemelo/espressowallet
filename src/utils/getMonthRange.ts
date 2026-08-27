@@ -1,4 +1,6 @@
-export default function getMonthRange(date) {
+import { DateRange } from "types";
+
+export default function getMonthRange(date: Date): DateRange {
   const start = new Date(date.getTime());
   const end = new Date(date.getTime());
 

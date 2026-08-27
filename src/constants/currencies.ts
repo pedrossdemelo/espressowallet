@@ -22,6 +22,6 @@ const currencies = [
   "SGD",
   "THB",
   "TWD",
-];
+] as const;
 
 export default currencies;

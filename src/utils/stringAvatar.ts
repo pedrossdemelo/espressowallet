@@ -1,4 +1,11 @@
-function stringToColor(string) {
+import { AvatarProps } from "@mui/material";
+import { User } from "firebase/auth";
+
+// Always called with a plain style-object literal (never the function/array
+// forms SxProps<Theme> also allows), so it can be safely spread below.
+type SxObject = Record<string, unknown>;
+
+function stringToColor(string: string) {
   let hash = 0;
   let i;
 
@@ -16,7 +23,10 @@ function stringToColor(string) {
   return color;
 }
 
-export default function stringAvatar(user, sx) {
+export default function stringAvatar(
+  user: User,
+  sx?: SxObject
+): Pick<AvatarProps, "src" | "sx" | "children"> {
   if (!user.email) return { sx };
   if (user.photoURL) return { src: user.photoURL, sx };
   return {

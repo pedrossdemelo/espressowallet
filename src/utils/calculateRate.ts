@@ -1,4 +1,11 @@
-export default function calculateRate(transaction) {
+import { Transaction } from "types";
+
+type RateInput = Pick<
+  Transaction,
+  "currency" | "value" | "exchangeRates" | "baseCurrency"
+>;
+
+export default function calculateRate(transaction: RateInput) {
   const { currency, value, exchangeRates, baseCurrency } = transaction;
 
   const nValue = Number(value);

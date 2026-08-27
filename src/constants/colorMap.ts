@@ -16,6 +16,6 @@ const colorMap = {
   Sale: "#d946ef",
   Household: "#a855f7",
   Other: "#d4d4d4",
-};
+} as const;
 
 export default colorMap;

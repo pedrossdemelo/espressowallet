@@ -1,4 +1,4 @@
-export default function formatLongNumber(number, maxLength = 5) {
+export default function formatLongNumber(number: number, _maxLength = 5) {
   const trillions = number / 1000000000000;
   if (trillions > 1) {
     return `${trillions.toFixed(2)}T`;
