@@ -16,8 +16,8 @@ const converter: FirestoreDataConverter<Transaction> = {
     };
   },
   fromFirestore(snapshot, options) {
-    // Raw, unvalidated document data coming off the wire — the cast reflects
-    // the same trust the original JS placed in it, just made explicit.
+    // Raw, unvalidated document data coming off the wire — the cast makes
+    // the trust we place in the stored shape explicit.
     const transaction = snapshot.data(options) as StoredTransaction;
     return {
       ...transaction,
