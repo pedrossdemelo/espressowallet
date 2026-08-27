@@ -7,11 +7,20 @@ import { DatePicker } from "@mui/lab";
 import { Card, FormControl, IconButton, Input, Stack } from "@mui/material";
 import { setDateFilter } from "actions";
 import { useMode, useUserData } from "hooks";
-import { useMemo } from "react";
+import { ReactNode, Ref, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTextWidth } from "utils";
 
-const getFirstDateByMonthAndYear = (date1, date2) => {
+// @mui/lab's DatePicker ships its props as `Record<any, any>` (the
+// component is deprecated in favor of @mui/x-date-pickers), so renderInput
+// gets no real typing from the library — this covers what's used below.
+interface DatePickerRenderInputParams {
+  inputRef?: Ref<HTMLInputElement>;
+  inputProps?: Record<string, unknown>;
+  InputProps?: { endAdornment?: ReactNode };
+}
+
+const getFirstDateByMonthAndYear = (date1: Date, date2: Date): Date => {
   const month1 = date1.getMonth();
   const month2 = date2.getMonth();
   const year1 = date1.getFullYear();
@@ -46,8 +55,10 @@ export default function OverviewDate() {
 
   const { start } = useSelector(state => state.filter.date);
 
-  const handleChange = newDate => {
-    dispatch(setDateFilter(newDate));
+  const handleChange = (newDate: Date | null) => {
+    // Non-null: matches the original, which also dispatched whatever the
+    // picker passed without guarding against a cleared (null) date.
+    dispatch(setDateFilter(newDate as Date));
   };
 
   const firstExpense = useUserData("expenses", {
@@ -69,7 +80,7 @@ export default function OverviewDate() {
       getComputedStyle(document.documentElement).fontSize
     );
     const fontSizePx = `${
-      parseFloat(theme.typography.h6.fontSize) * rootFontSize
+      parseFloat(String(theme.typography.h6.fontSize)) * rootFontSize
     }px`;
     return getTextWidth(
       result,
@@ -78,7 +89,7 @@ export default function OverviewDate() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start]);
 
-  let firstTransaction;
+  let firstTransaction: Date;
 
   if (firstExpense?.createdAt && firstIncome?.createdAt) {
     firstTransaction =
@@ -147,7 +158,7 @@ export default function OverviewDate() {
             minDate={firstTransaction}
             maxDate={new Date()}
             disableFuture
-            renderInput={params => (
+            renderInput={(params: DatePickerRenderInputParams) => (
               <FormControl>
                 <Input
                   disableUnderline
@@ -161,7 +172,7 @@ export default function OverviewDate() {
                     },
                   }}
                   endAdornment={
-                    params.InputProps.endAdornment ?? (
+                    params.InputProps?.endAdornment ?? (
                       <IconButton edge="end" sx={{ ml: 1 }}>
                         <Event />
                       </IconButton>

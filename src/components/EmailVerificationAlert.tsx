@@ -4,11 +4,13 @@ import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "hooks";
 import React from "react";
 
-export default function EmailVerificationAlert({ shown }) {
+export default function EmailVerificationAlert({ shown }: { shown: boolean }) {
   const [user] = useAuth();
 
   const handleResendEmailVerification = () => {
-    sendEmailVerification(user, { url: "http://www.espressowallet.com/" });
+    // Non-null: only reachable while logged in but unverified (see App.js),
+    // matching the original code's assumption.
+    sendEmailVerification(user!, { url: "http://www.espressowallet.com/" });
   };
 
   return (

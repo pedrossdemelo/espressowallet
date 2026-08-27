@@ -5,25 +5,39 @@ import {
   ListItem,
   SwipeableDrawer,
   TextField,
+  TextFieldProps,
 } from "@mui/material";
 import { currencies } from "constants";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, editTransaction, getRates } from "services";
+import { Tag, Transaction, TransactionWithId } from "types";
 
-const tagInputs = [
-  "Investments",
-  "Salary",
-  "Gift",
-  "Savings",
-  "Prize",
-  "Sale",
+const tagInputs: Tag[] = [
+  "Food",
+  "Education",
+  "Eletronics",
+  "Household",
+  "Clothing",
+  "Entertainment",
+  "Work",
+  "Transportation",
+  "Health",
+  "Payment",
   "Other",
 ];
 
-const initialFormState = {
-  tag: "Salary",
-  value: 1000,
+// A transaction in progress: always has tag/value/description, and — once
+// seeded from `toEdit` — everything else a real Transaction has too.
+type FormState = Partial<TransactionWithId> & {
+  tag: Tag;
+  value: number;
+  description: string;
+};
+
+const initialFormState: FormState = {
+  tag: "Food",
+  value: 10,
   description: "",
 };
 
@@ -31,42 +45,63 @@ const paperProps = {
   style: { backgroundColor: "transparent", backgroundImage: "none" },
 };
 
-export default function IncomeFormDrawer({ open, close, toEdit = null }) {
+interface ExpenseFormDrawerProps {
+  open: boolean;
+  close: () => void;
+  toEdit?: TransactionWithId | null;
+}
+
+export default function ExpenseFormDrawer({
+  open,
+  close,
+  toEdit = null,
+}: ExpenseFormDrawerProps) {
   const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
-  initialFormState.currency = baseCurrency;
-  const [formState, setFormState] = useState(toEdit ?? initialFormState);
+  initialFormState.currency = baseCurrency ?? undefined;
+  const [formState, setFormState] = useState<FormState>(
+    toEdit ?? initialFormState
+  );
   const [date, setDate] = useState(toEdit?.createdAt ?? new Date());
   const { tag, value, currency, description } = formState;
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value: valuePair } = e.target;
     const key = name.split("-")[0];
+    let numValue;
+    if (key === "value") numValue = Number(valuePair);
     setFormState({
       ...formState,
-      [key]: valuePair,
+      [key]: numValue ?? valuePair,
     });
   }
 
-  function handleDateChange(date) {
-    setDate(date);
+  function handleDateChange(date: Date | null) {
+    // Non-null: matches the original, which also stored whatever the picker
+    // passed without guarding against a cleared (null) date.
+    setDate(date as Date);
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const rates = await getRates(date);
 
-    const income = {
+    const expense = {
       ...formState,
       baseCurrency,
       createdAt: date,
-      type: "income",
+      type: "expense" as const,
       exchangeRates: rates,
     };
 
-    if (!toEdit) addTransaction(income);
+    // Cast: `formState.currency` is optional on the type (it models an
+    // in-progress draft) but is always set by submit time — the form only
+    // reaches here once a base currency has loaded, same as the original.
+    // `.id` is only relied on below when `toEdit` is set, in which case
+    // formState was seeded from it and still carries it.
+    if (!toEdit) addTransaction(expense as Transaction);
 
-    if (toEdit) editTransaction(toEdit, income);
+    if (toEdit) editTransaction(toEdit, expense as TransactionWithId);
 
     close();
   }
@@ -76,18 +111,20 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
     setFormState(initialFormState);
     setDate(new Date());
   }, [open, toEdit]);
-
   return (
     <SwipeableDrawer
       onClose={close}
       PaperProps={paperProps}
       open={open}
       anchor="bottom"
+      // No-op: matches the original, which never passed this MUI-required
+      // prop either — the drawer never opens via edge-swipe.
+      onOpen={() => {}}
     >
       <List
         component="form"
         sx={{
-          borderRadius: "12px 12px 0 0",
+          borderRadius: "1rem 1rem 0 0",
           bgcolor: "background.paper",
           boxShadow: 3,
         }}
@@ -97,7 +134,9 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
           <TextField
             variant="standard"
             fullWidth
-            size="large"
+            // Not a real TextField size ("small" | "medium" only) — kept as
+            // the original literal value via a cast rather than changed.
+            size={"large" as TextFieldProps["size"]}
             name="value-input"
             error={value <= 0}
             helperText={value <= 0 ? "Value must be greater than 0" : " "}
@@ -138,9 +177,9 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
                 ? "Descriptions should be shorter than 25 characters"
                 : " "
             }
-            size="large"
+            size={"large" as TextFieldProps["size"]}
             type="text"
-            placeholder="What was the income?"
+            placeholder="What was the expense?"
             autoComplete="off"
             name="description-input"
             label="Description"
@@ -152,12 +191,14 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
 
         <ListItem sx={{ justifyContent: "space-between", gap: 5 }}>
           <DateTimePicker
-            minDate={new Date(2000, 1, 1)}
-            disableFuture
             value={date}
             label="Date"
+            disableFuture
+            minDate={new Date(2000, 1, 1)}
             onChange={handleDateChange}
-            renderInput={params => <TextField size="small" {...params} />}
+            renderInput={(params: TextFieldProps) => (
+              <TextField size="small" {...params} />
+            )}
             ampm={false}
             ampmInClock={false}
           />
@@ -190,7 +231,7 @@ export default function IncomeFormDrawer({ open, close, toEdit = null }) {
             sx={{ ml: "auto", mt: 1 }}
             type="submit"
           >
-            {toEdit ? "Edit" : "Add"} income
+            {toEdit ? "Edit" : "Add"} expense
           </Button>
         </ListItem>
       </List>

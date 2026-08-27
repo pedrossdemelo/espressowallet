@@ -63,7 +63,9 @@ export default function WalletHeader() {
               </Typography>
               <br />
               {loading ? (
-                <Skeleton type="text" sx={skeletonStyle(balance)} />
+                // `type` isn't a Skeleton prop (only `variant`, which already
+                // defaults to "text") — dropped; it was inert either way.
+                <Skeleton sx={skeletonStyle(balance)} />
               ) : (
                 <span>
                   {" "}
@@ -79,7 +81,9 @@ export default function WalletHeader() {
               color="inherit"
             >
               <Avatar
-                {...stringAvatar(user, {
+                // Non-null: WalletHeader only renders once logged in and
+                // verified (see App.js), matching the original's assumption.
+                {...stringAvatar(user!, {
                   height: 36,
                   width: 36,
                   color: "background.paper",
@@ -103,7 +107,7 @@ const toolbarStyle = {
   py: 0,
 };
 
-function skeletonStyle(totalExpenses) {
+function skeletonStyle(totalExpenses: number) {
   return {
     display: "inline-block",
     width: `calc(${totalExpenses.toString().length}ch + 4ch)`,

@@ -6,8 +6,21 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { TransactionWithId } from "types";
 
-export const ConfirmationDialog = ({ open, transaction, close, onConfirm }) => {
+interface ConfirmationDialogProps {
+  open: boolean;
+  transaction: TransactionWithId;
+  close: () => void;
+  onConfirm: () => void;
+}
+
+export const ConfirmationDialog = ({
+  open,
+  transaction,
+  close,
+  onConfirm,
+}: ConfirmationDialogProps) => {
   return (
     <Dialog open={open} onClose={close}>
       <DialogTitle>Delete {transaction.type}</DialogTitle>

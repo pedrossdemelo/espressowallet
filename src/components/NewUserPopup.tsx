@@ -11,6 +11,7 @@ import { currencies } from "constants";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { changeCurrency } from "services";
+import { Currency } from "types";
 
 export default function NewUserPopup() {
   const [show, setShow] = useState(false);
@@ -19,7 +20,8 @@ export default function NewUserPopup() {
 
   const [selectedCurrency, setSelectedCurrency] = useState(currency ?? "USD");
 
-  const handleChange = event => setSelectedCurrency(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSelectedCurrency(event.target.value as Currency);
 
   useEffect(() => {
     if (loading) return setShow(false);
@@ -27,7 +29,7 @@ export default function NewUserPopup() {
     if (!currency) return setShow(true);
   }, [currency, loading]);
 
-  const close = async (_event, reason) => {
+  const close = async (_event?: unknown, reason?: string) => {
     if (reason && reason === "backdropClick") return;
     await changeCurrency(selectedCurrency, "convertAll");
     setShow(false);

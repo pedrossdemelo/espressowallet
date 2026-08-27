@@ -1,47 +1,59 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
-import { Donut } from "components";
 import { colorMap } from "constants";
-import { FilteredIncomes } from "context";
-import React, { useContext, useMemo } from "react";
+import { FilteredExpenses } from "context";
+import { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { Tag } from "types";
 import { calculateRate, formatLongNumber } from "utils";
+import Donut from "./Donut";
 
-export default function IncomeInfo() {
+interface TagSummary {
+  percentage: number;
+  amount: number;
+}
+
+export default function ExpenseInfo() {
   const currency = useSelector(state => state.wallet.baseCurrency.currency);
-  const [incomes] = useContext(FilteredIncomes);
-
-  const shouldRender = incomes.length > 0;
+  const [expenses] = useContext(FilteredExpenses);
 
   const total = useMemo(
-    () => incomes.reduce((acc, curr) => acc + calculateRate(curr), 0),
-    [incomes]
+    () => expenses.reduce((acc, curr) => acc + calculateRate(curr), 0),
+    [expenses]
   );
 
   const tags = useMemo(
     () =>
-      incomes.reduce((acc, curr) => {
+      expenses.reduce<Partial<Record<Tag, TagSummary>>>((acc, curr) => {
         const { tag } = curr;
         const amount = calculateRate(curr);
         const percentage = (amount / total) * 100;
-        if (acc[tag] !== undefined)
+        const existing = acc[tag];
+        if (existing !== undefined)
           acc[tag] = {
-            percentage: percentage + acc[tag].percentage,
-            amount: amount + acc[tag].amount,
+            percentage: percentage + existing.percentage,
+            amount: amount + existing.amount,
           };
         else acc[tag] = { percentage, amount };
         return acc;
       }, {}),
-    [incomes, total]
+    [expenses, total]
   );
 
-  let tagsArray = useMemo(() => Object.entries(tags), [tags]);
+  let tagsArray = useMemo(
+    // Object.entries widens keys to `string` — cast back to Tag, which is
+    // what every key actually is here (see the reduce above).
+    () => Object.entries(tags) as [Tag, TagSummary][],
+    [tags]
+  );
 
   tagsArray = useMemo(
     () => tagsArray.sort((a, b) => b[1].percentage - a[1].percentage),
     [tagsArray]
   );
 
-  function dotStyle(tag) {
+  const shouldRender = expenses.length > 0;
+
+  function dotStyle(tag: Tag) {
     return {
       width: "0.625rem",
       height: "0.625rem",
@@ -56,7 +68,7 @@ export default function IncomeInfo() {
       <Box sx={{ px: 2 }}>
         <Card>
           <Typography my={1} ml={2} variant="h6">
-            Your income sources
+            Your expense sources
           </Typography>
 
           <Box sx={{ bgcolor: "background.default", height: 2 }} />

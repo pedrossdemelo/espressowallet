@@ -19,8 +19,13 @@ import { useMode } from "hooks";
 import { useRef, useState } from "react";
 import SwipeableView from "react-swipeable-views";
 import { deleteTransaction } from "services";
+import { TransactionWithId } from "types";
 
-export function TransactionListItem(props) {
+interface TransactionListItemProps {
+  transaction: TransactionWithId;
+}
+
+export function TransactionListItem(props: TransactionListItemProps) {
   const { theme, isLight } = useMode();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -177,9 +182,9 @@ export function TransactionListItem(props) {
     </ListItem>
   );
 
-  const reachedThreshHold = useRef(null);
+  const reachedThreshHold = useRef<"left" | "right" | null>(null);
 
-  const handleSwitching = index => {
+  const handleSwitching = (index: number) => {
     // When the gesture stops, the index will always be 1, so ignore it
     if (index === 1) return;
     // If the user has reached the left threshold, open the delete confirmation dialog once the gesture stops

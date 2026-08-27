@@ -19,11 +19,26 @@ import { Box } from "@mui/system";
 import { useMode } from "hooks";
 import React from "react";
 
-export default function HamburgerMenuDrawer({ open, onClose }) {
+interface HamburgerMenuDrawerProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+export default function HamburgerMenuDrawer({
+  open,
+  onClose,
+}: HamburgerMenuDrawerProps) {
   const { isLight, toggleMode } = useMode();
 
   return (
-    <SwipeableDrawer open={open} onClose={onClose}>
+    <SwipeableDrawer
+      open={open}
+      onClose={onClose}
+      // No-op: matches the original, which never passed this MUI-required
+      // prop either — the drawer never opens via edge-swipe, only via the
+      // hamburger button's onClick in WalletHeader.
+      onOpen={() => {}}
+    >
       <List
         sx={{
           width: "min(90vw, 300px)",

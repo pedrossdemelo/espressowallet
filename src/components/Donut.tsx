@@ -1,8 +1,15 @@
 import { Box, Tooltip } from "@mui/material";
 import { colorMap } from "constants";
 import React from "react";
+import { Tag } from "types";
 
-export default function Donut(props) {
+interface DonutProps {
+  height?: number | string;
+  sx?: Record<string, unknown>;
+  data: [Tag, { percentage: number; amount: number }][];
+}
+
+export default function Donut(props: DonutProps) {
   const { height = 200, sx, data } = props;
 
   let percentageLeft = 100;
