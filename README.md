@@ -98,6 +98,7 @@ npm run typecheck   # tsc across app, vite config, service worker, and tests
 npm run lint        # eslint
 npm test            # unit tests
 npm run test:rules  # Firestore security-rules tests (needs the Firestore emulator)
+npm run test:e2e    # full authed run through the app in a real browser
 npm run build       # production build to build/
 npm run preview     # serve the production build locally
 ```
@@ -106,6 +107,26 @@ Firestore access control lives in [`firestore.rules`](firestore.rules) and is
 covered by [`src/__tests__/firestore.rules.test.ts`](src/__tests__/firestore.rules.test.ts).
 `npm run test:rules` wraps the test run in `firebase emulators:exec`, so it
 needs a JRE available locally (CI already has one).
+
+### End-to-end tests
+
+`npm run test:e2e` starts the auth and Firestore emulators, builds the app
+against them, serves that build, and drives it in headless Chrome: sign up,
+email verification, the wallet, the date picker, adding a transaction, both
+swipe directions, and the settings route. It never touches the production
+Firebase project, and it deletes `build/` afterwards so an emulator-wired
+build can't be deployed by accident.
+
+It needs a JRE (`brew install openjdk` — the scripts find Homebrew's keg-only
+install on their own) and Google Chrome; set `CHROME_PATH` if yours lives
+somewhere unusual. CI has no browser, so this one stays local.
+
+To drive a server you are already running:
+
+```sh
+VITE_USE_FIREBASE_EMULATORS=true npm run dev
+npm run test:e2e:run
+```
 
 ## Roadmap
 

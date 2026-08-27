@@ -1,14 +1,16 @@
 // End-to-end pass over the authed wallet, driven against the Firebase
 // emulators so it never touches the production project.
 //
-//   1. npx firebase emulators:start --only auth,firestore   (needs a JRE)
-//   2. VITE_USE_FIREBASE_EMULATORS=true npm run dev         (or build + preview)
-//   3. npm run test:e2e
+// `npm run test:e2e` starts the emulators, builds against them and serves the
+// build before running this. To drive an already-running server instead:
 //
-// Needs Google Chrome installed at the path below. Not wired into CI, which
-// has no browser.
+//   VITE_USE_FIREBASE_EMULATORS=true npm run dev
+//   node e2e/wallet.mjs
+//
+// Needs Google Chrome (CHROME_PATH overrides the default location). Not wired
+// into CI, which has no browser.
 import puppeteer from "puppeteer-core";
-const BASE = "http://127.0.0.1:3000";
+const BASE = `http://127.0.0.1:${process.env.E2E_PORT ?? 3000}`;
 const AUTH = "http://127.0.0.1:9099";
 const PROJECT = "espressowallet";
 const TAG = process.argv[2] || "run";
@@ -41,6 +43,15 @@ p.on("console", m => {
   )
     errs.push("warn: " + t.slice(0, 220));
 });
+
+// Screenshots are diagnostics, never a reason to abort the run.
+const shot = async name => {
+  try {
+    await shot("${name}");
+  } catch {
+    /* the page may be blank or gone; the step result already says so */
+  }
+};
 
 const results = [];
 const step = async (name, fn) => {
@@ -78,7 +89,7 @@ await step("sign up shows pending-verification screen", async () => {
     { timeout: 25000 },
   );
 });
-await p.screenshot({ path: `${SHOT}/${TAG}-1-pending.png` });
+await shot("1-pending");
 
 await step("verify email via emulator oobCode", async () => {
   const r = await fetch(`${AUTH}/emulator/v1/projects/${PROJECT}/oobCodes`);
@@ -101,7 +112,7 @@ await step("'I've verified' reaches the wallet", async () => {
     timeout: 25000,
   });
 });
-await p.screenshot({ path: `${SHOT}/${TAG}-2-wallet.png` });
+await shot("2-wallet");
 
 await step("onboarding: save base currency", async () => {
   await p.waitForFunction(
@@ -144,7 +155,7 @@ await step("open add-transaction drawer (FAB -> Expense)", async () => {
   );
   await sleep(600);
 });
-await p.screenshot({ path: `${SHOT}/${TAG}-3-form.png` });
+await shot("3-form");
 
 await step("DateTimePicker renders a formatted value", async () => {
   const fields = await visibleDrawerInputs();
@@ -186,7 +197,7 @@ await step("add a transaction", async () => {
   });
 });
 
-await p.screenshot({ path: `${SHOT}/${TAG}-4-added.png` });
+await shot("4-added");
 
 const rowBox = async () =>
   p.evaluate(() => {
@@ -231,7 +242,7 @@ await step("swipe towards end opens the delete confirmation", async () => {
         )),
     );
 });
-await p.screenshot({ path: `${SHOT}/${TAG}-5-swipe-delete.png` });
+await shot("5-swipe-delete");
 
 await step("swipe the other way opens the edit drawer", async () => {
   await p.keyboard.press("Escape");
@@ -257,7 +268,7 @@ await step("swipe the other way opens the edit drawer", async () => {
   if (!ok) throw new Error("no edit drawer");
 });
 
-await p.screenshot({ path: `${SHOT}/${TAG}-5-swipe.png` });
+await shot("5-swipe");
 
 await step("settings route renders", async () => {
   await p.goto(BASE + "/settings", {
@@ -271,7 +282,7 @@ await step("settings route renders", async () => {
     { timeout: 25000 },
   );
 });
-await p.screenshot({ path: `${SHOT}/${TAG}-6-settings.png` });
+await shot("6-settings");
 
 console.log("=== " + TAG + " ===");
 console.log(results.join("\n"));
@@ -280,3 +291,13 @@ console.log(
   errs.length ? "\n  " + [...new Set(errs)].join("\n  ") : "none",
 );
 await b.close();
+
+// A failed step or a page error has to fail the command, not just print.
+const failed = results.filter(r => r.startsWith("FAIL"));
+if (failed.length || errs.length) {
+  console.error(
+    `\ne2e: ${failed.length} failed step(s), ${errs.length} page issue(s).`,
+  );
+  process.exit(1);
+}
+console.log("\ne2e: all steps passed.");
