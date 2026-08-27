@@ -1,9 +1,10 @@
 import { converter } from "constants";
 import { collection, doc, increment, writeBatch } from "firebase/firestore";
+import { Transaction } from "types";
 import { calculateRate, dateToMMYYYY } from "utils";
 import { auth, db } from "./firebase";
 
-export default async function addTransaction(newTransaction) {
+export default async function addTransaction(newTransaction: Transaction) {
   const user = auth?.currentUser;
   if (!user) return;
 

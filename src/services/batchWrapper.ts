@@ -1,8 +1,19 @@
-import { writeBatch } from "firebase/firestore";
+import {
+  DocumentData,
+  QuerySnapshot,
+  WriteBatch,
+  writeBatch,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
-export default async function batchWrapper(documentRef, action, update) {
-  const batchArray = [];
+type BatchAction = "delete" | "update" | "set" | "setmerge";
+
+export default async function batchWrapper(
+  documentRef: QuerySnapshot<DocumentData>,
+  action: BatchAction,
+  update?: Record<string, unknown>
+) {
+  const batchArray: WriteBatch[] = [];
   batchArray.push(writeBatch(db));
   let operationCounter = 0;
   let batchIndex = 0;
@@ -11,13 +22,13 @@ export default async function batchWrapper(documentRef, action, update) {
     if (action === "delete") {
       batchArray[batchIndex].delete(doc.ref);
     }
-    if (action === "update") {
+    if (action === "update" && update) {
       batchArray[batchIndex].update(doc.ref, update);
     }
-    if (action === "set") {
+    if (action === "set" && update) {
       batchArray[batchIndex].set(doc.ref, update);
     }
-    if (action === "setmerge") {
+    if (action === "setmerge" && update) {
       batchArray[batchIndex].set(doc.ref, update, { merge: true });
     }
     operationCounter++;

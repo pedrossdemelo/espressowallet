@@ -1,12 +1,13 @@
 import { converter } from "constants";
 import { doc, increment, writeBatch } from "firebase/firestore";
+import { TransactionWithId } from "types";
 import { calculateRate } from "utils";
 import dateToMMYYYY from "utils/dateToMMYYYY";
 import { auth, db } from "./firebase";
 
 export default async function editTransaction(
-  oldTransaction,
-  updatedTransaction
+  oldTransaction: TransactionWithId,
+  updatedTransaction: TransactionWithId
 ) {
   const user = auth?.currentUser;
   if (!user) return;

@@ -1,9 +1,12 @@
 import { doc, increment, writeBatch } from "firebase/firestore";
+import { TransactionWithId } from "types";
 import { calculateRate } from "utils";
 import dateToMMYYYY from "utils/dateToMMYYYY";
 import { auth, db } from "./firebase";
 
-export default async function deleteTransaction(transaction) {
+export default async function deleteTransaction(
+  transaction: TransactionWithId
+) {
   const user = auth?.currentUser;
   if (!user) return;
 

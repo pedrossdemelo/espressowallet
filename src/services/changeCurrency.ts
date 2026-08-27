@@ -1,11 +1,31 @@
 import { converter } from "constants";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { Currency, MonthMetadata } from "types";
 import { calculateRate, dateToMMYYYY } from "utils";
 import batchWrapper from "./batchWrapper";
 import deleteAllTransactions from "./deleteAllTransactions";
 import { auth, db } from "./firebase";
 
-export default async function changeCurrency(newBaseCurrency, type) {
+type NewMetadata = {
+  currency: Currency;
+  balance: number;
+} & { [monthKey: string]: MonthMetadata | Currency | number };
+
+// `metadata[key]` can statically be a MonthMetadata, a Currency, or a number
+// (see NewMetadata above) — but by convention every key besides "currency"
+// and "balance" is an "MM/YYYY" string holding a MonthMetadata bucket.
+function getMonthMetadata(
+  metadata: NewMetadata,
+  key: string
+): MonthMetadata | undefined {
+  const value = metadata[key];
+  return typeof value === "object" ? value : undefined;
+}
+
+export default async function changeCurrency(
+  newBaseCurrency: Currency,
+  type: "deleteAll" | "convertAll"
+) {
   const user = auth?.currentUser;
   if (!user) return;
 
@@ -22,13 +42,14 @@ export default async function changeCurrency(newBaseCurrency, type) {
   );
 
   switch (type) {
-    case "deleteAll":
+    case "deleteAll": {
       await deleteAllTransactions();
 
       await setDoc(metadataToUpdate, { currency: newBaseCurrency, balance: 0 });
       return;
+    }
 
-    case "convertAll":
+    case "convertAll": {
       await batchWrapper(allIncomes, "update", {
         baseCurrency: newBaseCurrency,
       });
@@ -37,7 +58,7 @@ export default async function changeCurrency(newBaseCurrency, type) {
         baseCurrency: newBaseCurrency,
       });
 
-      const newMetadata = {
+      const newMetadata: NewMetadata = {
         currency: newBaseCurrency,
         balance: 0,
       };
@@ -52,13 +73,16 @@ export default async function changeCurrency(newBaseCurrency, type) {
 
         newMetadata.balance += total;
 
-        if (newMetadata[date]) {
-          newMetadata[date].balance += total;
-          newMetadata[date].incomes += 1;
-          newMetadata[date].totalIncome += total;
-        }
+        const month = getMonthMetadata(newMetadata, date);
 
-        if (!newMetadata[date]) {
+        if (month) {
+          month.balance += total;
+          // Non-null: matches the original untyped arithmetic exactly,
+          // including its behavior (NaN) for a month that has both incomes
+          // and expenses — see the migration report for details.
+          month.incomes! += 1;
+          month.totalIncome! += total;
+        } else {
           newMetadata[date] = {
             balance: total,
             incomes: 1,
@@ -75,13 +99,14 @@ export default async function changeCurrency(newBaseCurrency, type) {
 
         const total = calculateRate(data);
 
-        if (newMetadata[date]) {
-          newMetadata[date].balance -= total;
-          newMetadata[date].expenses += 1;
-          newMetadata[date].totalExpense += total;
-        }
+        const month = getMonthMetadata(newMetadata, date);
 
-        if (!newMetadata[date]) {
+        if (month) {
+          month.balance -= total;
+          // Non-null: see the matching comment in the incomes loop above.
+          month.expenses! += 1;
+          month.totalExpense! += total;
+        } else {
           newMetadata[date] = {
             balance: -total,
             expenses: 1,
@@ -92,6 +117,7 @@ export default async function changeCurrency(newBaseCurrency, type) {
 
       await setDoc(metadataToUpdate, newMetadata);
       return;
+    }
 
     default:
       return;

@@ -1,10 +1,11 @@
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "./firebase";
 
-export default async function signUpEmail(email, password) {
+export default async function signUpEmail(email: string, password: string) {
   try {
     const credentials = await createUserWithEmailAndPassword(
       auth,
@@ -15,7 +16,7 @@ export default async function signUpEmail(email, password) {
       url: "http://www.espressowallet.com/",
     });
     return { error: null };
-  } catch ({ code }) {
-    return { error: code };
+  } catch (err) {
+    return { error: err instanceof FirebaseError ? err.code : undefined };
   }
 }
