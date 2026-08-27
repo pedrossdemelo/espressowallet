@@ -36,5 +36,18 @@ export default defineConfig({
     // available in this Vite build). CSS is ~1% of the JS bundle size, so
     // leaving it unminified costs nothing worth trading font coverage for.
     cssMinify: false,
+    rolldownOptions: {
+      output: {
+        // Split the two biggest dependencies into their own chunks so a
+        // change to app code doesn't invalidate ~900kB of vendor code the
+        // browser already cached, and so they can load in parallel with it.
+        codeSplitting: {
+          groups: [
+            { name: "firebase", test: /node_modules\/@?firebase\// },
+            { name: "mui", test: /node_modules\/@mui\// },
+          ],
+        },
+      },
+    },
   },
 });
