@@ -9,12 +9,13 @@ interface DonutProps {
   data: [Tag, { percentage: number; amount: number }][];
 }
 
+// Circumference of the r=9.5 circle used below (2 * 3.1416 * 9.5).
+const CIRCUMFERENCE = 3.1416 * 19;
+
 export default function Donut(props: DonutProps) {
   const { height = 200, sx, data } = props;
 
   let percentageLeft = 100;
-
-  // TODO: This donut approach doesn't work on Firefox. Fix it.
 
   return (
     <Box
@@ -44,9 +45,12 @@ export default function Donut(props: DonutProps) {
               stroke={colorMap[tag]}
               strokeWidth="5"
               shapeRendering="optimizeSpeed"
-              strokeDasharray={`calc(${
-                percentageLeft + percentage
-              } * (3.1416 * 19)/100) calc(3.1416 * 19)`}
+              // Firefox doesn't evaluate calc() inside SVG presentation
+              // attributes (only Chrome/Safari do) — compute the dash length
+              // in JS instead so this renders the same everywhere.
+              strokeDasharray={`${
+                ((percentageLeft + percentage) * CIRCUMFERENCE) / 100
+              } ${CIRCUMFERENCE}`}
             />
           </Tooltip>
         );

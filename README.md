@@ -127,13 +127,6 @@ needs a JRE available locally (CI already has one).
 These are the known issues at the moment. If you find another, please [open an issue](https://github.com/pedrossdemelo/espressowallet/issues), it would be greatly appreciated!
 
 <details>
-  <summary>Firefox charts don't work</summary>
-
-  Expense and income visualization charts don't work on Firefox <br>
-  ![Firefox charts bug](https://i.imgur.com/R76T6lH.png)
-</details>
-
-<details>
   <summary>Safari calendar clipping</summary>
 
   Calendar showing the current month is clipped in Safari idk why <br>
