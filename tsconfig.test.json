@@ -1,23 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
     "module": "ESNext",
-    "skipLibCheck": true,
-
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
 
-    "types": ["vite/client", "vite-plugin-pwa/client"],
+    // Tests legitimately need Node built-ins (fs to read firestore.rules), so
+    // @types/node is in scope here. That's exactly why tests are a separate
+    // program: @types/node declares an ambient "constants" module which would
+    // otherwise shadow this project's `constants` path alias in app code.
+    "types": ["node"],
 
     "baseUrl": ".",
     "paths": {
@@ -41,10 +39,10 @@
       "utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"],
-  "exclude": [
-    "src/service-worker.ts",
+  "include": [
     "src/**/*.test.ts",
-    "src/**/__tests__/**"
+    "src/**/__tests__/**/*",
+    "vitest.config.ts",
+    "vitest.rules.config.ts"
   ]
 }

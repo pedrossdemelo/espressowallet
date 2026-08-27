@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Espresso Wallet stores everything a user owns under `userData/{uid}`:
+//   userData/{uid}                  -> metadata doc (base currency, balance,
+//                                      per-month "MM/YYYY" rollups)
+//   userData/{uid}/expenses/{id}    -> expense transactions
+//   userData/{uid}/incomes/{id}     -> income transactions
+//
+// Access is therefore a single rule: you may touch a document tree only if you
+// are signed in, verified, and the {uid} segment is your own. The email
+// verification requirement mirrors the gate App.tsx already enforces in the UI.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isVerifiedOwner(uid) {
+      return request.auth != null
+        && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+
+    match /userData/{uid} {
+      allow read, write: if isVerifiedOwner(uid);
+
+      match /{document=**} {
+        allow read, write: if isVerifiedOwner(uid);
+      }
+    }
+  }
+}
