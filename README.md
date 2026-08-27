@@ -24,7 +24,7 @@
   <br>
 </div>
 
-A simple, free and beautiful multi-currency tracker app for your daily use. Visualize your spending habits with graphs that break down your finances monthly. Create, delete and edit transactions using gestures, select a date to get historical exchange rates, and much more!
+A simple, free and beautiful multi-currency tracker app for your daily use. Built as a TypeScript codebase end to end — app, tests, Vite config, and service worker. Visualize your spending habits with graphs that break down your finances monthly. Create, delete and edit transactions using gestures, select a date to get historical exchange rates, and much more!
 
 <br>
 <br>
@@ -80,7 +80,7 @@ A simple, free and beautiful multi-currency tracker app for your daily use. Visu
 
 ## Built with
 
-- [React.js](https://reactjs.org/)
+- [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vite.dev/)
 - [React Router](https://reactrouter.com/)

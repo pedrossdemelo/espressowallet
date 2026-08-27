@@ -47,7 +47,7 @@ export default function Donut(props: DonutProps) {
               shapeRendering="optimizeSpeed"
               // Firefox doesn't evaluate calc() inside SVG presentation
               // attributes (only Chrome/Safari do) — compute the dash length
-              // in JS instead so this renders the same everywhere.
+              // here instead so this renders the same everywhere.
               strokeDasharray={`${
                 ((percentageLeft + percentage) * CIRCUMFERENCE) / 100
               } ${CIRCUMFERENCE}`}

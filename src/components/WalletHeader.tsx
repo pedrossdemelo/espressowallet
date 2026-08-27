@@ -82,7 +82,7 @@ export default function WalletHeader() {
             >
               <Avatar
                 // Non-null: WalletHeader only renders once logged in and
-                // verified (see App.js), matching the original's assumption.
+                // verified (see App.tsx).
                 {...stringAvatar(user!, {
                   height: 36,
                   width: 36,
