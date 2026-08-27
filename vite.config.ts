@@ -15,6 +15,10 @@ export default defineConfig({
       manifest: false,
       injectManifest: {
         injectionPoint: "self.__WB_MANIFEST",
+        // Match the original CRA/workbox precache scope: build output JS,
+        // CSS, HTML, and the self-hosted font files — vite-plugin-pwa's
+        // default globPatterns don't pick up woff/woff2 on their own.
+        globPatterns: ["**/*.{js,css,html,woff,woff2}"],
       },
       devOptions: {
         enabled: false,
@@ -26,5 +30,11 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
+    // The default CSS minifier (lightningcss) drops the vietnamese-subset
+    // @font-face rules from @fontsource's font CSS (verified: they survive
+    // with minification off, and there's no non-lightningcss minifier
+    // available in this Vite build). CSS is ~1% of the JS bundle size, so
+    // leaving it unminified costs nothing worth trading font coverage for.
+    cssMinify: false,
   },
 });
