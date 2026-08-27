@@ -2,10 +2,12 @@ import {
   createTheme,
   CssBaseline,
   darkScrollbar,
+  PaletteMode,
+  Theme,
   ThemeProvider,
 } from "@mui/material";
 import { useLocalStorage } from "hooks";
-import React, { useEffect, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
 
@@ -13,12 +15,22 @@ const headingFont = "Poppins, sans-serif";
 const headingWeight = 500;
 const bodyFont = "Inter, sans-serif";
 
-export const ModeContext = React.createContext({
+interface ModeContextValue {
+  mode: string;
+  isLight: boolean;
+  setMode: (mode: string) => void;
+  toggleMode: () => void;
+  theme: Theme;
+}
+
+export const ModeContext = React.createContext<ModeContextValue>({
   mode: "light",
   isLight: true,
   setMode: () => {},
   toggleMode: () => {},
-  theme: {},
+  // Never actually read: ThemeContextProvider always wraps the app before
+  // anything consumes this context, same as the original placeholder `{}`.
+  theme: {} as Theme,
 });
 
 const useQuery = () => {
@@ -26,7 +38,11 @@ const useQuery = () => {
   return useMemo(() => new URLSearchParams(search), [search]);
 };
 
-export default function ThemeContextProvider({ children }) {
+export default function ThemeContextProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const query = useQuery();
 
   const [mode, setMode] = useLocalStorage("mode", "light");
@@ -34,15 +50,19 @@ export default function ThemeContextProvider({ children }) {
   const isLight = React.useMemo(() => mode === "light", [mode]);
 
   useEffect(() => {
-    if (!query.get("theme")) return;
-    setMode(query.get("theme"));
+    const themeQueryParam = query.get("theme");
+    if (!themeQueryParam) return;
+    setMode(themeQueryParam);
   }, [query, setMode]);
 
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
-          mode,
+          // Cast, not narrowed: preserves the original's exact runtime
+          // behavior, including for a non-"light"/"dark" value that could
+          // reach here via the `?theme=` query param (see useEffect above).
+          mode: mode as PaletteMode,
 
           background: {
             default: isLight ? "#f1f0ed" : "#111111",
@@ -130,7 +150,7 @@ export default function ThemeContextProvider({ children }) {
           },
           MuiCssBaseline: {
             styleOverrides: {
-              body: isLight ? null : darkScrollbar(),
+              body: isLight ? undefined : darkScrollbar(),
               "*::selection": {
                 backgroundColor: isLight
                   ? "#ac9b8445"

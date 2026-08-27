@@ -4,5 +4,5 @@ import { auth } from "../services";
 export default function useAuth() {
   const [user, loading, error] = useAuthState(auth);
 
-  return [user, loading, error];
+  return [user, loading, error] as const;
 }

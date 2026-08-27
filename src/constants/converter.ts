@@ -3,7 +3,7 @@ import { Transaction } from "types";
 
 // The raw document shape as it's actually stored: same as Transaction, but
 // createdAt is a Firestore Timestamp until fromFirestore converts it.
-type StoredTransaction = Omit<Transaction, "createdAt"> & {
+export type StoredTransaction = Omit<Transaction, "createdAt"> & {
   createdAt: Timestamp;
 };
 
