@@ -1,3 +1,4 @@
+import useAppSelector from "./useAppSelector";
 import baseConverter from "../constants/converter";
 import { StoredTransaction } from "constants/converter";
 import {
@@ -12,7 +13,7 @@ import {
   WhereFilterOp,
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useSelector } from "react-redux";
+
 import { TransactionCollection, TransactionWithId } from "types";
 import { db } from "../services";
 import useAuth from "./useAuth";
@@ -50,7 +51,7 @@ export default function useUserData(
 ) {
   const [user] = useAuth();
 
-  const { start, end } = useSelector(state => state.filter.date);
+  const { start, end } = useAppSelector(state => state.filter.date);
   const startTimestamp = Timestamp.fromDate(start);
   const endTimestamp = Timestamp.fromDate(end);
 

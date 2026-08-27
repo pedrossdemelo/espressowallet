@@ -1,7 +1,7 @@
 import { Box, Card, Collapse, Stack, Typography } from "@mui/material";
 import { colorMap } from "constants";
-import { useTagBreakdown } from "hooks";
-import { useSelector } from "react-redux";
+import { useAppSelector, useTagBreakdown } from "hooks";
+
 import { Tag, TransactionWithId } from "types";
 import { formatLongNumber } from "utils";
 import Donut from "./Donut";
@@ -28,7 +28,7 @@ export default function TagBreakdownCard({
   title,
   transactions,
 }: TagBreakdownCardProps) {
-  const currency = useSelector(state => state.wallet.baseCurrency.currency);
+  const currency = useAppSelector(state => state.wallet.baseCurrency.currency);
   const tagsArray = useTagBreakdown(transactions);
   const shouldRender = transactions.length > 0;
 

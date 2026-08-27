@@ -1,3 +1,4 @@
+import { useAppSelector } from "hooks";
 import { LoadingButton } from "@mui/lab";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import {
@@ -10,7 +11,7 @@ import {
 import { currencies } from "constants";
 import { errorMessage, useSnackbar } from "context";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+
 import {
   addTransaction,
   editTransaction,
@@ -57,7 +58,9 @@ export default function TransactionFormDrawer({
   close,
   toEdit = null,
 }: TransactionFormDrawerProps) {
-  const baseCurrency = useSelector(state => state.wallet.baseCurrency.currency);
+  const baseCurrency = useAppSelector(
+    state => state.wallet.baseCurrency.currency,
+  );
 
   // A mutable per-instance draft, reused across re-renders and reset to a
   // blank form whenever the drawer reopens for a new (non-edit) transaction.

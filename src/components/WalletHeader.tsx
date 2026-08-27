@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import { HamburgerMenuDrawer } from "components";
 import { UserMetadata } from "context";
-import { useAuth } from "hooks";
+import { useAppSelector, useAuth } from "hooks";
 import { useContext, useState } from "react";
-import { useSelector } from "react-redux";
+
 import { useHistory } from "react-router-dom";
 import { stringAvatar } from "utils";
 
 export default function WalletHeader() {
-  const currency = useSelector(state => state.wallet.baseCurrency.currency);
+  const currency = useAppSelector(state => state.wallet.baseCurrency.currency);
 
   const [user] = useAuth();
 

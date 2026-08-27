@@ -1,12 +1,13 @@
+import { useAppSelector } from "hooks";
 import { ArrowBack } from "@mui/icons-material";
 import { Fab, Zoom } from "@mui/material";
 import { setDateFilter } from "actions";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function GoBackFab() {
   const dispatch = useDispatch();
-  const start = useSelector(state => state.filter.date.start);
+  const start = useAppSelector(state => state.filter.date.start);
 
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
