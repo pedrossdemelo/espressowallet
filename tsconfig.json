@@ -41,5 +41,6 @@
       "utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/service-worker.ts"]
 }

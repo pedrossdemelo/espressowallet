@@ -3,6 +3,7 @@ import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
 import { useAuth } from "hooks";
 import { Login, Settings, Wallet } from "pages";
+import { ReactNode } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -43,7 +44,13 @@ const Background = styled(Box)(({ theme }) => ({
   minHeight: "-webkit-fill-available",
 }));
 
-function UserData({ children, verified }) {
+function UserData({
+  children,
+  verified,
+}: {
+  children: ReactNode;
+  verified: boolean;
+}) {
   if (!verified) return <>{children}</>;
   return <FilteredUserDataProvider>{children}</FilteredUserDataProvider>;
 }
