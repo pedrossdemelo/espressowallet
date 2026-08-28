@@ -2,8 +2,9 @@ import { Box, styled } from "@mui/material";
 import { EmailVerificationAlert, Loading } from "components";
 import { FilteredUserDataProvider } from "context";
 import { useAuth } from "hooks";
-import { lazy, ReactNode, Suspense } from "react";
+import { lazy, ReactNode, Suspense, useEffect } from "react";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { startPerformanceMonitoring } from "services";
 
 // Route-level code splitting: each page (and everything it alone pulls in —
 // Wallet drags in the bulk of Firestore usage, Settings its own dialogs) only
@@ -17,10 +18,17 @@ function App() {
   const [user, loadingUser] = useAuth();
   const { pathname } = useLocation();
 
-  if (loadingUser) return <Loading />;
-
   const loggedIn = Boolean(user);
   const verified = user?.emailVerified === true;
+  const inside = loggedIn && verified;
+
+  // Metrics only once someone is actually through sign-in — see
+  // startPerformanceMonitoring for why it must not run before that.
+  useEffect(() => {
+    if (inside) startPerformanceMonitoring();
+  }, [inside]);
+
+  if (loadingUser) return <Loading />;
 
   return (
     <>

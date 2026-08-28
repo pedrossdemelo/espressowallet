@@ -1,3 +1,5 @@
+import whenIdle from "utils/whenIdle";
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -35,26 +37,33 @@ export function register(config?: ServiceWorkerConfig) {
       return;
     }
 
+    // Registering the worker kicks off precaching ~1.4MB of assets. On a
+    // first visit that competes with sign-in for the connection, so it waits
+    // for the browser to be idle rather than firing straight off `load`.
     window.addEventListener("load", () => {
-      const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
-
-      if (isLocalhost) {
-        // This is running on localhost. Let's check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl, config);
-
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://cra.link/PWA",
-          );
-        });
-      } else {
-        // Is not localhost. Just register service worker
-        registerValidSW(swUrl, config);
-      }
+      whenIdle(() => registerWhenIdle(config));
     });
+  }
+}
+
+function registerWhenIdle(config?: ServiceWorkerConfig) {
+  const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
+
+  if (isLocalhost) {
+    // This is running on localhost. Let's check if a service worker still exists or not.
+    checkValidServiceWorker(swUrl, config);
+
+    // Add some additional logging to localhost, pointing developers to the
+    // service worker/PWA documentation.
+    navigator.serviceWorker.ready.then(() => {
+      console.log(
+        "This web app is being served cache-first by a service " +
+          "worker. To learn more, visit https://cra.link/PWA",
+      );
+    });
+  } else {
+    // Is not localhost. Just register service worker
+    registerValidSW(swUrl, config);
   }
 }
 
