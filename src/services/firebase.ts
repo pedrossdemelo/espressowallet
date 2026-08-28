@@ -10,6 +10,7 @@ import {
   persistentLocalCache,
   persistentMultipleTabManager,
 } from "firebase/firestore";
+import whenIdle from "utils/whenIdle";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDk4HjU5PHhrT8MNvDNGkMKe_UblpK1hiU",
@@ -25,14 +26,34 @@ const useEmulators = import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true";
 
 const app = initializeApp(firebaseConfig);
 
-// Deferred: it's metrics-only, so it shouldn't compete with the app's own
-// code for bandwidth/parse time on first load.
-if (!useEmulators)
-  window.addEventListener("load", () => {
-    import("firebase/performance").then(({ getPerformance }) =>
-      getPerformance(app),
-    );
+let performanceStarted = false;
+
+/**
+ * Starts Firebase Performance Monitoring.
+ *
+ * On a first visit this costs three network round trips before it reports
+ * anything — an installations registration, a fireperf Remote Config fetch,
+ * and a firelog upload. Measured on a throttled connection against
+ * production, the last of them landed 9.6s into the page. Started on window
+ * `load` it was doing all that while someone was typing their password, so
+ * the sign-in request queued behind metrics traffic and the login button
+ * looked dead.
+ *
+ * So it waits: the app calls this once the user is through the door, and
+ * even then only when the browser is idle.
+ */
+export function startPerformanceMonitoring() {
+  if (performanceStarted || useEmulators) return;
+  performanceStarted = true;
+
+  whenIdle(() => {
+    import("firebase/performance")
+      .then(({ getPerformance }) => getPerformance(app))
+      .catch(() => {
+        // Metrics are optional; a blocked or failed load must not surface.
+      });
   });
+}
 
 export const auth = getAuth(app);
 

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { errorMessage, useSnackbar } from "context";
 import { useAuth } from "hooks";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   loginEmail,
   logout,
@@ -19,7 +19,7 @@ import {
   signUpEmail,
 } from "services";
 import signInGoogle from "services/signInGoogle";
-import { authErrorMessage, noAuthErrors as noErrors } from "utils";
+import { authErrorMessage, noAuthErrors as noErrors, whenIdle } from "utils";
 
 const notLoading = {
   loginLoading: false,
@@ -34,6 +34,18 @@ const emptyForm = {
 export default function Login() {
   const { showError } = useSnackbar();
   const [user] = useAuth();
+
+  // The wallet is a lazy route, so without this its chunk is only requested
+  // once sign-in has already succeeded — an extra serial round trip at the
+  // exact moment the user is waiting. Same specifier as App's lazy import, so
+  // this warms that chunk rather than pulling in a second copy.
+  useEffect(() => {
+    whenIdle(() => {
+      import("pages/Wallet").catch(() => {
+        // A failed warm-up is harmless; the route import will retry.
+      });
+    });
+  }, []);
   const [loading, setLoading] = useState(notLoading);
   const { loginLoading, signUpLoading } = loading;
 
